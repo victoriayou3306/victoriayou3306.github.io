@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Victoria You — About Me" />
+  <title>About | Victoria You</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav>
+    <span class="nav-name">Victoria You</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="about.html" class="active">About Me</a></li>
+    </ul>
+  </nav>
+
+  <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
+
+    <!-- ========== BIO ========== -->
+    <section style="display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:start;margin-bottom:3rem;">
+      <div>
+        <h1 class="section-title" style="font-size:2.5rem;margin-bottom:1rem;">About Me</h1>
+        <p style="margin-bottom:1rem;">
+          <!-- TODO: Replace with your bio paragraph(s) -->
+          [Write a paragraph about yourself — your background, where you're from, what drives you, what you're studying or working on.]
+        </p>
+        <p style="color:var(--text-muted);">
+          [A second paragraph about your interests, hobbies, or personal philosophy — optional.]
+        </p>
+
+        <div class="btn-row" style="margin-top:1.5rem;">
+          <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
+          <a class="btn btn-outline" href="mailto:you@example.com">Email Me</a>
+        </div>
+      </div>
+
+      <!-- TODO: Replace with your actual photo -->
+      <img
+        style="width:200px;height:200px;border-radius:12px;object-fit:cover;border:1px solid var(--border);background:var(--accent-light);"
+        src="assets/profile-photo.jpg"
+        alt="Victoria You"
+        onerror="this.style.background='#c8ddd9';this.removeAttribute('src')"
+      />
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ========== SKILLS ========== -->
+    <section style="margin-bottom:3rem;">
+      <h2 class="section-title">Skills</h2>
+      <p class="section-subtitle"><!-- TODO: optional subtitle --></p>
+
+      <!-- TODO: Replace with your actual skills -->
+      <div class="skill-list">
+        <span class="skill-chip">Skill One</span>
+        <span class="skill-chip">Skill Two</span>
+        <span class="skill-chip">Skill Three</span>
+        <span class="skill-chip">Skill Four</span>
+        <span class="skill-chip">Skill Five</span>
+        <span class="skill-chip">Skill Six</span>
+        <span class="skill-chip">Skill Seven</span>
+        <span class="skill-chip">Skill Eight</span>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ========== EXPERIENCE ========== -->
+    <section style="margin-bottom:3rem;">
+      <h2 class="section-title">Experience</h2>
+      <p class="section-subtitle"><!-- TODO: optional subtitle --></p>
+
+      <ul class="timeline">
+
+        <!-- TODO: Replace with your real experience entries -->
+
+        <li class="timeline-item">
+          <div class="timeline-date">Month Year – Month Year</div>
+          <div class="timeline-title">Job Title / Role</div>
+          <div class="timeline-sub">Company or Organization · Location</div>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
+            [Brief description of what you did here.]
+          </p>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-date">Month Year – Month Year</div>
+          <div class="timeline-title">Job Title / Role</div>
+          <div class="timeline-sub">Company or Organization · Location</div>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
+            [Brief description of what you did here.]
+          </p>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-date">Month Year – Present</div>
+          <div class="timeline-title">Job Title / Role</div>
+          <div class="timeline-sub">Company or Organization · Location</div>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
+            [Brief description of what you do here.]
+          </p>
+        </li>
+
+      </ul>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ========== EDUCATION ========== -->
+    <section style="margin-bottom:3rem;">
+      <h2 class="section-title">Education</h2>
+
+      <ul class="timeline">
+
+        <!-- TODO: Replace with your real education -->
+
+        <li class="timeline-item">
+          <div class="timeline-date">Year – Year</div>
+          <div class="timeline-title">Degree · Major</div>
+          <div class="timeline-sub">University Name</div>
+        </li>
+
+        <li class="timeline-item">
+          <div class="timeline-date">Year – Year</div>
+          <div class="timeline-title">Degree · Major</div>
+          <div class="timeline-sub">University Name</div>
+        </li>
+
+      </ul>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- ========== AWARDS (optional) ========== -->
+    <section style="margin-bottom:3rem;">
+      <h2 class="section-title">Awards & Honors</h2>
+      <p class="section-subtitle"><!-- optional subtitle --></p>
+
+      <ul style="list-style:none;padding:0;">
+        <!-- TODO: Fill in or delete this section -->
+        <li style="margin-bottom:0.75rem;">
+          <strong>[Award Name]</strong> · <span style="color:var(--text-muted);">Organization · Year</span>
+        </li>
+        <li style="margin-bottom:0.75rem;">
+          <strong>[Award Name]</strong> · <span style="color:var(--text-muted);">Organization · Year</span>
+        </li>
+      </ul>
+    </section>
+
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    © <span id="year"></span> Victoria You
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+</body>
+</html>

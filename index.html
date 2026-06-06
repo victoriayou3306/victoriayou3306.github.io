@@ -9,7 +9,6 @@
 </head>
 <body>
 
-  <!-- ========== NAVIGATION ========== -->
   <nav>
     <span class="nav-name">Victoria You</span>
     <ul class="nav-links">
@@ -19,82 +18,58 @@
     </ul>
   </nav>
 
-  <!-- ========== HERO ========== -->
   <div class="container">
+
+    <!-- HERO -->
     <section class="hero">
       <div class="hero-text">
         <h1>Hi, I'm Victoria</h1>
         <p class="tagline">
-          <!-- TODO: Write 1–2 sentences about yourself and what you do -->
+          <!-- TODO: Your tagline -->
           [Your tagline / field / passion goes here.]
         </p>
-
-        <!-- TODO: Replace # with actual file paths once you upload them to assets/ -->
         <div class="btn-row">
+          <!-- TODO: Update links -->
           <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
           <a class="btn btn-outline" href="https://linkedin.com/in/YOURHANDLE" target="_blank">LinkedIn</a>
           <a class="btn btn-outline" href="https://github.com/victoriayou3306" target="_blank">GitHub</a>
         </div>
-
         <p class="contact-line">
-          <!-- TODO: Replace with your email(s) -->
+          <!-- TODO: Your email -->
           <a href="mailto:you@example.com">you@example.com</a>
         </p>
       </div>
-
-      <!-- TODO: Replace with your actual photo in assets/profile-photo.jpg -->
-      <img
-        class="hero-photo"
-        src="assets/profile-photo.jpg"
-        alt="Victoria You profile photo"
-        onerror="this.style.background='#c8ddd9';this.removeAttribute('src')"
-      />
+      <!-- TODO: Add your photo to assets/profile-photo.jpg -->
+      <img class="hero-photo" src="assets/profile-photo.jpg" alt="Victoria You"
+           onerror="this.style.background='#c8ddd9';this.removeAttribute('src')" />
     </section>
 
     <hr class="section-divider" />
 
-    <!-- ========== FEATURED SECTIONS ========== -->
+    <!-- SKILLS — auto-generated from projects.js -->
+    <section class="skills-section">
+      <h2 class="section-title">Skills &amp; Tools</h2>
+      <p class="section-subtitle">Hover any skill to see related projects</p>
+      <div class="skill-pills-row" id="skillPills"></div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- FEATURED PROJECTS — shows first 3, auto-generated -->
     <section>
       <h2 class="section-title">Featured Work</h2>
       <p class="section-subtitle">A selection of projects — <a href="projects.html">see all →</a></p>
-
-      <div class="card-grid">
-        <!-- TODO: Replace these placeholder cards with your real projects -->
-
-        <a href="projects.html" style="text-decoration:none;color:inherit;">
-          <div class="card">
-            <span class="card-tag">Project</span>
-            <h3>Project One</h3>
-            <p>Short description of what this project does and what you learned from it.</p>
-          </div>
-        </a>
-
-        <a href="projects.html" style="text-decoration:none;color:inherit;">
-          <div class="card">
-            <span class="card-tag">Research</span>
-            <h3>Project Two</h3>
-            <p>Short description of what this project does and what you learned from it.</p>
-          </div>
-        </a>
-
-        <a href="projects.html" style="text-decoration:none;color:inherit;">
-          <div class="card">
-            <span class="card-tag">Design</span>
-            <h3>Project Three</h3>
-            <p>Short description of what this project does and what you learned from it.</p>
-          </div>
-        </a>
-      </div>
+      <div class="card-grid" id="featuredCards"></div>
     </section>
 
     <hr class="section-divider" />
 
-    <!-- ========== QUICK ABOUT ========== -->
+    <!-- QUICK ABOUT -->
     <section style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem;">
       <div>
         <h2 class="section-title">About Me</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          <!-- TODO: Write a short bio paragraph -->
+          <!-- TODO: Short bio -->
           [A few sentences about your background, interests, and goals.]
         </p>
         <a href="about.html" class="btn btn-outline">Learn more →</a>
@@ -102,7 +77,7 @@
       <div>
         <h2 class="section-title">Projects</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          <!-- TODO: Describe your work broadly -->
+          <!-- TODO: Brief description of your work -->
           [A short description of the kind of work or projects you do.]
         </p>
         <a href="projects.html" class="btn btn-outline">Explore projects →</a>
@@ -111,11 +86,69 @@
 
   </div>
 
-  <!-- ========== FOOTER ========== -->
   <footer>
     © <span id="year"></span> Victoria You
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
+
+  <script src="projects.js"></script>
+  <script>
+    /* ---- Sort newest first ---- */
+    PROJECTS.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    /* ---- Format "YYYY-MM" → "May 2024" ---- */
+    function fmtDate(d) {
+      if (!d) return '';
+      const [y, m] = d.split('-');
+      if (!m) return y;
+      return new Date(+y, +m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    }
+
+    /* ---- Build skill pills with popups ---- */
+    const allTags = [...new Set(PROJECTS.flatMap(p => p.tags))].sort();
+    const pillsContainer = document.getElementById('skillPills');
+
+    allTags.forEach(tag => {
+      const related = PROJECTS.filter(p => p.tags.includes(tag));
+
+      const pill = document.createElement('div');
+      pill.className = 'skill-pill';
+
+      const popupHTML = `
+        <div class="skill-popup">
+          <div class="popup-heading">Used in ${related.length} project${related.length !== 1 ? 's' : ''}</div>
+          ${related.map(p => `
+            <div class="popup-project">
+              <div class="popup-dot"></div>
+              <div>
+                <div class="popup-project-name">${p.name}</div>
+                <div class="popup-project-cat">${p.cat}</div>
+              </div>
+            </div>`).join('')}
+        </div>`;
+
+      pill.innerHTML = tag + popupHTML;
+      pillsContainer.appendChild(pill);
+    });
+
+    /* ---- Render first 3 projects as featured cards ---- */
+    const featuredContainer = document.getElementById('featuredCards');
+    PROJECTS.slice(0, 3).forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
+          ${p.date ? `<span style="font-size:0.75rem;color:var(--text-muted);">${fmtDate(p.date)}</span>` : ''}
+        </div>
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="card-tags">${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+        ${p.link ? `<p style="margin-top:0.75rem;"><a href="${p.link}" target="_blank" style="font-size:0.85rem;">View project →</a></p>` : ''}
+      `;
+      featuredContainer.appendChild(card);
+    });
+  </script>
 
 </body>
 </html>

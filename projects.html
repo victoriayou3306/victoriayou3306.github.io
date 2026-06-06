@@ -9,7 +9,6 @@
 </head>
 <body>
 
-  <!-- ========== NAVIGATION ========== -->
   <nav>
     <span class="nav-name">Victoria You</span>
     <ul class="nav-links">
@@ -24,64 +23,99 @@
     <h1 class="section-title" style="font-size:2.5rem;margin-bottom:0.4rem;">Projects</h1>
     <p class="section-subtitle">
       <!-- TODO: One-liner about your project themes -->
-      [A brief description of the kind of work you do — research, engineering, design, etc.]
+      [A brief description of the kind of work you do.]
     </p>
 
     <hr class="section-divider" />
 
-    <!-- ========== PROJECT CARDS ========== -->
-    <!-- TODO: Fill in each card with your real projects.
-         Duplicate or remove cards as needed.
-         You can add an <img> inside a card too. -->
-
-    <div class="card-grid">
-
-      <div class="card">
-        <span class="card-tag">Category</span>
-        <h3>Project Title One</h3>
-        <p>Describe what the project is, your role, and what the outcome was. Keep it 2–3 sentences.</p>
-        <!-- Optional: <a href="#" class="btn btn-outline" style="margin-top:1rem;display:inline-block;font-size:0.8rem;">View →</a> -->
-      </div>
-
-      <div class="card">
-        <span class="card-tag">Category</span>
-        <h3>Project Title Two</h3>
-        <p>Describe what the project is, your role, and what the outcome was. Keep it 2–3 sentences.</p>
-      </div>
-
-      <div class="card">
-        <span class="card-tag">Category</span>
-        <h3>Project Title Three</h3>
-        <p>Describe what the project is, your role, and what the outcome was. Keep it 2–3 sentences.</p>
-      </div>
-
-      <div class="card">
-        <span class="card-tag">Category</span>
-        <h3>Project Title Four</h3>
-        <p>Describe what the project is, your role, and what the outcome was. Keep it 2–3 sentences.</p>
-      </div>
-
-      <div class="card">
-        <span class="card-tag">Category</span>
-        <h3>Project Title Five</h3>
-        <p>Describe what the project is, your role, and what the outcome was. Keep it 2–3 sentences.</p>
-      </div>
-
-      <div class="card">
-        <span class="card-tag">Category</span>
-        <h3>Project Title Six</h3>
-        <p>Describe what the project is, your role, and what the outcome was. Keep it 2–3 sentences.</p>
-      </div>
-
+    <!-- Filter bar — auto-generated from tags -->
+    <div style="margin-bottom:1.5rem;">
+      <span style="font-size:0.85rem;color:var(--text-muted);margin-right:0.75rem;">Filter by skill:</span>
+      <span class="card-tag" id="filter-all"
+        style="cursor:pointer;padding:4px 12px;border-radius:20px;font-size:0.8rem;background:var(--accent);color:#fff;border-color:var(--accent);"
+        onclick="filterCards(null)">All</span>
+      <span id="filterTags" style="display:inline-flex;flex-wrap:wrap;gap:6px;margin-left:6px;"></span>
     </div>
+
+    <!-- Cards — auto-generated from projects.js -->
+    <div class="card-grid" id="projectCards"></div>
 
   </div>
 
-  <!-- ========== FOOTER ========== -->
   <footer>
     © <span id="year"></span> Victoria You
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
+
+  <script src="projects.js"></script>
+  <script>
+    /* ---- Sort newest first ---- */
+    PROJECTS.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+    /* ---- Format "YYYY-MM" → "May 2024" ---- */
+    function fmtDate(d) {
+      if (!d) return '';
+      const [y, m] = d.split('-');
+      if (!m) return y;
+      return new Date(+y, +m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    }
+
+    let activeFilter = null;
+
+    /* ---- Render all project cards ---- */
+    const cardGrid = document.getElementById('projectCards');
+
+    function renderCards() {
+      cardGrid.innerHTML = '';
+      PROJECTS.forEach(p => {
+        const visible = !activeFilter || p.tags.includes(activeFilter);
+        const card = document.createElement('div');
+        card.className = 'card' + (visible ? '' : ' dimmed');
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+            <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
+            ${p.date ? `<span style="font-size:0.75rem;color:var(--text-muted);">${fmtDate(p.date)}</span>` : ''}
+          </div>
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+          <div class="card-tags">${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+          ${p.link ? `<p style="margin-top:0.75rem;"><a href="${p.link}" target="_blank" style="font-size:0.85rem;">View project →</a></p>` : ''}
+        `;
+        cardGrid.appendChild(card);
+      });
+    }
+
+    /* ---- Build filter tag buttons ---- */
+    const allTags = [...new Set(PROJECTS.flatMap(p => p.tags))].sort();
+    const filterRow = document.getElementById('filterTags');
+
+    allTags.forEach(tag => {
+      const btn = document.createElement('span');
+      btn.className = 'card-tag';
+      btn.style.cssText = 'cursor:pointer;padding:4px 12px;border-radius:20px;font-size:0.8rem;';
+      btn.textContent = tag;
+      btn.dataset.tag = tag;
+      btn.onclick = () => filterCards(tag);
+      filterRow.appendChild(btn);
+    });
+
+    function filterCards(tag) {
+      activeFilter = tag;
+      /* Update button styles */
+      document.getElementById('filter-all').style.background = tag ? '' : 'var(--accent)';
+      document.getElementById('filter-all').style.color = tag ? '' : '#fff';
+      document.getElementById('filter-all').style.borderColor = tag ? '' : 'var(--accent)';
+      filterRow.querySelectorAll('span').forEach(btn => {
+        const active = btn.dataset.tag === tag;
+        btn.style.background = active ? 'var(--accent)' : '';
+        btn.style.color = active ? '#fff' : '';
+        btn.style.borderColor = active ? 'var(--accent)' : '';
+      });
+      renderCards();
+    }
+
+    renderCards();
+  </script>
 
 </body>
 </html>

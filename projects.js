@@ -17,48 +17,48 @@
 
 const PROJECTS = [
   {
-    id: "project-one",
-    name: "Project Title One",
-    cat: "Engineering",
+    id: "Novoprint",
+    name: "NovoPrint MultiExtruder Arm",
+    cat: "Research",
     date: "2025-03",
     desc: "Short description of what this project does and what you learned from it.",
     tags: ["Python", "SQL", "Tool A"],
     link: ""
   },
   {
-    id: "project-two",
-    name: "Project Title Two",
+    id: "keyboard",
+    name: "Custom Split Keyboard",
+    cat: "Personal",
+    date: "2026-06",
+    desc: "Short description of what this project does and what you learned from it.",
+    tags: ["KiCad", "Soldering", "Rapid Prototyping", "Inventor"],
+    link: ""
+  },
+  {
+    id: "boids",
+    name: "Boids Algorithm Simulation",
+    cat: "Class",
+    date: "2026-05",
+    desc: "Short description of what this project does and what you learned from it.",
+    tags: ["Python", "JavaScript"],
+    link: ""
+  },
+  {
+    id: "meca",
+    name: "Meca 6-Axis Arm Control & Simulation",
+    cat: "Class",
+    date: "2023-12",
+    desc: "Short description of what this project does and what you learned from it.",
+    tags: ["MATLAB"],
+    link: ""
+  },
+  {
+    id: "continuum",
+    name: "Continuum Robot Model",
     cat: "Research",
-    date: "2024-11",
+    date: "2023-08",
     desc: "Short description of what this project does and what you learned from it.",
-    tags: ["Python", "Data Analysis", "Tool B"],
-    link: ""
-  },
-  {
-    id: "project-three",
-    name: "Project Title Three",
-    cat: "Design",
-    date: "2024-08",
-    desc: "Short description of what this project does and what you learned from it.",
-    tags: ["Figma", "Tool A", "Tool C"],
-    link: ""
-  },
-  {
-    id: "project-four",
-    name: "Project Title Four",
-    cat: "Engineering",
-    date: "2024-05",
-    desc: "Short description of what this project does and what you learned from it.",
-    tags: ["SQL", "Tool C", "Tool D"],
-    link: ""
-  },
-  {
-    id: "project-five",
-    name: "Project Title Five",
-    cat: "Research",
-    date: "2023-09",
-    desc: "Short description of what this project does and what you learned from it.",
-    tags: ["Data Analysis", "Tool B", "Tool D"],
+    tags: ["MATLAB", "Tool B", "Tool D"],
     link: ""
   },
   {

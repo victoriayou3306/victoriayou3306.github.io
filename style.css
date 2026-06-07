@@ -176,6 +176,11 @@ nav {
   padding: 3px 9px; border-radius: 12px;
   border: 1px solid #ccddd9;
 }
+.card-date { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+.card-ext-link { font-size: 0.85rem; }
+
+/* Clickable cards */
+.card[style*="cursor: pointer"]:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
 
 /* --- Skills on About page --- */
 .skill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 2rem; }

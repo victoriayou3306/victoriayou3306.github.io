@@ -26,17 +26,16 @@
         <h1>Hi, I'm Victoria</h1>
         <p class="tagline">
           <!-- TODO: Your tagline -->
-          [Your tagline / field / passion goes here.]
+          Mechanical Engineering & Computational Physics
         </p>
         <div class="btn-row">
-          <!-- TODO: Update links -->
           <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
-          <a class="btn btn-outline" href="https://linkedin.com/in/YOURHANDLE" target="_blank">LinkedIn</a>
+          <a class="btn btn-outline" href="https://www.linkedin.com/in/victoria-you/" target="_blank">LinkedIn</a>
           <a class="btn btn-outline" href="https://github.com/victoriayou3306" target="_blank">GitHub</a>
         </div>
         <p class="contact-line">
-          <!-- TODO: Your email -->
-          <a href="mailto:you@example.com">you@example.com</a>
+          <p>Feel free to contact me for project ideas/collaborations!</p>
+          <a href="vyou2@illinois.edu">vyou2@illinois.edu</a>
         </p>
       </div>
       <!-- TODO: Add your photo to assets/profile-photo.jpg -->
@@ -46,30 +45,27 @@
 
     <hr class="section-divider" />
 
-    <!-- SKILLS — auto-generated from projects.js -->
     <section class="skills-section">
       <h2 class="section-title">Skills &amp; Tools</h2>
       <p class="section-subtitle">Hover any skill to see related projects</p>
       <div class="skill-pills-row" id="skillPills"></div>
     </section>
-
+ 
     <hr class="section-divider" />
-
+ 
     <!-- FEATURED PROJECTS — shows first 3, auto-generated -->
     <section>
       <h2 class="section-title">Featured Work</h2>
       <p class="section-subtitle">A selection of projects — <a href="projects.html">see all →</a></p>
       <div class="card-grid" id="featuredCards"></div>
     </section>
-
-    <hr class="section-divider" />
-
-    <!-- QUICK ABOUT -->
-    <section style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem;">
+ 
+    <!-- <hr class="section-divider" /> -->
+ 
+    <!-- <section style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem;">
       <div>
         <h2 class="section-title">About Me</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          <!-- TODO: Short bio -->
           [A few sentences about your background, interests, and goals.]
         </p>
         <a href="about.html" class="btn btn-outline">Learn more →</a>
@@ -77,78 +73,71 @@
       <div>
         <h2 class="section-title">Projects</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          <!-- TODO: Brief description of your work -->
           [A short description of the kind of work or projects you do.]
         </p>
         <a href="projects.html" class="btn btn-outline">Explore projects →</a>
       </div>
-    </section>
-
+    </section> -->
+ 
   </div>
-
+ 
   <footer>
     © <span id="year"></span> Victoria You
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
-
+ 
   <script src="projects.js"></script>
+  <script src="projects-utils.js"></script>
   <script>
-    /* ---- Sort newest first ---- */
-    PROJECTS.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-
-    /* ---- Format "YYYY-MM" → "May 2024" ---- */
-    function fmtDate(d) {
-      if (!d) return '';
-      const [y, m] = d.split('-');
-      if (!m) return y;
-      return new Date(+y, +m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-    }
-
+    sortProjects(PROJECTS);
+ 
     /* ---- Build skill pills with popups ---- */
-    const allTags = [...new Set(PROJECTS.flatMap(p => p.tags))].sort();
+    // Count projects per tag, then sort by count descending (ties broken alphabetically)
+    const tagCounts = {};
+    PROJECTS.flatMap(p => p.tags).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; });
+    const allTags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a] || a.localeCompare(b));
+    const maxCount = Math.max(...Object.values(tagCounts));
     const pillsContainer = document.getElementById('skillPills');
-
+ 
+    // Interpolate between light accent and a deep forest green based on relative count
+    // Light end: hsl(162, 28%, 86%)  Deep end: hsl(162, 42%, 26%)
+    function pillColor(count) {
+      const t = maxCount === 1 ? 0 : (count - 1) / (maxCount - 1); // 0 = lightest, 1 = darkest
+      const l = Math.round(86 - t * 60);   // lightness: 86% → 26%
+      const s = Math.round(28 + t * 14);   // saturation: 28% → 42%
+      const textL = l < 55 ? 95 : 22;      // flip text light/dark at midpoint
+      return { bg: `hsl(162, ${s}%, ${l}%)`, text: `hsl(162, 30%, ${textL}%)` };
+    }
+ 
     allTags.forEach(tag => {
       const related = PROJECTS.filter(p => p.tags.includes(tag));
-
+      const { bg, text } = pillColor(related.length);
       const pill = document.createElement('div');
       pill.className = 'skill-pill';
-
-      const popupHTML = `
-        <div class="skill-popup">
-          <div class="popup-heading">Used in ${related.length} project${related.length !== 1 ? 's' : ''}</div>
-          ${related.map(p => `
-            <div class="popup-project">
-              <div class="popup-dot"></div>
-              <div>
-                <div class="popup-project-name">${p.name}</div>
-                <div class="popup-project-cat">${p.cat}</div>
-              </div>
-            </div>`).join('')}
-        </div>`;
-
-      pill.innerHTML = tag + popupHTML;
+      pill.style.cssText = `background:${bg};color:${text};border-color:transparent;`;
+      pill.innerHTML = `${tag}<div class="skill-popup">
+        <div class="popup-heading">Used in ${related.length} project${related.length !== 1 ? 's' : ''}</div>
+        ${related.map(p => `
+          <div class="popup-project">
+            <div class="popup-dot"></div>
+            <div>
+              <div class="popup-project-name">${p.name}</div>
+              <div class="popup-project-cat">${p.cat}</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+      // On hover, slightly darken the pill without overriding the inline color
+      pill.addEventListener('mouseenter', () => { pill.style.filter = 'brightness(0.88)'; });
+      pill.addEventListener('mouseleave', () => { pill.style.filter = ''; });
       pillsContainer.appendChild(pill);
     });
-
+ 
     /* ---- Render first 3 projects as featured cards ---- */
     const featuredContainer = document.getElementById('featuredCards');
     PROJECTS.slice(0, 3).forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
-          ${p.date ? `<span style="font-size:0.75rem;color:var(--text-muted);">${fmtDate(p.date)}</span>` : ''}
-        </div>
-        <h3>${p.name}</h3>
-        <p>${p.desc}</p>
-        <div class="card-tags">${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
-        ${p.link ? `<p style="margin-top:0.75rem;"><a href="${p.link}" target="_blank" style="font-size:0.85rem;">View project →</a></p>` : ''}
-      `;
-      featuredContainer.appendChild(card);
+      featuredContainer.appendChild(buildCard(p));
     });
   </script>
-
+ 
 </body>
 </html>

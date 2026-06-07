@@ -21,9 +21,10 @@
   <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
 
     <h1 class="section-title" style="font-size:2.5rem;margin-bottom:0.4rem;">Projects</h1>
-    <p class="section-subtitle">
-      <!-- TODO: One-liner about your project themes -->
-      [A brief description of the kind of work you do.]
+    <p class="section-subtitle"> </p><p>
+      I work on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did a lot of additional work after the assignment was submitted.
+      </p><p>For the longest time, robotics and 3D Printing were my biggest passion. Unsurprising outcome for a kid who spent Covid with a 3D  and too much time in isolation.</p>
+      <p>As I've grown through my college career, I've developed a strong interest in controls and nanofabrication. My work at KLA happened to be a perfect intersection of the two in precision motion, and my personal projects display much of my side hobbies.
     </p>
 
     <hr class="section-divider" />
@@ -37,7 +38,6 @@
       <span id="filterTags" style="display:inline-flex;flex-wrap:wrap;gap:6px;margin-left:6px;"></span>
     </div>
 
-    <!-- Cards — auto-generated from projects.js -->
     <div class="card-grid" id="projectCards"></div>
 
   </div>
@@ -48,17 +48,9 @@
   </footer>
 
   <script src="projects.js"></script>
+  <script src="projects-utils.js"></script>
   <script>
-    /* ---- Sort newest first ---- */
-    PROJECTS.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-
-    /* ---- Format "YYYY-MM" → "May 2024" ---- */
-    function fmtDate(d) {
-      if (!d) return '';
-      const [y, m] = d.split('-');
-      if (!m) return y;
-      return new Date(+y, +m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-    }
+    sortProjects(PROJECTS);
 
     let activeFilter = null;
 
@@ -68,19 +60,8 @@
     function renderCards() {
       cardGrid.innerHTML = '';
       PROJECTS.forEach(p => {
-        const visible = !activeFilter || p.tags.includes(activeFilter);
-        const card = document.createElement('div');
-        card.className = 'card' + (visible ? '' : ' dimmed');
-        card.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-            <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
-            ${p.date ? `<span style="font-size:0.75rem;color:var(--text-muted);">${fmtDate(p.date)}</span>` : ''}
-          </div>
-          <h3>${p.name}</h3>
-          <p>${p.desc}</p>
-          <div class="card-tags">${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
-          ${p.link ? `<p style="margin-top:0.75rem;"><a href="${p.link}" target="_blank" style="font-size:0.85rem;">View project →</a></p>` : ''}
-        `;
+        const card = buildCard(p);
+        if (activeFilter && !p.tags.includes(activeFilter)) card.classList.add('dimmed');
         cardGrid.appendChild(card);
       });
     }
@@ -101,7 +82,6 @@
 
     function filterCards(tag) {
       activeFilter = tag;
-      /* Update button styles */
       document.getElementById('filter-all').style.background = tag ? '' : 'var(--accent)';
       document.getElementById('filter-all').style.color = tag ? '' : '#fff';
       document.getElementById('filter-all').style.borderColor = tag ? '' : 'var(--accent)';

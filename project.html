@@ -10,108 +10,62 @@
     .project-header { padding: 3rem 0 2rem; }
     .project-header h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.75rem; }
     .project-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-    .project-body { max-width: 680px; }
-    .project-body p { margin-bottom: 1.25rem; color: var(--text); line-height: 1.8; font-size: 1.02rem; }
     .back-link { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2rem; }
     .back-link:hover { color: var(--accent); text-decoration: none; }
     .not-found { padding: 5rem 0; text-align: center; color: var(--text-muted); }
 
-    /* ── Photo gallery ── */
-    .media-section { margin: 2.5rem 0; }
-    .media-heading { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+    /* ── Project body (your HTML) ── */
+    .project-body { max-width: 720px; padding: 2rem 0; }
+    .project-body p  { margin-bottom: 1.25rem; color: var(--text); line-height: 1.8; font-size: 1.02rem; }
+    .project-body h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin: 2rem 0 0.75rem; }
+    .project-body h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    .project-body ul, .project-body ol { padding-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text); line-height: 1.8; font-size: 1.02rem; }
+    .project-body li { margin-bottom: 0.3rem; }
 
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 10px;
-    }
-    .gallery-item {
-      position: relative;
-      border-radius: 8px;
-      overflow: hidden;
-      background: var(--accent-light);
-      aspect-ratio: 4/3;
-      cursor: pointer;
-    }
-    .gallery-item img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      border-radius: 0;
-      display: block;
-      transition: transform 0.25s;
-    }
-    .gallery-item:hover img { transform: scale(1.04); }
+    /* ── Image helpers (use these classes in your body HTML) ── */
 
-    /* Lightbox */
-    .lightbox {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.88);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-    .lightbox.open { display: flex; }
-    .lightbox img {
-      max-width: min(90vw, 1000px);
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 6px;
-    }
-    .lightbox-close {
-      position: absolute; top: 1.25rem; right: 1.5rem;
-      color: #fff; font-size: 2rem; cursor: pointer; line-height: 1;
-      background: none; border: none; opacity: 0.8;
-    }
-    .lightbox-close:hover { opacity: 1; }
-    .lightbox-prev, .lightbox-next {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(255,255,255,0.15); color: #fff;
-      border: none; font-size: 1.8rem; cursor: pointer;
-      padding: 0.5rem 0.9rem; border-radius: 6px; line-height: 1;
-    }
-    .lightbox-prev { left: 1rem; }
-    .lightbox-next { right: 1rem; }
-    .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.28); }
-    .lightbox-caption {
-      position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%);
-      color: rgba(255,255,255,0.7); font-size: 0.85rem;
-    }
+    /* Full-width image */
+    .img-full { width: 100%; border-radius: 8px; margin: 1.5rem 0; display: block; }
+
+    /* Centered image at a specific width — use style="--w:500px" to control */
+    .img-center { display: block; margin: 1.5rem auto; border-radius: 8px; width: var(--w, 100%); max-width: 100%; }
+
+    /* Float right — text wraps left */
+    .img-right { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
+
+    /* Float left — text wraps right */
+    .img-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
+
+    /* Clear floats */
+    .clear { clear: both; }
+
+    /* Side-by-side pair */
+    .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
+    .img-pair img { width: 100%; border-radius: 8px; }
+
+    /* Three across */
+    .img-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
+    .img-trio img { width: 100%; border-radius: 8px; }
+
+    /* Caption under any image */
+    .img-caption { font-size: 0.82rem; color: var(--text-muted); text-align: center; margin-top: -0.9rem; margin-bottom: 1.5rem; }
+
+    /* Clickable image — add class "lb" and onclick="lb(this)" to open in lightbox */
+    img.lb { cursor: zoom-in; }
 
     /* ── PDF Slideshow ── */
-    .slideshow-wrap {
-      background: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .slideshow-canvas-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 200px;
-      padding: 1rem;
-    }
-    #slideCanvas {
-      max-width: 100%;
-      border-radius: 4px;
-      display: block;
-    }
+    .slideshow-section { margin: 2.5rem 0; }
+    .slideshow-label { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+    .slideshow-wrap { background: #1a1a1a; border-radius: 10px; overflow: hidden; }
+    .slideshow-canvas-row { display: flex; justify-content: center; align-items: center; min-height: 200px; padding: 1rem; }
+    #slideCanvas { max-width: 100%; border-radius: 4px; display: block; }
     .slideshow-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.25rem;
-      background: #111;
-      color: #ccc;
-      font-size: 0.88rem;
-      gap: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1.25rem; background: #111; gap: 1rem;
     }
     .slide-btn {
-      background: rgba(255,255,255,0.1);
-      border: none; color: #fff;
-      padding: 0.4rem 1rem; border-radius: 5px;
-      cursor: pointer; font-size: 0.88rem;
+      background: rgba(255,255,255,0.1); border: none; color: #fff;
+      padding: 0.4rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.88rem;
       transition: background 0.15s;
     }
     .slide-btn:hover:not(:disabled) { background: rgba(255,255,255,0.22); }
@@ -119,10 +73,42 @@
     .slide-counter { color: #aaa; font-size: 0.85rem; white-space: nowrap; }
     .slide-loading { color: #aaa; font-size: 0.9rem; padding: 2rem; text-align: center; }
 
+    /* Slide notes — shown below the slideshow, updates per slide */
+    .slide-notes-wrap {
+      background: #f5f4f1;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      padding: 1rem 1.5rem;
+      min-height: 3rem;
+    }
+    .slide-notes-label {
+      font-size: 0.72rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;
+    }
+    .slide-notes-text {
+      font-size: 0.92rem; color: var(--text); line-height: 1.7;
+      white-space: pre-wrap;
+    }
+    .slide-notes-empty { color: var(--text-muted); font-size: 0.88rem; font-style: italic; }
+
     /* ── Prev/Next project nav ── */
-    .proj-nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .proj-nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); margin-bottom: 2rem; }
     .proj-nav a { font-size: 0.88rem; color: var(--text-muted); }
     .proj-nav a:hover { color: var(--accent); }
+
+    /* ── Lightbox ── */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000; align-items: center; justify-content: center; padding: 2rem; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: min(90vw,1000px); max-height: 85vh; object-fit: contain; border-radius: 6px; }
+    .lb-close { position: absolute; top: 1.25rem; right: 1.5rem; color: #fff; font-size: 2rem; cursor: pointer; background: none; border: none; opacity: 0.8; line-height: 1; }
+    .lb-close:hover { opacity: 1; }
+    .lb-caption { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 0.85rem; text-align: center; max-width: 600px; }
+
+    @media (max-width: 640px) {
+      .img-right, .img-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
+      .img-pair, .img-trio { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -137,16 +123,26 @@
   </nav>
 
   <div class="container">
-    <div id="content"></div>
+
+    <!-- Header — always auto-generated from projects.js -->
+    <div id="proj-header"></div>
+
+    <!-- Body — loaded from body-<id>.html if it exists, else falls back to projects.js body field -->
+    <div class="project-body" id="proj-body"></div>
+
+    <!-- Slideshow — auto-generated from projects.js slides + notes fields -->
+    <div id="proj-slides"></div>
+
+    <!-- Prev/Next nav -->
+    <div id="proj-nav"></div>
+
   </div>
 
-  <!-- Lightbox (shared, outside container) -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <button class="lightbox-close" onclick="lbClose()">×</button>
-    <button class="lightbox-prev" onclick="lbStep(-1)">‹</button>
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="if(event.target===this)lbClose()">
+    <button class="lb-close" onclick="lbClose()">×</button>
     <img id="lbImg" src="" alt="" />
-    <button class="lightbox-next" onclick="lbStep(1)">›</button>
-    <div class="lightbox-caption" id="lbCaption"></div>
+    <div class="lb-caption" id="lbCaption"></div>
   </div>
 
   <footer>
@@ -154,20 +150,16 @@
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
 
-  <!-- PDF.js from CDN — only used when a project has slides -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
   <script src="projects.js"></script>
   <script src="projects-utils.js"></script>
   <script>
-    /* ─── Load project ─────────────────────────────────────── */
     const params  = new URLSearchParams(window.location.search);
     const id      = params.get('id');
     const project = PROJECTS.find(p => p.id === id);
-    const content = document.getElementById('content');
 
     if (!project) {
-      content.innerHTML = `
+      document.getElementById('proj-body').innerHTML = `
         <div class="not-found">
           <h2 style="font-family:var(--font-display);margin-bottom:1rem;">Project not found</h2>
           <p><a href="projects.html">← Back to all projects</a></p>
@@ -175,47 +167,9 @@
     } else {
       document.title = `${project.name} | Victoria You`;
 
-      const dateStr  = fmtDateRange(project.dateStart, project.date);
-      const bodyHTML = (project.body || '')
-        .split(/\n\n+/).filter(Boolean)
-        .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-
-      sortProjects(PROJECTS);
-      const idx  = PROJECTS.findIndex(p => p.id === id);
-      const prev = PROJECTS[idx + 1];
-      const next = PROJECTS[idx - 1];
-
-      /* Images */
-      const imgs = (project.images || []).filter(Boolean);
-      const galleryHTML = imgs.length ? `
-        <div class="media-section">
-          <div class="media-heading">Photos</div>
-          <div class="gallery" id="gallery">
-            ${imgs.map((f, i) => `
-              <div class="gallery-item" onclick="lbOpen(${i})">
-                <img src="assets/projects/${id}/${f}" alt="${f}" loading="lazy" />
-              </div>`).join('')}
-          </div>
-        </div>` : '';
-
-      /* Slideshow */
-      const slidesHTML = project.slides ? `
-        <div class="media-section">
-          <div class="media-heading">Slides</div>
-          <div class="slideshow-wrap">
-            <div class="slideshow-canvas-row">
-              <div class="slide-loading" id="slideLoading">Loading slides…</div>
-              <canvas id="slideCanvas" style="display:none;"></canvas>
-            </div>
-            <div class="slideshow-controls">
-              <button class="slide-btn" id="slidePrev" onclick="slideStep(-1)" disabled>‹ Prev</button>
-              <span class="slide-counter" id="slideCounter">— / —</span>
-              <button class="slide-btn" id="slideNext" onclick="slideStep(1)" disabled>Next ›</button>
-            </div>
-          </div>
-        </div>` : '';
-
-      content.innerHTML = `
+      /* ── Header ─────────────────────────────────────────────── */
+      const dateStr = fmtDateRange(project.dateStart, project.date);
+      document.getElementById('proj-header').innerHTML = `
         <div class="project-header">
           <a class="back-link" href="projects.html">← All projects</a>
           <h1>${project.name}</h1>
@@ -228,58 +182,80 @@
           </div>
           ${project.link ? `<a class="btn btn-outline" href="${project.link}" target="_blank" style="margin-bottom:2rem;">${project.linkLabel || 'View project'} →</a>` : ''}
         </div>
+        <hr class="section-divider" style="margin-top:0;" />`;
 
-        <hr class="section-divider" style="margin-top:0;" />
+      /* ── Body: try body-<id>.html first, fall back to project.body ── */
+      fetch(`body-${id}.html`)
+        .then(r => {
+          if (!r.ok) throw new Error('no custom body');
+          return r.text();
+        })
+        .then(html => {
+          document.getElementById('proj-body').innerHTML = html;
+        })
+        .catch(() => {
+          // Fallback: render the plain-text body field as paragraphs
+          const bodyHTML = (project.body || '')
+            .split(/\n\n+/).filter(Boolean)
+            .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+          document.getElementById('proj-body').innerHTML =
+            bodyHTML || `<p style="color:var(--text-muted);">[No description yet. Create <code>body-${id}.html</code> or add a <code>body</code> field in projects.js]</p>`;
+        });
 
-        <div class="project-body" style="padding:2rem 0;">
-          ${bodyHTML || `<p style="color:var(--text-muted);">[No description yet — add a <code>body</code> field to this project in projects.js]</p>`}
-        </div>
+      /* ── Slideshow ───────────────────────────────────────────── */
+      if (project.slides) {
+        document.getElementById('proj-slides').innerHTML = `
+          <div class="slideshow-section">
+            <div class="slideshow-label">Slides</div>
+            <div class="slideshow-wrap">
+              <div class="slideshow-canvas-row">
+                <div class="slide-loading" id="slideLoading">Loading slides…</div>
+                <canvas id="slideCanvas" style="display:none;"></canvas>
+              </div>
+              <div class="slideshow-controls">
+                <button class="slide-btn" id="slidePrev" onclick="slideStep(-1)" disabled>‹ Prev</button>
+                <span class="slide-counter" id="slideCounter">— / —</span>
+                <button class="slide-btn" id="slideNext" onclick="slideStep(1)" disabled>Next ›</button>
+              </div>
+            </div>
+            <div class="slide-notes-wrap">
+              <div class="slide-notes-label">Notes</div>
+              <div class="slide-notes-text" id="slideNotes"></div>
+            </div>
+          </div>`;
+        initSlideshow(`assets/projects/${id}/${project.slides}`);
+      }
 
-        ${galleryHTML}
-        ${slidesHTML}
-
+      /* ── Prev / Next nav ─────────────────────────────────────── */
+      sortProjects(PROJECTS);
+      const idx  = PROJECTS.findIndex(p => p.id === id);
+      const prev = PROJECTS[idx + 1];
+      const next = PROJECTS[idx - 1];
+      document.getElementById('proj-nav').innerHTML = `
         <div class="proj-nav">
           <div>${prev ? `<a href="project.html?id=${prev.id}">← ${prev.name}</a>` : ''}</div>
           <div>${next ? `<a href="project.html?id=${next.id}">${next.name} →</a>` : ''}</div>
-        </div>
-      `;
-
-      /* Init PDF slideshow after DOM is ready */
-      if (project.slides) initSlideshow(`assets/projects/${id}/${project.slides}`);
+        </div>`;
     }
 
-    /* ─── Lightbox ─────────────────────────────────────────── */
-    let lbImages = [];
-    let lbIndex  = 0;
-
-    function lbOpen(i) {
-      const imgs = (project.images || []).filter(Boolean);
-      lbImages = imgs.map(f => ({ src: `assets/projects/${id}/${f}`, caption: f }));
-      lbIndex  = i;
-      lbShow();
+    /* ─── Lightbox ───────────────────────────────────────────────
+       Use in body HTML:
+         <img class="lb" src="assets/projects/mitll/photo.jpg" alt="caption" onclick="lb(this)">
+    ─────────────────────────────────────────────────────────────── */
+    function lb(imgEl) {
+      document.getElementById('lbImg').src = imgEl.src;
+      document.getElementById('lbCaption').textContent = imgEl.alt || '';
       document.getElementById('lightbox').classList.add('open');
     }
-    function lbShow() {
-      document.getElementById('lbImg').src     = lbImages[lbIndex].src;
-      document.getElementById('lbCaption').textContent =
-        `${lbIndex + 1} / ${lbImages.length}`;
+    function lbClose() {
+      document.getElementById('lightbox').classList.remove('open');
     }
-    function lbStep(dir) {
-      lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
-      lbShow();
-    }
-    function lbClose() { document.getElementById('lightbox').classList.remove('open'); }
-    function closeLightbox(e) { if (e.target === document.getElementById('lightbox')) lbClose(); }
     document.addEventListener('keydown', e => {
-      if (!document.getElementById('lightbox').classList.contains('open')) return;
-      if (e.key === 'ArrowRight') lbStep(1);
-      if (e.key === 'ArrowLeft')  lbStep(-1);
-      if (e.key === 'Escape')     lbClose();
+      if (e.key === 'Escape') lbClose();
     });
 
-    /* ─── PDF Slideshow ────────────────────────────────────── */
-    let pdfDoc      = null;
-    let currentPage = 1;
+    /* ─── PDF Slideshow ──────────────────────────────────────────── */
+    let pdfDoc = null, currentPage = 1;
 
     async function initSlideshow(url) {
       try {
@@ -288,36 +264,47 @@
         pdfDoc = await pdfjsLib.getDocument(url).promise;
         document.getElementById('slideLoading').style.display = 'none';
         document.getElementById('slideCanvas').style.display  = 'block';
-        updateSlideButtons();
+        updateSlideUI();
         await renderSlide(1);
       } catch (err) {
         document.getElementById('slideLoading').textContent =
-          'Could not load slides. Make sure the PDF is in assets/projects/' + id + '/';
+          `Could not load slides. Make sure the PDF is at assets/projects/${id}/${project.slides}`;
       }
     }
 
-    async function renderSlide(pageNum) {
-      const page     = await pdfDoc.getPage(pageNum);
+    async function renderSlide(n) {
+      const page     = await pdfDoc.getPage(n);
       const canvas   = document.getElementById('slideCanvas');
-      const maxW     = canvas.parentElement.clientWidth - 32; // 32 = 2×1rem padding
-      const viewport = page.getViewport({ scale: 1 });
-      const scale    = Math.min(maxW / viewport.width, 1.5);
+      const maxW     = canvas.parentElement.clientWidth - 32;
+      const vp       = page.getViewport({ scale: 1 });
+      const scale    = Math.min(maxW / vp.width, 1.5);
       const scaled   = page.getViewport({ scale });
       canvas.width   = scaled.width;
       canvas.height  = scaled.height;
       await page.render({ canvasContext: canvas.getContext('2d'), viewport: scaled }).promise;
-      document.getElementById('slideCounter').textContent = `${pageNum} / ${pdfDoc.numPages}`;
+      document.getElementById('slideCounter').textContent = `${n} / ${pdfDoc.numPages}`;
+
+      // Show notes for this slide (1-indexed, stored 0-indexed in notes array)
+      const notes    = (project.notes || [])[n - 1] || '';
+      const notesEl  = document.getElementById('slideNotes');
+      if (notes.trim()) {
+        notesEl.className = 'slide-notes-text';
+        notesEl.textContent = notes;
+      } else {
+        notesEl.className = 'slide-notes-empty';
+        notesEl.textContent = 'No notes for this slide.';
+      }
     }
 
     async function slideStep(dir) {
       const next = currentPage + dir;
       if (next < 1 || next > pdfDoc.numPages) return;
       currentPage = next;
-      updateSlideButtons();
+      updateSlideUI();
       await renderSlide(currentPage);
     }
 
-    function updateSlideButtons() {
+    function updateSlideUI() {
       document.getElementById('slidePrev').disabled = currentPage <= 1;
       document.getElementById('slideNext').disabled = currentPage >= (pdfDoc ? pdfDoc.numPages : 1);
     }

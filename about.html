@@ -6,10 +6,28 @@
   <meta name="description" content="Victoria You — About Me" />
   <title>About | Victoria You</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Coursework list inside education */
+    .course-list {
+      display: flex; flex-wrap: wrap; gap: 5px;
+      margin-top: 0.6rem;
+    }
+    .course-chip {
+      font-size: 0.78rem; color: var(--text-muted);
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 2px 9px; border-radius: 10px;
+      white-space: nowrap;
+    }
+    /* Coursework label */
+    .course-label {
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-top: 0.75rem; margin-bottom: 0.3rem; display: block;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ========== NAVIGATION ========== -->
   <nav>
     <span class="nav-name">Victoria You</span>
     <ul class="nav-links">
@@ -21,112 +39,83 @@
 
   <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
 
-    <!-- ========== BIO ========== -->
+    <!-- BIO -->
     <section style="display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:start;margin-bottom:3rem;">
       <div>
         <h1 class="section-title" style="font-size:2.5rem;margin-bottom:1rem;">About Me</h1>
         <p style="margin-bottom:1rem;">
-          I'm originally from Nashville, TN, and I'm studying Mechanical Engineering & Computational Physics with a minor in Semiconductor Engineering at the University of Illinois Urbana Champaign. I've been fortunate enough to explore many different states throughout internship opportunities and will probably continue to bounce around for a while both geographically and my interests.
+          I'm originally from Nashville, TN, and I'm studying Mechanical Engineering &amp; Computational Physics with a minor in Semiconductor Engineering at the University of Illinois Urbana Champaign. I've been fortunate enough to explore many different states throughout internship opportunities and will probably continue to bounce around for a while both geographically and my interests.
         </p>
         <p style="color:var(--text-muted);">
           I'm basically using this website as another side project. Maybe sometime I'll add more non-technical hobbies, but for now, most of my project descriptions will be more informal blog-style just for fun (and to prove I'm not a robot). Check out my resume if you want the shortened, pretty version of my experiences.
         </p>
-
         <div class="btn-row" style="margin-top:1.5rem;">
           <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
           <a class="btn btn-outline" href="mailto:vyou2@illinois.edu">Email Me</a>
         </div>
       </div>
-
-      <!-- TODO: Replace with your actual photo -->
       <img
         style="width:200px;height:200px;border-radius:12px;object-fit:cover;border:1px solid var(--border);background:var(--accent-light);"
-        src="assets/profile-photo.jpg"
-        alt="Victoria You"
-        onerror="this.style.background='#c8ddd9';this.removeAttribute('src')"
-      />
+        src="assets/profile-photo.jpg" alt="Victoria You"
+        onerror="this.style.background='#c8ddd9';this.removeAttribute('src')" />
     </section>
 
     <hr class="section-divider" />
 
-    <!-- ========== SKILLS ========== -->
+    <!-- SKILLS — auto-generated from projects + courses, collapses to 2 rows -->
     <section style="margin-bottom:3rem;">
       <h2 class="section-title">Skills</h2>
-      <p class="section-subtitle"><!-- TODO: optional subtitle --></p>
-
-      <!-- TODO: Replace with your actual skills -->
-      <div class="skill-list">
-        <span class="skill-chip">Skill One</span>
-        <span class="skill-chip">Skill Two</span>
-        <span class="skill-chip">Skill Three</span>
-        <span class="skill-chip">Skill Four</span>
-        <span class="skill-chip">Skill Five</span>
-        <span class="skill-chip">Skill Six</span>
-        <span class="skill-chip">Skill Seven</span>
-        <span class="skill-chip">Skill Eight</span>
-      </div>
+      <p class="section-subtitle">Hover any skill to see where it appears</p>
+      <div class="skill-pills-row" id="skillPills"></div>
     </section>
 
     <hr class="section-divider" />
 
-    <!-- ========== EXPERIENCE ========== -->
+    <!-- EXPERIENCE -->
     <section style="margin-bottom:3rem;">
       <h2 class="section-title">Experience</h2>
-      <p class="section-subtitle"><!-- TODO: optional subtitle --></p>
-
       <ul class="timeline">
+
         <li class="timeline-item">
           <div class="timeline-date">May 2026 – August 2026</div>
           <div class="timeline-title">Mechatronics Intern</div>
           <div class="timeline-sub">KLA · <em>Ann Arbor, MI</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
-            [Brief description of what you did here.]
-          </p>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">[Brief description.]</p>
         </li>
 
         <li class="timeline-item">
           <div class="timeline-date">March 2026 – <em>Present</em></div>
           <div class="timeline-title">Undergraduate Research</div>
           <div class="timeline-sub">Quantum and Nanoscale Photonics Laboratory · <em>Champaign, IL</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
-            [Brief description of what you did here.]
-          </p>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">[Brief description.]</p>
         </li>
 
         <li class="timeline-item">
           <div class="timeline-date">February 2026 – May 2026</div>
           <div class="timeline-title">Web Content Developer</div>
-          <div class="timeline-sub">UIUC Mechanical Sciences & Engineering · <em>Champaign, IL</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
-            [Brief description of what you do here.]
-          </p>
+          <div class="timeline-sub">UIUC Mechanical Sciences &amp; Engineering · <em>Champaign, IL</em></div>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">[Brief description.]</p>
         </li>
 
         <li class="timeline-item">
           <div class="timeline-date">September 2025 – January 2026</div>
           <div class="timeline-title">Microfabrication Process Engineering Co-Op</div>
           <div class="timeline-sub">MIT Lincoln Laboratory · <em>Lexington, MA</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
-            [Brief description of what you do here.]
-          </p>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">[Brief description.]</p>
         </li>
 
         <li class="timeline-item">
           <div class="timeline-date">February 2025 – August 2025</div>
-          <div class="timeline-title">R&D Engineering Intern</div>
+          <div class="timeline-title">R&amp;D Engineering Intern</div>
           <div class="timeline-sub">Cygnus Photonics · <em>Champaign, IL</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
-            [Brief description of what you do here.]
-          </p>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">[Brief description.]</p>
         </li>
 
         <li class="timeline-item">
           <div class="timeline-date">May 2024 – August 2024</div>
           <div class="timeline-title">Restoration Mechanic Intern</div>
           <div class="timeline-sub">Nashville Motorcycle Repair · <em>Nashville, TN</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">
-            [Brief description of what you do here.]
-          </p>
+          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">[Brief description.]</p>
         </li>
 
       </ul>
@@ -134,43 +123,17 @@
 
     <hr class="section-divider" />
 
-    <!-- ========== EDUCATION ========== -->
+    <!-- EDUCATION — auto-generated from courses.js -->
     <section style="margin-bottom:3rem;">
       <h2 class="section-title">Education</h2>
-
-      <ul class="timeline">
-
-        <li class="timeline-item">
-          <div class="timeline-date">2024 – 2028</div>
-          <div class="timeline-title">BS · Physics</div>
-          <div class="timeline-sub">University of Illinois Urbana Champaign</div>
-          <p>Relevant Coursework: <em>Special Relativity, Classical Mechanics, Computational Physics, Computer Science I & II, Discrete Structures, Semiconductor Devices, Quantum Information Theory, Electromagnetic Fields</em></p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">2024 – 2028</div>
-          <div class="timeline-title">BS · Mechanical Engineering</div>
-          <div class="timeline-sub">University of Illinois Urbana Champaign</div>
-          <p>Relevant Coursework: <em>Mechanical Design I, Dynamics of Mechanical Systems, Design for Manufacturing, Thermodynamics, Fluid Dynamics, Solid Mechanics, Electrical Circuits, Computer Aided Design, Statics</em></p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">2023 – 2024</div>
-          <div class="timeline-title">High School Dual Enrollment</div>
-          <div class="timeline-sub">Vanderbilt University</div>
-          <p>Relevant Coursework: <em>Abstract Linear Algebra, Intro to Robotics</em></p>
-        </li>
-
-      </ul>
+      <ul class="timeline" id="educationList"></ul>
     </section>
 
     <hr class="section-divider" />
 
-    <!-- ========== AWARDS (optional) ========== -->
+    <!-- AWARDS -->
     <section style="margin-bottom:3rem;">
-      <h2 class="section-title">Awards & Honors</h2>
-      <p class="section-subtitle"><!-- optional subtitle --></p>
-
+      <h2 class="section-title">Awards &amp; Honors</h2>
       <ul style="list-style:none;padding:0;">
         <li style="margin-bottom:0.75rem;">
           <strong>James Scholar</strong> · <span style="color:var(--text-muted);">UIUC · 2025</span>
@@ -183,11 +146,64 @@
 
   </div>
 
-  <!-- ========== FOOTER ========== -->
   <footer>
     © <span id="year"></span> Victoria You
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
+
+  <script src="projects.js"></script>
+  <script src="courses.js"></script>
+  <script src="projects-utils.js"></script>
+  <script>
+    /* ── Combine project tags + course skills into one unified count ── */
+    const tagCounts   = {};
+    const projectsMap = {};  // tag → [{name, cat}]
+    const coursesMap  = {};  // tag → ["Course Name", ...]
+
+    PROJECTS.flatMap(p => p.tags).forEach(t => {
+      tagCounts[t] = (tagCounts[t] || 0) + 1;
+    });
+    PROJECTS.forEach(p => {
+      p.tags.forEach(t => {
+        if (!projectsMap[t]) projectsMap[t] = [];
+        projectsMap[t].push({ name: p.name, cat: p.cat });
+      });
+    });
+
+    EDUCATION.forEach(school => {
+      school.courses.forEach(course => {
+        (course.skills || []).forEach(t => {
+          tagCounts[t]  = (tagCounts[t]  || 0) + 1;
+          if (!coursesMap[t]) coursesMap[t] = [];
+          if (!coursesMap[t].includes(course.name)) coursesMap[t].push(course.name);
+        });
+      });
+    });
+
+    const allTags  = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a] || a.localeCompare(b));
+    const maxCount = Math.max(...Object.values(tagCounts));
+
+    buildSkillPills(document.getElementById('skillPills'), {
+      allTags, tagCounts, maxCount, projectsMap, coursesMap, collapse: true
+    });
+
+    /* ── Render education from courses.js ── */
+    const eduList = document.getElementById('educationList');
+    EDUCATION.forEach(school => {
+      const courseChips = school.courses.map(c => `<span class="course-chip">${c.name}</span>`).join('');
+      const li = document.createElement('li');
+      li.className = 'timeline-item';
+      li.innerHTML = `
+        <div class="timeline-date">${school.dates}</div>
+        <div class="timeline-title">${school.degree}</div>
+        <div class="timeline-sub">${school.school}</div>
+        ${school.courses.length ? `
+          <span class="course-label">Relevant Coursework</span>
+          <div class="course-list">${courseChips}</div>` : ''}
+      `;
+      eduList.appendChild(li);
+    });
+  </script>
 
 </body>
 </html>

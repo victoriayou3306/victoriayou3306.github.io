@@ -1,0 +1,109 @@
+<!--
+  IMAGE QUICK REFERENCE
+  ─────────────────────
+
+  Classes you can use on any <img>:
+
+    .img-full          → spans full column width
+    .img-center        → centered, default full width
+                         add style="--w:500px" to set a specific width
+    .img-right         → floats right, text wraps left
+                         add style="--w:300px" to control width
+    .img-left          → floats left, text wraps right
+    .img-caption       → put in a <p> right after an image for a caption
+    .clear             → put in a <div> to stop text from wrapping a float
+    .img-pair          → wrapper div for two side-by-side images
+    .img-trio          → wrapper div for three side-by-side images
+
+  Add   class="lb" onclick="lb(this)"   to any image to make it
+  open in a fullscreen lightbox when clicked. The alt="" text becomes
+  the lightbox caption.
+
+  ═══════════════════════════════════════════════════════════════════
+-->
+
+<p>
+  This project was a gift to my mother, who's a Professor at Vanderbilt, after she expressed her discomfort and unsatisfaction with her office setup ergonomics (kind of). My solution was to improve her set up. Ergonomic mice are relatively cheap with common designs. Keyboards had too much variety based on personal comfort and were also too expensive for my liking. As every engineer/tinkerer/middle-aged father has said, 'I can build that better, and cheaper.' (scroll down for full BOM).
+</p>
+
+
+<!-- ── EXAMPLE: Full-width image ───────────────────────────────── -->
+<img class="img-full lb"
+     src="assets/projects/mitll/overview.jpg"
+     alt="Overview of the experimental setup"
+     onclick="lb(this)">
+<p class="img-caption">Caption for the full-width image above.</p>
+
+
+<p>
+  [Continue writing here. The image above spans the full width of the content column.
+  Clicking it opens the lightbox.]
+</p>
+
+
+<!-- ── EXAMPLE: Image floated right, text wraps left ───────────── -->
+<img class="img-right lb"
+     style="--w: 300px"
+     src="assets/projects_main.JPG"
+     alt="System architecture diagram"
+     onclick="lb(this)">
+
+<p>
+  [This paragraph flows to the left of the floated image. Good for figures that
+  accompany a specific section of text. Adjust --w to make the image wider or narrower.]
+</p>
+<p>
+  [Keep writing and the text continues to wrap around the image until it clears.]
+</p>
+
+<div class="clear"></div>
+<!-- ↑ Always put this after a float so the next section starts cleanly -->
+
+
+<!-- ── EXAMPLE: Centered image at a specific width ─────────────── -->
+<img class="img-center lb"
+     style="--w: 480px"
+     src="assets/projects/mitll/results.png"
+     alt="Results chart"
+     onclick="lb(this)">
+<p class="img-caption">Results from the final evaluation.</p>
+
+<p>
+  [Another paragraph after the centered image.]
+</p>
+
+
+<!-- ── EXAMPLE: Two images side by side ────────────────────────── -->
+<div class="img-pair">
+  <img src="assets/projects/mitll/before.jpg"  alt="Before" class="lb" onclick="lb(this)">
+  <img src="assets/projects/mitll/after.jpg"   alt="After"  class="lb" onclick="lb(this)">
+</div>
+<p class="img-caption">Left: before. Right: after.</p>
+
+
+<!-- ── EXAMPLE: Three images side by side ───────────────────────── -->
+<div class="img-trio">
+  <img src="assets/projects/mitll/step1.jpg" alt="Step 1" class="lb" onclick="lb(this)">
+  <img src="assets/projects/mitll/step2.jpg" alt="Step 2" class="lb" onclick="lb(this)">
+  <img src="assets/projects/mitll/step3.jpg" alt="Step 3" class="lb" onclick="lb(this)">
+</div>
+
+
+<h2>Section Heading</h2>
+
+<p>
+  [You can use h2 for major sections and h3 for subsections within the body.
+  Delete any example blocks above that you don't need.]
+</p>
+
+<h3>Subsection</h3>
+
+<p>
+  [Subsection content here.]
+</p>
+
+<ul>
+  <li>Bullet point one</li>
+  <li>Bullet point two</li>
+  <li>Bullet point three</li>
+</ul>

@@ -91,6 +91,7 @@ const PROJECTS = [
     date: "2026-01",
     desc: "Microfabrication Process Engineering Co-Op focused on thin-film development. My main projects were in Epitaxy, E-beam Evaporation, and ALD.",
     body: "This was my first time working with anything less than millimeter scale, as much of my previous experience was in Mechanical Engineering. Needless to say, there was a steep learning curve, but it was an incredible experience. Special shoutout to my mentor Stephen Margiotta for answering thousands of questions throughout the semester and helping with my awful presentation skills. \n I've condensed my Final Presentation to give an overview of what I worked on, but I've also included the full version including my speaker notes (aka script I forgot to follow) for anyone who's interested.",
+    notes: ["hi"],
     tags: ["JMP", "Microfabrication", "CVD", "E-beam Evaporation", "ALD", "SEM", "Ellipsometry"],
     link: "",
     slides: "full_presentation.pdf"

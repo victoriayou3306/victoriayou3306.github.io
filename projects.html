@@ -28,7 +28,7 @@
      alt="triple computer"
      onclick="lb(this)">
     <p>
-      I work on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did a lot of additional work after the assignment was submitted.
+      I've worked on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did a lot of additional work after the assignment was submitted.
       </p><p>For the longest time, robotics and 3D Printing were my biggest passions.* Through my college career, I've developed a strong interest in controls and nanofabrication. My work at KLA happens to be a perfect intersection of the two in precision motion, and my personal projects display much of my side hobbies.
     </p>
     <p>*<em>Unsurprising outcome for a kid who spent Covid with a 3D Printer and too much time in isolation.</em></p>
@@ -53,9 +53,24 @@
     <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   </footer>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="if(event.target===this)lbClose()">
+    <button class="lb-close" onclick="lbClose()">×</button>
+    <img id="lbImg" src="" alt="" />
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
   <script src="projects.js"></script>
   <script src="projects-utils.js"></script>
   <script>
+    /* Lightbox */
+    function lb(imgEl) {
+      document.getElementById('lbImg').src = imgEl.src;
+      document.getElementById('lbCaption').textContent = imgEl.alt || '';
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function lbClose() { document.getElementById('lightbox').classList.remove('open'); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); });
     sortProjects(PROJECTS);
 
     let activeFilter = null;

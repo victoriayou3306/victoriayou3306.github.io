@@ -211,8 +211,8 @@ nav {
 /* --- Image layout helpers (available on every page) --- */
 .img-full    { width: 100%; border-radius: 8px; margin: 1.5rem 0; display: block; }
 .img-center  { display: block; margin: 1.5rem auto; border-radius: 8px; width: var(--w, 100%); max-width: 100%; }
-.img-right   { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
-.img-left    { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
+.img-right   { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 68%; }
+.img-left    { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 68%; }
 .clear       { clear: both; }
 .img-pair    { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
 .img-trio    { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.5rem 0; }

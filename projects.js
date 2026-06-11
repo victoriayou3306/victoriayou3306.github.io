@@ -36,8 +36,9 @@ const PROJECTS = [
     desc: "Fully custom split ortholinear keyboard. Custom design & PCB by JLCPCB, case modeled and 3D printed from PLA/TPU",
     body: "This project was a gift to my mother, who's a Professor at Vanderbilt, after she expressed her discomfort and unsatisfaction with her office setup ergonomics (kind of). Ergonomic mice are relatively cheap with common designs. Keyboards had too much variety based on personal comfort, and were too expensive for my liking. As every engineer/tinkerer/middle-aged father has said, 'I can build that better, and cheaper.' \n Though this also gave me many more constraints than my usual projects. Lots of keyboard design choices are subjective to the user, and this was a surprise gift. Also, my mother isn't very tech-savvy. I had hundreds of ideas to implement, but I also knew she wouldn't use anything that was even slightly overcomplicated.",
     tags: ["KiCad", "Soldering", "Rapid Prototyping", "Autodesk Inventor", "3D Printing"],
-    link: "",
-    imgages: []
+    headerImage: "banner.png",
+    headerOpacity: .30,
+    link: ""
   },
   {
     id: "boids",

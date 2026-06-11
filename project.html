@@ -6,13 +6,35 @@
   <title>Project | Victoria You</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* ── Project header ── */
+    /* ── Header — no-image version ── */
     .project-header { padding: 3rem 0 2rem; }
     .project-header h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.75rem; }
     .project-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
     .back-link { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.88rem; color: var(--text-muted); margin-bottom: 2rem; }
     .back-link:hover { color: var(--accent); text-decoration: none; }
     .not-found { padding: 5rem 0; text-align: center; color: var(--text-muted); }
+
+    /* ── Header banner — full viewport width, text constrained inside ── */
+    .header-banner {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      /* no border-radius — spans edge to edge */
+    }
+    .header-banner-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      /* opacity set inline per-project: 0.0 (invisible) → 1.0 (fully opaque) */
+    }
+    /* Text content is constrained to the same max-width as the rest of the page */
+    .header-banner-content {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 2.5rem;
+    }
+    .header-banner .back-link { opacity: 0.75; }
+    .header-banner .back-link:hover { opacity: 1; }
 
     /* ── Project body (your HTML) ── */
     .project-body { max-width: 720px; padding: 2rem 0; }
@@ -122,10 +144,10 @@
     </ul>
   </nav>
 
-  <div class="container">
+  <!-- Header lives outside .container so the banner image can go full viewport width -->
+  <div id="proj-header"></div>
 
-    <!-- Header — always auto-generated from projects.js -->
-    <div id="proj-header"></div>
+  <div class="container">
 
     <!-- Body — loaded from body-<id>.html if it exists, else falls back to projects.js body field -->
     <div class="project-body" id="proj-body"></div>
@@ -162,27 +184,45 @@
       document.getElementById('proj-body').innerHTML = `
         <div class="not-found">
           <h2 style="font-family:var(--font-display);margin-bottom:1rem;">Project not found</h2>
-          <p><a href="projects.html">← Back to all projects</a></p>
+          <strong><a href="projects.html">← Back to all projects</a></strong>
         </div>`;
     } else {
       document.title = `${project.name} | Victoria You`;
 
       /* ── Header ─────────────────────────────────────────────── */
       const dateStr = fmtDateRange(project.dateStart, project.date);
-      document.getElementById('proj-header').innerHTML = `
-        <div class="project-header">
-          <a class="back-link" href="projects.html">← All projects</a>
-          <h1>${project.name}</h1>
-          <div class="project-meta">
-            <span class="card-category" style="margin:0;">${project.cat}</span>
-            ${dateStr ? `<span class="card-date">${dateStr}</span>` : ''}
-          </div>
-          <div class="card-tags" style="margin-bottom:1.5rem;">
-            ${project.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
-          </div>
-          ${project.link ? `<a class="btn btn-outline" href="${project.link}" target="_blank" style="margin-bottom:2rem;">${project.linkLabel || 'View project'} →</a>` : ''}
+
+      const innerContent = `
+        <a class="back-link" href="projects.html">← All projects</a>
+        <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;line-height:1.2;margin-bottom:0.75rem;">${project.name}</h1>
+        <div class="project-meta">
+          <span class="card-category" style="margin:0;">${project.cat}</span>
+          ${dateStr ? `<span class="card-date">${dateStr}</span>` : ''}
         </div>
-        <hr class="section-divider" style="margin-top:0;" />`;
+        <div class="card-tags" style="margin-bottom:1.5rem;">
+          ${project.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+        </div>
+        ${project.link ? `<a class="btn btn-outline" href="${project.link}" target="_blank" style="margin-bottom:1rem;">${project.linkLabel || 'View project'} →</a>` : ''}`;
+
+      if (project.headerImage) {
+        const opacity = project.headerOpacity !== undefined ? project.headerOpacity : 0.25;
+        const imgPath = `assets/projects/${id}/${project.headerImage}`;
+        document.getElementById('proj-header').innerHTML = `
+          <div class="header-banner">
+            <div class="header-banner-bg"
+                 style="background-image:url('${imgPath}');opacity:${opacity};"></div>
+            <div class="header-banner-content">${innerContent}</div>
+          </div>
+          <div style="max-width:900px;margin:0 auto;padding:0 2rem;">
+            <hr class="section-divider" style="margin-top:0;" />
+          </div>`;
+      } else {
+        document.getElementById('proj-header').innerHTML = `
+          <div style="max-width:900px;margin:0 auto;padding:3rem 2rem 0;">${innerContent}</div>
+          <div style="max-width:900px;margin:0 auto;padding:0 2rem;">
+            <hr class="section-divider" />
+          </div>`;
+      }
 
       /* ── Body: try body-<id>.html first, fall back to project.body ── */
       fetch(`body-${id}.html`)

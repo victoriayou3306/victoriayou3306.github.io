@@ -22,88 +22,93 @@
   ═══════════════════════════════════════════════════════════════════
 -->
 
-<p>
-  This project was a gift to my mother, who's a Professor at Vanderbilt, after she expressed her discomfort and unsatisfaction with her office setup ergonomics (kind of). My solution was to improve her set up. Ergonomic mice are relatively cheap with common designs. Keyboards had too much variety based on personal comfort and were also too expensive for my liking. As every engineer/tinkerer/middle-aged father has said, 'I can build that better, and cheaper.' (scroll down for full BOM).
-</p>
-
-
-<!-- ── EXAMPLE: Full-width image ───────────────────────────────── -->
 <img class="img-full lb"
-     src="assets/projects/mitll/overview.jpg"
-     alt="Overview of the experimental setup"
+     src="assets/projects/keyboard/main.jpeg"
+     alt="Keyboard"
      onclick="lb(this)">
-<p class="img-caption">Caption for the full-width image above.</p>
-
+<!-- <p class="img-caption">Caption for the full-width image above.</p> -->
 
 <p>
-  [Continue writing here. The image above spans the full width of the content column.
-  Clicking it opens the lightbox.]
+  This project was a gift to my mother, who's a Professor and spends most of her day at her desk, after she expressed her discomfort and unsatisfaction with her office setup ergonomics (exact words), so I tried to fix it. Ergonomic mice are relatively cheap with common designs. Keyboards had too much variety based on personal comfort and were also too expensive for my liking. As every engineer/tinkerer/middle-aged father has said, 'I can build that better, and cheaper.' (scroll down for full BOM).
 </p>
 
+<p>Though this also gave me many more constraints than my usual projects. Lots of keyboard design choices are subjective to the user, and this was a surprise gift. I tried to make layouts and functions as intuitive as possible and keep things simple.</p>
+
+<img class="img-center lb"
+     style="--w: 750px"
+     src="assets/projects/keyboard/layouts.png"
+     alt="Layouts"
+     onclick="lb(this)">
 
 <!-- ── EXAMPLE: Image floated right, text wraps left ───────────── -->
+<!-- <img class="img-right lb"
+     style="--w: 300px"
+     src="assets/projects/keyboard/layout.png"
+     alt="Layout Schematic"
+     onclick="lb(this)"> -->
+
+<p>
+  Layout was mostly my personal preference, with as little deviation from the standard QWERTY as possible for simplicity and ease of use. I've personally only ever used 100% keyboards (for reasons I can't explain), but I cut down here. I looked online a lot for inspiration and settled for a 64 key (3 key thumb cluster) layout, but decided it looked too clunky and ended up with the final 60 key layout. I ended up spending a good while looking for nice keycaps and getting some custom ones made for aesthetics. Blanks probably would've been the cheapest, or all 1U size keys, but that wouldn't be nearly as easy to use.
+</p>
 <img class="img-right lb"
      style="--w: 300px"
-     src="assets/projects_main.JPG"
-     alt="System architecture diagram"
+     src="assets/projects/keyboard/kicad.png"
+     alt="KiCad PCB"
      onclick="lb(this)">
 
-<p>
-  [This paragraph flows to the left of the floated image. Good for figures that
-  accompany a specific section of text. Adjust --w to make the image wider or narrower.]
-</p>
-<p>
-  [Keep writing and the text continues to wrap around the image until it clears.]
-</p>
+<p>The PCB I designed to be reversible and usable for both sides, primarily to save money and because why not. I used an Arduino Pro Micro on each side and went with Cherry Red Silent switches. I decided against hot-swappable switches, but did socket my microcontrollers because I was scared I'd fry something. The two halves are connected via TRRS for serial communication.</p>
 
 <div class="clear"></div>
-<!-- ↑ Always put this after a float so the next section starts cleanly -->
-
 
 <!-- ── EXAMPLE: Centered image at a specific width ─────────────── -->
-<img class="img-center lb"
+<!-- <img class="img-center lb"
      style="--w: 480px"
      src="assets/projects/mitll/results.png"
      alt="Results chart"
      onclick="lb(this)">
-<p class="img-caption">Results from the final evaluation.</p>
+<p class="img-caption">Results from the final evaluation.</p> -->
 
 <p>
-  [Another paragraph after the centered image.]
+  Apparently keyboard enthusiasts are more common than I thought, and ergogen.xyz was developed to make the process MUCH easier. I basically drew out the layout and PCB using YAML, so my KiCad skill might be a lie (all I did was route the connections and line up mounting holes). Still, it was great fun to make sure all my connections could be formed in just two layers, and definitely helped me learn my way around the KiCad interface.
 </p>
 
+<img class="img-left lb"
+     style="--w:500px"
+     src="assets/projects/keyboard/soldering.jpg"
+     alt="Yippee"
+     onclick="lb(this)">
+
+<p>This project was also totally just an excuse to buy a soldering kit, though I should've definitely picked one with a fan. [30 switches, 30 diodes, 24 pins/sockets + Arduino] x 2 was definitely some good soldering practice. 
+</p>
+<div class="clear"></div>
+
+<img class="img-center lb"
+     style="--w: 550px"
+     src="assets/projects/keyboard/shortcuts.jpeg"
+     alt="Was doing this at Chicago Train Station"
+     onclick="lb(this)">
+
+<p>I also tried adding shortcuts that might be useful, like emails and passwords, as well as special characters like greek letters that commonly appear in genomics research/writing (at least from my outsider perspective). Again, keyboard enthusiasts have created the great tool QMK that made writing and flashing firmware very easy, so no C code had to be manually written (thankfully). I used windows Alt codes* so no Unicode or external software needs to be installed to get the extra characters.
+</p>
 
 <!-- ── EXAMPLE: Two images side by side ────────────────────────── -->
 <div class="img-pair">
-  <img src="assets/projects/mitll/before.jpg"  alt="Before" class="lb" onclick="lb(this)">
-  <img src="assets/projects/mitll/after.jpg"   alt="After"  class="lb" onclick="lb(this)">
-</div>
-<p class="img-caption">Left: before. Right: after.</p>
-
-
-<!-- ── EXAMPLE: Three images side by side ───────────────────────── -->
-<div class="img-trio">
-  <img src="assets/projects/mitll/step1.jpg" alt="Step 1" class="lb" onclick="lb(this)">
-  <img src="assets/projects/mitll/step2.jpg" alt="Step 2" class="lb" onclick="lb(this)">
-  <img src="assets/projects/mitll/step3.jpg" alt="Step 3" class="lb" onclick="lb(this)">
+  <img src="assets/projects/keyboard/top.jpeg"  alt="1" class="lb" onclick="lb(this)">
+  <img src="assets/projects/keyboard/tenting.jpeg"   alt="2"  class="lb" onclick="lb(this)">
 </div>
 
-
-<h2>Section Heading</h2>
-
-<p>
-  [You can use h2 for major sections and h3 for subsections within the body.
-  Delete any example blocks above that you don't need.]
+<p>Ergogen could've also helped create an stl for a case, but I preferred making my own in Inventor. This was pretty straightforward, though it did take a few tries to get a nice print in place tenting. Also added some TPU pieces for wrist rests but after this picture was taken. See top picture.
 </p>
 
-<h3>Subsection</h3>
+<img class="img-center lb"
+     style="--w: 550px"
+     src="assets/projects/keyboard/BOM.png"
+     alt="Bill of Materials #Engineer"
+     onclick="lb(this)">
 
-<p>
-  [Subsection content here.]
+<p>I spent about ~$150 total including extra/wrong parts and shipping/tariffs, which really isn't that bad. Looking just at the used parts, though, its pretty comparable to market options for ergonomic split keyboards. I probably could've found cheaper keycaps or even printed my own, but that's not right to give to your mother. I still think its worth the cost because I like the layout and customizability, but I guess we need user feedback to decide if its better (hello mother). </p>
+
+<p> Since JLCPCB ships in packs of 5, and I already have extra diodes/microcontrollers (bought 1.5x the needed amount in case I blew something up), I might just rip some switches off one of my old keyboards and make myself a macropad. My dad also had an odd fascination with the keyboard, so I'm gonna try to add a trackpad or some pointer control and make a second one too- with the same pcbs if possible.
 </p>
 
-<ul>
-  <li>Bullet point one</li>
-  <li>Bullet point two</li>
-  <li>Bullet point three</li>
-</ul>
+<strong>Overall 10/10 project. Learned a lot, had a blast, mother is happy!</strong>

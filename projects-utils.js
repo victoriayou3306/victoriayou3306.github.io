@@ -136,18 +136,59 @@ function buildCard(p, { clickable = true } = {}) {
   card.className = 'card';
   if (clickable) card.style.cursor = 'pointer';
 
-  const dateStr = fmtDateRange(p.dateStart, p.date);
+  const dateStr  = fmtDateRange(p.dateStart, p.date);
+  const imgPath  = p.coverImage ? `assets/projects/${p.id}/${p.coverImage}` : null;
+
+  /* Cover image block (only when coverImage is set) */
+  const coverHTML = imgPath ? `
+    <div class="card-cover">
+      <img src="${imgPath}" alt="${p.name}" loading="lazy"
+           onerror="this.parentElement.style.display='none'">
+      <div class="card-cover-desc">${p.desc}</div>
+    </div>` : '';
+
+  /* Tag chips — rendered all at once; JS below handles 2-row overflow */
+  const tagsHTML = p.tags.map(t =>
+    `<span class="card-tag">${t}</span>`
+  ).join('');
 
   card.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-      <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
-      ${dateStr ? `<span class="card-date">${dateStr}</span>` : ''}
+    <div class="card-body" style="padding-bottom:0.6rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
+        <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
+        ${dateStr ? `<span class="card-date">${dateStr}</span>` : ''}
+      </div>
+      <h3>${p.name}</h3>
     </div>
-    <h3>${p.name}</h3>
-    <p>${p.desc}</p>
-    <div class="card-tags">${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
-    ${p.link ? `<p style="margin-top:0.75rem;"><a href="${p.link}" target="_blank" class="card-ext-link" onclick="event.stopPropagation()">${p.linkLabel || 'View project'} →</a></p>` : ''}
+    ${coverHTML}
+    <div class="card-body" style="padding-top:0.6rem;">
+      ${!imgPath ? `<div class="card-desc-inline">${p.desc}</div>` : ''}
+      <div class="card-tags">${tagsHTML}</div>
+      ${p.link ? `<p style="margin-top:0.6rem;margin-bottom:0;"><a href="${p.link}" target="_blank" class="card-ext-link" onclick="event.stopPropagation()">${p.linkLabel || 'View project'} →</a></p>` : ''}
+    </div>
   `;
+
+  /* Collapse tags to 2 rows with a (…) overflow bubble */
+  requestAnimationFrame(() => {
+    const tagsEl  = card.querySelector('.card-tags');
+    const tagEls  = [...tagsEl.querySelectorAll('.card-tag')];
+    if (!tagEls.length) return;
+
+    // Measure: find where the 3rd row starts
+    const rowH   = tagEls[0].offsetHeight + 5; // tag height + gap
+    const top0   = tagEls[0].offsetTop;
+    const cutoff = top0 + rowH * 2 + 3;
+
+    const hidden = tagEls.filter(t => t.offsetTop > cutoff);
+    if (!hidden.length) return;
+
+    hidden.forEach(t => t.style.display = 'none');
+    const more = document.createElement('span');
+    more.className = 'card-tags-more';
+    more.textContent = `+${hidden.length}`;
+    more.title = hidden.map(t => t.textContent).join(', ');
+    tagsEl.appendChild(more);
+  });
 
   if (clickable) {
     card.addEventListener('click', () => {

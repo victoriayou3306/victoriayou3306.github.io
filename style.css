@@ -150,34 +150,124 @@ nav {
 
 /* --- Project Cards --- */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+
 .card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; padding: 1.5rem;
+  border-radius: 12px; overflow: hidden;
   transition: box-shadow 0.2s, transform 0.2s, opacity 0.2s;
+  display: flex; flex-direction: column;
 }
-.card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
 .card.dimmed { opacity: 0.2; }
-.card h3 { font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 0.5rem; }
-.card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+/* ── Cover image area ── */
+.card-cover {
+  position: relative;
+  width: 100%; aspect-ratio: 16/9;
+  overflow: hidden; flex-shrink: 0;
+  background: var(--accent-light);
+}
+.card-cover img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; border-radius: 0;
+  transition: transform 0.3s;
+}
+.card:hover .card-cover img { transform: scale(1.04); }
+
+/* Desc overlay — appears on hover over the cover */
+.card-cover-desc {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.92);
+  padding: 0.9rem 1rem;
+  opacity: 0; transition: opacity 0.2s;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.85rem; color: var(--text); line-height: 1.55;
+}
+.card:hover .card-cover-desc { opacity: 1; }
+
+/* ── Card body (below image or top if no image) ── */
+.card-body { padding: 1rem 1.1rem 1rem; display: flex; flex-direction: column; flex: 1; }
+
+/* Title: max 2 lines */
+.card-body h3 {
+  font-family: var(--font-display); font-size: 1rem; margin-bottom: 0.35rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  line-height: 1.35;
+}
+
+/* Desc when there's NO cover image: max 5 lines, always visible */
+.card-desc-inline {
+  font-size: 0.85rem; color: var(--text-muted); line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 0.6rem; flex: 1;
+}
 
 /* Category badge */
 .card-category {
   display: inline-block; background: var(--accent-light); color: var(--accent);
   font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.6rem;
-  border-radius: 4px; margin-bottom: 0.75rem;
+  border-radius: 4px; margin-bottom: 0.5rem;
   letter-spacing: 0.05em; text-transform: uppercase;
 }
 
-/* Skill tags on cards */
-.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 0.75rem; }
+/* Skill tags on cards — overflow handled by JS, not CSS height clipping */
+.card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 0.6rem; padding-bottom: 2px; overflow: visible; position: relative; }
 .card-tag {
   background: #f0f4f3; color: #3a5e54;
   font-size: 0.75rem; font-weight: 500;
   padding: 3px 9px; border-radius: 12px;
-  border: 1px solid #ccddd9;
+  border: 1px solid #ccddd9; white-space: nowrap;
+}
+.card-tags-more {
+  background: #e5e2dd; color: #6b6b6b;
+  font-size: 0.75rem; font-weight: 500;
+  padding: 3px 9px; border-radius: 12px;
+  border: 1px solid #d5d2cd; white-space: nowrap;
+  cursor: default;
 }
 .card-date { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
 .card-ext-link { font-size: 0.85rem; }
+
+/* ── Inline footnote tooltip ── */
+/* Usage: <span class="footnote">*<span class="footnote-tip">Your tooltip text here.</span></span> */
+.footnote {
+  position: relative;
+  display: inline;
+  cursor: default;
+  border-bottom: 1px dashed var(--text-muted);
+  color: inherit;
+}
+.footnote-tip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%; transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 10px 13px;
+  width: 260px;
+  font-size: 0.83rem; color: var(--text); line-height: 1.5;
+  white-space: normal; text-align: left;
+  z-index: 50;
+  pointer-events: none;
+}
+.footnote-tip::after {
+  content: '';
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 6px solid transparent; border-top-color: var(--surface);
+}
+.footnote-tip::before {
+  content: '';
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 7px solid transparent; border-top-color: var(--border);
+  margin-top: 1px;
+}
+.footnote:hover .footnote-tip { display: block; }
 
 /* Clickable cards */
 .card[style*="cursor: pointer"]:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
@@ -211,8 +301,8 @@ nav {
 /* --- Image layout helpers (available on every page) --- */
 .img-full    { width: 100%; border-radius: 8px; margin: 1.5rem 0; display: block; }
 .img-center  { display: block; margin: 1.5rem auto; border-radius: 8px; width: var(--w, 100%); max-width: 100%; }
-.img-right   { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 68%; }
-.img-left    { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 68%; }
+.img-right   { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
+.img-left    { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
 .clear       { clear: both; }
 .img-pair    { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
 .img-trio    { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.5rem 0; }

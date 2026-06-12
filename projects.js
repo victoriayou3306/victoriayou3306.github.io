@@ -38,6 +38,7 @@ const PROJECTS = [
     tags: ["KiCad", "Soldering", "Rapid Prototyping", "Autodesk Inventor", "3D Printing"],
     headerImage: "banner.png",
     headerOpacity: .30,
+    coverImage:  "main.jpeg",
     link: ""
   },
   {

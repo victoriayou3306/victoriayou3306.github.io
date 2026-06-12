@@ -31,12 +31,12 @@
         <div class="btn-row">
           <!-- TODO: Update links -->
           <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
-          <a class="btn btn-outline" href="https://linkedin.com/in/YOURHANDLE" target="_blank">LinkedIn</a>
+          <a class="btn btn-outline" href="https://linkedin.com/in/victoria-you" target="_blank">LinkedIn</a>
           <a class="btn btn-outline" href="https://github.com/victoriayou3306" target="_blank">GitHub</a>
         </div>
         <p class="contact-line">
           <!-- TODO: Your email -->
-          <a href="mailto:you@example.com">you@example.com</a>
+          <a href="mailto:vyou2@illinois.edu">vyou2@illinois.edu</a>
         </p>
       </div>
       <!-- TODO: Add your photo to assets/profile-photo.jpg -->
@@ -52,7 +52,6 @@
       <p class="section-subtitle">Hover any skill to see related projects</p>
       <div class="skill-pills-row" id="skillPills"></div>
     </section>
-    
 
     <hr class="section-divider" />
 
@@ -93,20 +92,35 @@
   </footer>
 
   <script src="projects.js"></script>
+  <script src="courses.js"></script>
   <script src="projects-utils.js"></script>
   <script>
     sortProjects(PROJECTS);
 
-    /* ---- Build skill pills ---- */
+    /* ---- Build skill pills (same combined count as about.html) ---- */
     const tagCounts   = {};
-    PROJECTS.flatMap(p => p.tags).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; });
-    const allTags     = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a] || a.localeCompare(b));
-    const maxCount    = Math.max(...Object.values(tagCounts));
     const projectsMap = {};
-    allTags.forEach(t => { projectsMap[t] = PROJECTS.filter(p => p.tags.includes(t)).map(p => ({ name: p.name, cat: p.cat })); });
+    const coursesMap  = {};
+
+    PROJECTS.flatMap(p => p.tags).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; });
+    PROJECTS.forEach(p => p.tags.forEach(t => {
+      if (!projectsMap[t]) projectsMap[t] = [];
+      projectsMap[t].push({ name: p.name, cat: p.cat });
+    }));
+
+    EDUCATION.forEach(school => school.courses.forEach(course => {
+      (course.skills || []).forEach(t => {
+        tagCounts[t] = (tagCounts[t] || 0) + 1;
+        if (!coursesMap[t]) coursesMap[t] = [];
+        if (!coursesMap[t].includes(course.name)) coursesMap[t].push(course.name);
+      });
+    }));
+
+    const allTags  = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a] || a.localeCompare(b));
+    const maxCount = Math.max(...Object.values(tagCounts));
 
     buildSkillPills(document.getElementById('skillPills'), {
-      allTags, tagCounts, maxCount, projectsMap
+      allTags, tagCounts, maxCount, projectsMap, coursesMap
     });
 
     /* ---- Render first 3 projects as featured cards ---- */

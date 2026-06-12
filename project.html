@@ -79,8 +79,9 @@
     .slideshow-section { margin: 2.5rem 0; }
     .slideshow-label { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
     .slideshow-wrap { background: #1a1a1a; border-radius: 10px; overflow: hidden; }
-    .slideshow-canvas-row { display: flex; justify-content: center; align-items: center; min-height: 200px; padding: 1rem; }
-    #slideCanvas { max-width: 100%; border-radius: 4px; display: block; }
+    /* No fixed height — canvas sets its own height based on PDF aspect ratio */
+    .slideshow-canvas-row { display: flex; justify-content: center; align-items: center; padding: 0; line-height: 0; }
+    #slideCanvas { width: 100%; height: auto; display: block; border-radius: 0; }
     .slideshow-controls {
       display: flex; align-items: center; justify-content: space-between;
       padding: 0.75rem 1.25rem; background: #111; gap: 1rem;
@@ -93,7 +94,7 @@
     .slide-btn:hover:not(:disabled) { background: rgba(255,255,255,0.22); }
     .slide-btn:disabled { opacity: 0.3; cursor: default; }
     .slide-counter { color: #aaa; font-size: 0.85rem; white-space: nowrap; }
-    .slide-loading { color: #aaa; font-size: 0.9rem; padding: 2rem; text-align: center; }
+    .slide-loading { color: #aaa; font-size: 0.9rem; padding: 2rem; text-align: center; width: 100%; }
 
     /* Slide notes — shown below the slideshow, updates per slide */
     .slide-notes-wrap {
@@ -184,7 +185,7 @@
       document.getElementById('proj-body').innerHTML = `
         <div class="not-found">
           <h2 style="font-family:var(--font-display);margin-bottom:1rem;">Project not found</h2>
-          <strong><a href="projects.html">← Back to all projects</a></strong>
+          <p><a href="projects.html">← Back to all projects</a></p>
         </div>`;
     } else {
       document.title = `${project.name} | Victoria You`;
@@ -313,20 +314,21 @@
     }
 
     async function renderSlide(n) {
-      const page     = await pdfDoc.getPage(n);
-      const canvas   = document.getElementById('slideCanvas');
-      const maxW     = canvas.parentElement.clientWidth - 32;
-      const vp       = page.getViewport({ scale: 1 });
-      const scale    = Math.min(maxW / vp.width, 1.5);
-      const scaled   = page.getViewport({ scale });
-      canvas.width   = scaled.width;
-      canvas.height  = scaled.height;
-      await page.render({ canvasContext: canvas.getContext('2d'), viewport: scaled }).promise;
+      const page   = await pdfDoc.getPage(n);
+      const canvas = document.getElementById('slideCanvas');
+      const vp0    = page.getViewport({ scale: 1 });
+      // Fill the full container width — CSS width:100% handles display scaling,
+      // but canvas pixel dimensions must match for sharpness
+      const containerW = canvas.parentElement.clientWidth;
+      const scale      = containerW / vp0.width;
+      const vp         = page.getViewport({ scale });
+      canvas.width     = vp.width;
+      canvas.height    = vp.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
       document.getElementById('slideCounter').textContent = `${n} / ${pdfDoc.numPages}`;
 
-      // Show notes for this slide (1-indexed, stored 0-indexed in notes array)
-      const notes    = (project.notes || [])[n - 1] || '';
-      const notesEl  = document.getElementById('slideNotes');
+      const notes   = (project.notes || [])[n - 1] || '';
+      const notesEl = document.getElementById('slideNotes');
       if (notes.trim()) {
         notesEl.className = 'slide-notes-text';
         notesEl.textContent = notes;
@@ -335,6 +337,13 @@
         notesEl.textContent = 'No notes for this slide.';
       }
     }
+
+    // Re-render current slide if window is resized (keeps canvas sharp at new width)
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { if (pdfDoc) renderSlide(currentPage); }, 150);
+    });
 
     async function slideStep(dir) {
       const next = currentPage + dir;

@@ -25,6 +25,7 @@ const PROJECTS = [
     desc: "Short description of what this project does and what you learned from it.",
     body: "",
     tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management"],
+    // coverImage: "main.jpeg",
     link: ""
   },
   {
@@ -87,14 +88,17 @@ const PROJECTS = [
   },
   {
     id: "mitll",
-    name: "MIT Lincoln Laboratory Co-Op",
+    name: "MIT Lincoln Labs Co-Op",
     cat: "Internship",
     dateStart: "2025-09",
     date: "2026-01",
     desc: "Microfabrication Process Engineering Co-Op focused on thin-film development. My main projects were in Epitaxy, E-beam Evaporation, and ALD.",
-    body: "This was my first time working with anything less than millimeter scale, as much of my previous experience was in Mechanical Engineering. Needless to say, there was a steep learning curve, but it was an incredible experience. Special shoutout to my mentor Stephen Margiotta for answering thousands of questions throughout the semester and helping with my awful presentation skills. \n I've condensed my Final Presentation to give an overview of what I worked on, but I've also included the full version including my speaker notes (aka script I forgot to follow) for anyone who's interested.",
-    notes: ["hi"],
+    body: "This was my first time working with anything less than millimeter scale, as much of my previous experience was in Mechanical Engineering. Needless to say, there was a steep learning curve, but it was an incredible experience. Special shoutout to my mentor Stephen Margiotta for answering thousands of questions throughout the semester and helping with my awful presentation skills. \n I've attached my Final Presentation including my speaker notes (aka script I forgot to follow) for anyone who's interested.",
+    notes: ["hi", "", "", "The first project i worked on is with the Beneq in bay 6 for HZO films. We've been getting thickness variations both within individual wafers, as well as between different wafers in a single run. Adding these variations up makes a range of almost a nanometer, which is huge for a 5nm film. This project was started by a previous co-op, giving a few baseline tests of 4 wafer runs. This is how we typically load the 8-slot beneq cassette, as shown in the bottom right here, primarily to reduce scratch risk in the loading and unloading."
+      
+    ],
     tags: ["JMP", "Microfabrication", "CVD", "E-beam Evaporation", "ALD", "SEM", "Ellipsometry"],
+    coverImage: "wafer.jpg",
     link: "",
     slides: "full_presentation.pdf"
   },
@@ -115,7 +119,7 @@ const PROJECTS = [
     cat: "Personal",
     dateStart: "2020",
     date: "0000",
-    desc: "Miscellaneous projects that are undeserving of their own page. But funny/interesting enough to appear at all",
+    desc: "Miscellaneous projects that are undeserving of their own page. But interesting enough to appear at all",
     body: "",
     tags: ["Fusion 360", "Autodesk Inventor", "Blender", "3D Printing", "Rapid Prototyping"],
     link: ""

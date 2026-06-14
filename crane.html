@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Victoria You — Crane" />
+  <title>Crane | Victoria You</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CRANE COUNT — edit crane-count.js to update everywhere
+       ═══════════════════════════════════════════════════════════ -->
+  <script src="crane-count.js"></script>
+</head>
+<body>
+
+  <nav>
+    <span class="nav-name">Victoria You</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="about.html">About Me</a></li>
+      <li>
+        <a href="crane.html" class="nav-crane active" aria-label="Crane">
+          <img src="assets/crane.png" alt="" class="nav-crane-icon">
+          <span class="nav-crane-count" id="navCraneCount"></span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
+
+    <!-- ═══════════════════ PAGE CONTENT — edit freely below ═══════════════════ -->
+
+    <section style="margin-bottom:2rem;">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.5rem;">
+        <img src="assets/crane.png" alt="crane" style="width:48px;height:48px;object-fit:contain;">
+        <h1 class="section-title" style="font-size:2.5rem;margin:0;">
+          <span id="pageCount"></span> Cranes
+        </h1>
+      </div>
+      <p style="color:var(--text-muted);">
+        <!-- TODO: add a description of your crane project here -->
+      </p>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- Add your content below -->
+
+
+    <!-- ════════════════════════════════════════════════════════════════════════ -->
+
+  </div>
+
+  <footer>
+    © <span id="year"></span> Victoria You
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <script>
+    // Populate the count wherever it appears
+    document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+    document.getElementById('pageCount').textContent     = CRANE_COUNT;
+  </script>
+
+</body>
+</html>

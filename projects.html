@@ -6,6 +6,7 @@
   <meta name="description" content="Victoria You — Projects" />
   <title>Projects | Victoria You</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="crane-count.js"></script>
 </head>
 <body>
 
@@ -15,6 +16,12 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="projects.html" class="active">Projects</a></li>
       <li><a href="about.html">About Me</a></li>
+      <li>
+        <a href="crane.html" class="nav-crane" aria-label="Crane">
+          <img src="assets/crane.png" alt="" class="nav-crane-icon">
+          <span class="nav-crane-count" id="navCraneCount"></span>
+        </a>
+      </li>
     </ul>
   </nav>
 
@@ -28,7 +35,7 @@
      alt="triple computer"
      onclick="lb(this)">
     <p>
-      I've worked on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did a lot of additional work after the assignment was submitted.
+      I've worked on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did additional work after the assignment was submitted.
       </p><p>For the longest time, robotics and 3D Printing were my biggest passions.* Through my college career, I've developed a strong interest in controls and nanofabrication. My work at KLA happens to be a perfect intersection of the two in precision motion, and my personal projects display much of my side hobbies.
     </p>
     <p>*Unsurprising outcome for a kid who spent Covid with a 3D Printer and too much time in isolation.</p>
@@ -117,6 +124,8 @@
 
     renderCards();
   </script>
-
+  <script>
+      document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+  </script>
 </body>
 </html>

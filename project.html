@@ -133,6 +133,7 @@
       .img-pair, .img-trio { grid-template-columns: 1fr; }
     }
   </style>
+  <script src="crane-count.js"></script>
 </head>
 <body>
 
@@ -365,5 +366,10 @@
     }
   </script>
 
+  <script>
+    // Populate the count wherever it appears
+    document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+    document.getElementById('pageCount').textContent     = CRANE_COUNT;
+  </script>
 </body>
 </html>

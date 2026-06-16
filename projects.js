@@ -154,6 +154,7 @@ const PROJECTS = [
     desc: "Miscellaneous projects that are undeserving of their own page. But interesting enough to appear at all",
     body: "",
     tags: ["Fusion 360", "Autodesk Inventor", "Blender", "3D Printing", "Rapid Prototyping"],
-    link: ""
+    link: "",
+    coverImage: "random.jpeg"
   },
 ];

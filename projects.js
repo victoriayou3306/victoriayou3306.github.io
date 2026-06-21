@@ -42,17 +42,17 @@ const PROJECTS = [
     coverImage:  "main.jpeg",
     link: ""
   },
-  {
-    id: "boids",
-    name: "Boids Algorithm Simulation",
-    cat: "Class",
-    dateStart: "2026-04",
-    date: "2026-05",
-    desc: "Simulates Boids Algorithm for bird flocking behavior for Computational Physics Final Project.",
-    body: "",
-    tags: ["Python", "JavaScript"],
-    link: ""
-  },
+  // {
+  //   id: "boids",
+  //   name: "Boids Algorithm Simulation",
+  //   cat: "Class",
+  //   dateStart: "2026-04",
+  //   date: "2026-05",
+  //   desc: "Simulates Boids Algorithm for bird flocking behavior for Computational Physics Final Project.",
+  //   body: "",
+  //   tags: ["Python", "JavaScript"],
+  //   link: ""
+  // },
   {
     id: "meca",
     name: "6-Axis Robot Arm Control & Simulation",
@@ -75,17 +75,17 @@ const PROJECTS = [
     tags: ["MATLAB", "Arduino"],
     link: ""
   },
-  {
-    id: "cvt",
-    name: "Variable Extruder Design",
-    cat: "Research",
-    dateStart: "2025-06",
-    date: "present",
-    desc: "Short description of what this project does and what you learned from it.",
-    body: "",
-    tags: ["MATLAB", "Autodesk Inventor", "3D Printing", "Rapid Prototyping", "Laser Cutting"],
-    link: ""
-  },
+  // {
+  //   id: "cvt",
+  //   name: "Variable Extruder Design",
+  //   cat: "Research",
+  //   dateStart: "2025-06",
+  //   date: "present",
+  //   desc: "Short description of what this project does and what you learned from it.",
+  //   body: "",
+  //   tags: ["MATLAB", "Autodesk Inventor", "3D Printing", "Rapid Prototyping", "Laser Cutting"],
+  //   link: ""
+  // },
   {
     id: "mitll",
     name: "MIT Lincoln Labs Co-Op",
@@ -133,17 +133,6 @@ const PROJECTS = [
     coverImage: "wafer.jpg",
     link: "",
     slides: "full_presentation.pdf"
-  },
-  {
-    id: "vex",
-    name: "VEX Robotics Competitions",
-    cat: "Club",
-    dateStart: "2022-09",
-    date: "2024-04",
-    desc: "empty",
-    body: "",
-    tags: ["Fusion 360"],
-    link: ""
   },
   {
     id: "3dp",

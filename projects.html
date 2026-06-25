@@ -6,7 +6,6 @@
   <meta name="description" content="Victoria You — Projects" />
   <title>Projects | Victoria You</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="crane-count.js"></script>
 </head>
 <body>
 
@@ -16,12 +15,6 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="projects.html" class="active">Projects</a></li>
       <li><a href="about.html">About Me</a></li>
-      <li>
-        <a href="crane.html" class="nav-crane" aria-label="Crane">
-          <img src="assets/crane.png" alt="" class="nav-crane-icon">
-          <span class="nav-crane-count" id="navCraneCount"></span>
-        </a>
-      </li>
     </ul>
   </nav>
 
@@ -35,21 +28,12 @@
      alt="triple computer"
      onclick="lb(this)">
     <p>
-      I've worked on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did additional work after the assignment was submitted.
-      </p><p>For the longest time, robotics and 3D Printing were my biggest passions.* Through my college career, I've developed a strong interest in controls and nanofabrication. My internship at KLA happens to be a perfect intersection of the two in precision motion, and my personal projects display much of my side hobbies.
+      I've worked on a wide variety of projects, depending on the situation. I didn't include many class projects unless it was a major focus of mine or I did a lot of additional work after the assignment was submitted.
+      </p><p>For the longest time, robotics and 3D Printing were my biggest passions.* Through my college career, I've developed a strong interest in controls and nanofabrication. My work at KLA happens to be a perfect intersection of the two in precision motion, and my personal projects display much of my side hobbies.
     </p>
-    <p>*Unsurprising outcome for a kid who spent Covid with a 3D Printer and too much time in isolation.</p>
+    <p>*<em>Unsurprising outcome for a kid who spent Covid with a 3D Printer and too much time in isolation.</em></p>
 
     <hr class="section-divider" />
-
-    <!-- Filter bar — auto-generated from tags -->
-    <div style="margin-bottom:1.5rem;">
-      <span style="font-size:0.85rem;color:var(--text-muted);margin-right:0.75rem;">Filter by skill:</span>
-      <span class="card-tag" id="filter-all"
-        style="cursor:pointer;padding:4px 12px;border-radius:20px;font-size:0.8rem;background:var(--accent);color:#fff;border-color:var(--accent);"
-        onclick="filterCards(null)">All</span>
-      <span id="filterTags" style="display:inline-flex;flex-wrap:wrap;gap:6px;margin-left:6px;"></span>
-    </div>
 
     <div class="card-grid" id="projectCards"></div>
 
@@ -70,7 +54,6 @@
   <script src="projects.js"></script>
   <script src="projects-utils.js"></script>
   <script>
-    /* Lightbox */
     function lb(imgEl) {
       document.getElementById('lbImg').src = imgEl.src;
       document.getElementById('lbCaption').textContent = imgEl.alt || '';
@@ -78,54 +61,12 @@
     }
     function lbClose() { document.getElementById('lightbox').classList.remove('open'); }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); });
+
     sortProjects(PROJECTS);
-
-    let activeFilter = null;
-
-    /* ---- Render all project cards ---- */
     const cardGrid = document.getElementById('projectCards');
+    PROJECTS.forEach(p => cardGrid.appendChild(buildCard(p)));
 
-    function renderCards() {
-      cardGrid.innerHTML = '';
-      PROJECTS.forEach(p => {
-        const card = buildCard(p);
-        if (activeFilter && !p.tags.includes(activeFilter)) card.classList.add('dimmed');
-        cardGrid.appendChild(card);
-      });
-    }
-
-    /* ---- Build filter tag buttons ---- */
-    const allTags = [...new Set(PROJECTS.flatMap(p => p.tags))].sort();
-    const filterRow = document.getElementById('filterTags');
-
-    allTags.forEach(tag => {
-      const btn = document.createElement('span');
-      btn.className = 'card-tag';
-      btn.style.cssText = 'cursor:pointer;padding:4px 12px;border-radius:20px;font-size:0.8rem;';
-      btn.textContent = tag;
-      btn.dataset.tag = tag;
-      btn.onclick = () => filterCards(tag);
-      filterRow.appendChild(btn);
-    });
-
-    function filterCards(tag) {
-      activeFilter = tag;
-      document.getElementById('filter-all').style.background = tag ? '' : 'var(--accent)';
-      document.getElementById('filter-all').style.color = tag ? '' : '#fff';
-      document.getElementById('filter-all').style.borderColor = tag ? '' : 'var(--accent)';
-      filterRow.querySelectorAll('span').forEach(btn => {
-        const active = btn.dataset.tag === tag;
-        btn.style.background = active ? 'var(--accent)' : '';
-        btn.style.color = active ? '#fff' : '';
-        btn.style.borderColor = active ? 'var(--accent)' : '';
-      });
-      renderCards();
-    }
-
-    renderCards();
-  </script>
-  <script>
-      document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+    document.getElementById('navCraneCount').textContent = CRANE_COUNT;
   </script>
 </body>
 </html>

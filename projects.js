@@ -36,8 +36,9 @@ const PROJECTS = [
     date: "2026-06",
     desc: "Fully custom split ortholinear keyboard. Custom design & PCB by JLCPCB, case modeled and 3D printed from PLA/TPU",
     body: "This project was a gift to my mother, who's a Professor at Vanderbilt, after she expressed her discomfort and unsatisfaction with her office setup ergonomics (kind of). Ergonomic mice are relatively cheap with common designs. Keyboards had too much variety based on personal comfort, and were too expensive for my liking. As every engineer/tinkerer/middle-aged father has said, 'I can build that better, and cheaper.' \n Though this also gave me many more constraints than my usual projects. Lots of keyboard design choices are subjective to the user, and this was a surprise gift. Also, my mother isn't very tech-savvy. I had hundreds of ideas to implement, but I also knew she wouldn't use anything that was even slightly overcomplicated.",
-    tags: ["KiCad", "Soldering", "Rapid Prototyping", "Autodesk Inventor", "3D Printing"],
+    tags: ["KiCad", "Soldering", "3D Printing", "Rapid Prototyping", "Autodesk Inventor"],
     headerImage: "banner.png",
+    sidebar: [{title: "^Banner^", content: "I've started using oneNote to organize my thoughts for personal projects and thought it'd be cool to share what kind of stuff I used in ideation/planning. I've decided my criteria for personal projects to get their own page is if they needed enough planning/documentation to fill this banner."}],
     headerOpacity: .30,
     coverImage:  "main.jpeg",
     link: ""
@@ -70,7 +71,7 @@ const PROJECTS = [
     cat: "Research",
     dateStart: "2023-06",
     date: "2023-08",
-    desc: "Short description of what this project does and what you learned from it.",
+    desc: "Modeled the kinematics of a simple continuum segment in MATLAB. Designed a 3D printed model and implemented control via Arduino",
     body: "",
     tags: ["MATLAB", "Arduino"],
     link: ""
@@ -144,6 +145,7 @@ const PROJECTS = [
     body: "",
     tags: ["Fusion 360", "Autodesk Inventor", "Blender", "3D Printing", "Rapid Prototyping"],
     link: "",
+    toc: true,
     coverImage: "random.jpeg"
   },
 ];

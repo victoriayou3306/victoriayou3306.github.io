@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project | Victoria You</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- MathJax — renders LaTeX in body-*.html files -->
+  <script>MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']] } };</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
   <style>
     /* ── Header — no-image version ── */
     .project-header { padding: 3rem 0 2rem; }
@@ -37,12 +40,84 @@
     .header-banner .back-link:hover { opacity: 1; }
 
     /* ── Project body (your HTML) ── */
-    .project-body { max-width: 720px; padding: 2rem 0; }
+    .project-body { max-width: 720px; margin: 0 auto; padding: 2rem 0; }
     .project-body p  { margin-bottom: 1.25rem; color: var(--text); line-height: 1.8; font-size: 1.02rem; }
     .project-body h2 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 600; margin: 2rem 0 0.75rem; }
     .project-body h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
     .project-body ul, .project-body ol { padding-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text); line-height: 1.8; font-size: 1.02rem; }
     .project-body li { margin-bottom: 0.3rem; }
+
+    /* ── Body + sidebar/TOC layout ── */
+    /* The body stays at full container width.
+       TOC and sidebar are pulled outside via absolute positioning. */
+    .project-layout {
+      position: relative;
+      padding: 2rem 0;
+    }
+    .project-layout .project-body {
+      max-width: 720px;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    /* TOC — absolutely positioned to the LEFT of the container */
+    .project-toc {
+      position: absolute;
+      left: -220px;
+      top: 2rem;
+      width: 180px;
+    }
+    .project-toc.sticky-toc {
+      position: fixed;
+      top: calc(var(--nav-height) + 1.5rem);
+    }
+    .toc-label {
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--text-muted); margin-bottom: 0.6rem;
+    }
+    .toc-list {
+      list-style: none; padding: 0; margin: 0;
+      border-left: 2px solid var(--border);
+    }
+    .toc-list li a {
+      display: block;
+      padding: 0.3rem 0 0.3rem 0.85rem;
+      font-size: 0.82rem; color: var(--text-muted);
+      text-decoration: none; line-height: 1.4;
+      transition: color 0.15s;
+      border-left: 2px solid transparent;
+      margin-left: -2px;
+    }
+    .toc-list li a:hover  { color: var(--accent); }
+    .toc-list li a.active { color: var(--accent); border-left-color: var(--accent); }
+
+    /* Right sidebar — absolutely positioned to the RIGHT of the body text */
+    .project-sidebar {
+      position: absolute;
+      right: -220px;
+      top: 2rem;
+      width: 180px;
+    }
+    .sidebar-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      font-size: 0.85rem; line-height: 1.6; color: var(--text);
+    }
+    .sidebar-box + .sidebar-box { margin-top: 1rem; }
+    .sidebar-box-title {
+      font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--text-muted); margin-bottom: 0.5rem;
+    }
+    .sidebar-box p { margin: 0; font-size: 0.85rem; line-height: 1.6; }
+    .sidebar-box a { color: var(--accent); }
+
+    /* Hide both on narrow screens */
+    @media (max-width: 1160px) { .project-toc    { display: none; } }
+    @media (max-width: 1160px) { .project-sidebar { display: none; } }
 
     /* ── Image helpers (use these classes in your body HTML) ── */
 
@@ -133,7 +208,6 @@
       .img-pair, .img-trio { grid-template-columns: 1fr; }
     }
   </style>
-  <script src="crane-count.js"></script>
 </head>
 <body>
 
@@ -155,12 +229,13 @@
   <!-- Header lives outside .container so the banner image can go full viewport width -->
   <div id="proj-header"></div>
 
+  <!-- Container width stays at 900px; TOC/sidebar float outside via absolute positioning -->
   <div class="container">
 
-    <!-- Body — loaded from body-<id>.html if it exists, else falls back to projects.js body field -->
+    <!-- Body — loaded from body-<id>.html, else falls back to projects.js body field -->
     <div class="project-body" id="proj-body"></div>
 
-    <!-- Slideshow — auto-generated from projects.js slides + notes fields -->
+    <!-- Slideshow -->
     <div id="proj-slides"></div>
 
     <!-- Prev/Next nav -->
@@ -233,21 +308,93 @@
       }
 
       /* ── Body: try body-<id>.html first, fall back to project.body ── */
+
+      /* Build sidebar HTML from project.sidebar array (if present). */
+      const sidebarBoxes = (project.sidebar || []).map(box => `
+        <div class="sidebar-box">
+          ${box.title ? `<div class="sidebar-box-title">${box.title}</div>` : ''}
+          <p>${box.content}</p>
+        </div>`).join('');
+      const sidebarHTML = sidebarBoxes
+        ? `<aside class="project-sidebar">${sidebarBoxes}</aside>` : '';
+
+      const bodyWrapper = document.getElementById('proj-body');
+
+      function injectLayout(html) {
+        bodyWrapper.innerHTML = html;
+
+        if (project.toc) {
+          const headings = [...bodyWrapper.querySelectorAll('h2')];
+          headings.forEach((h, i) => { if (!h.id) h.id = `section-${i}`; });
+
+          const tocItemsClean = headings.map(h => {
+            const firstText = [...h.childNodes]
+              .filter(n => n.nodeType === 3)
+              .map(n => n.textContent.trim())
+              .join('') || h.textContent.trim();
+            return `<li><a href="#${h.id}">${firstText}</a></li>`;
+          });
+
+          const tocHTML = `
+            <nav class="project-toc" id="projToc">
+              <div class="toc-label"></div>
+              <ul class="toc-list">${tocItemsClean.join('')}</ul>
+            </nav>`;
+
+          bodyWrapper.outerHTML = `
+            <div class="project-layout" id="projLayout">
+              ${tocHTML}
+              <div class="project-body" id="proj-body">${html}</div>
+              ${sidebarHTML}
+            </div>`;
+
+          // Scroll spy + sticky TOC
+          requestAnimationFrame(() => {
+            const toc     = document.getElementById('projToc');
+            const layout  = document.getElementById('projLayout');
+            const links   = document.querySelectorAll('.toc-list a');
+            const navH    = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '64');
+
+            // Sticky: switch to fixed once layout top scrolls past nav
+            window.addEventListener('scroll', () => {
+              const rect = layout.getBoundingClientRect();
+              if (rect.top < navH + 24) {
+                toc.classList.add('sticky-toc');
+              } else {
+                toc.classList.remove('sticky-toc');
+              }
+            }, { passive: true });
+
+            // Active link
+            const obs = new IntersectionObserver(entries => {
+              entries.forEach(e => {
+                if (e.isIntersecting) {
+                  links.forEach(l => l.classList.remove('active'));
+                  const a = [...links].find(l => l.getAttribute('href') === `#${e.target.id}`);
+                  if (a) a.classList.add('active');
+                }
+              });
+            }, { rootMargin: '-20% 0px -70% 0px' });
+            document.querySelectorAll('.project-body h2').forEach(h => obs.observe(h));
+          });
+
+        } else {
+          bodyWrapper.outerHTML = `
+            <div class="project-layout">
+              <div class="project-body" id="proj-body">${html}</div>
+              ${sidebarHTML}
+            </div>`;
+        }
+      }
+
       fetch(`body-${id}.html`)
-        .then(r => {
-          if (!r.ok) throw new Error('no custom body');
-          return r.text();
-        })
-        .then(html => {
-          document.getElementById('proj-body').innerHTML = html;
-        })
+        .then(r => { if (!r.ok) throw new Error(); return r.text(); })
+        .then(html => injectLayout(html))
         .catch(() => {
-          // Fallback: render the plain-text body field as paragraphs
           const bodyHTML = (project.body || '')
             .split(/\n\n+/).filter(Boolean)
             .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
-          document.getElementById('proj-body').innerHTML =
-            bodyHTML || `<p style="color:var(--text-muted);">[No description yet. Create <code>body-${id}.html</code> or add a <code>body</code> field in projects.js]</p>`;
+          injectLayout(bodyHTML || `<p style="color:var(--text-muted);">[No description yet.]</p>`);
         });
 
       /* ── Slideshow ───────────────────────────────────────────── */
@@ -321,16 +468,21 @@
     }
 
     async function renderSlide(n) {
-      const page   = await pdfDoc.getPage(n);
-      const canvas = document.getElementById('slideCanvas');
-      const vp0    = page.getViewport({ scale: 1 });
-      // Fill the full container width — CSS width:100% handles display scaling,
-      // but canvas pixel dimensions must match for sharpness
+      const page       = await pdfDoc.getPage(n);
+      const canvas     = document.getElementById('slideCanvas');
       const containerW = canvas.parentElement.clientWidth;
-      const scale      = containerW / vp0.width;
-      const vp         = page.getViewport({ scale });
-      canvas.width     = vp.width;
-      canvas.height    = vp.height;
+
+      // Render at 2x device pixel ratio for sharpness, scaled to container width
+      const vp0    = page.getViewport({ scale: 1 });
+      const scale  = (containerW / vp0.width) * (window.devicePixelRatio || 1);
+      const vp     = page.getViewport({ scale });
+
+      // Physical canvas pixels = high-res; CSS size = container width, auto height
+      canvas.width  = vp.width;
+      canvas.height = vp.height;
+      canvas.style.width  = containerW + 'px';
+      canvas.style.height = Math.round(containerW * (vp0.height / vp0.width)) + 'px';
+
       await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
       document.getElementById('slideCounter').textContent = `${n} / ${pdfDoc.numPages}`;
 
@@ -366,10 +518,7 @@
     }
   </script>
 
-  <script>
-    // Populate the count wherever it appears
-    document.getElementById('navCraneCount').textContent = CRANE_COUNT;
-    document.getElementById('pageCount').textContent     = CRANE_COUNT;
-  </script>
+  <script src="crane-count.js"></script>
+  <script>document.getElementById("navCraneCount").textContent = CRANE_COUNT;</script>
 </body>
 </html>

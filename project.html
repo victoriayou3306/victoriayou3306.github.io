@@ -67,7 +67,7 @@
     }
     .project-toc.sticky-toc {
       position: fixed;
-      top: calc(var(--nav-height) + 1.5rem);
+      top: calc(var(--nav-height) + 5.5rem);
       /* left is set dynamically by JS when sticky kicks in */
     }
     .toc-label {
@@ -337,7 +337,7 @@
           ? `<img src="assets/projects/${id}/${box.image}" alt="${box.imageAlt || ''}">`
           : '';
         return `
-          <aside class="project-sidebar" style="top:${top}">
+          <aside class="project-sidebar" style="top:${top}" data-natural-top="${top}">
             <div class="sidebar-box">
               ${box.title ? `<div class="sidebar-box-title">${box.title}</div>` : ''}
               ${imgHTML}
@@ -404,23 +404,24 @@
               const tocRect    = toc.getBoundingClientRect();
               const layoutRect = layout.getBoundingClientRect();
 
+              // ── TOC sticky ──
+              // Trigger at navH+24 (the fixed resting position) so the TOC snaps
+              // to fixed exactly where it already sits — no jump.
+              const stickyThreshold = navH + 90;
               if (!toc.classList.contains('sticky-toc')) {
-                // Not yet sticky — check if the TOC's top is about to go behind the nav
-                if (tocRect.top <= navH) {
-                  // Snapshot left before going fixed (it won't change while sticky)
+                if (tocRect.top <= stickyThreshold) {
                   tocNaturalLeft = layoutRect.left - 220;
                   toc.style.left = tocNaturalLeft + 'px';
                   toc.classList.add('sticky-toc');
                 }
               } else {
-                // Already sticky — un-stick if layout has scrolled back down enough
-                // that the TOC's natural absolute position would be below the nav
-                const naturalTop = layoutRect.top + 32; // layout top + TOC's top:2rem offset
-                if (naturalTop > navH) {
+                const naturalTop = layoutRect.top + 32;
+                if (naturalTop > stickyThreshold) {
                   toc.classList.remove('sticky-toc');
                   toc.style.left = '';
                 }
               }
+
             }, { passive: true });
 
             // Active link highlight via IntersectionObserver
@@ -434,6 +435,7 @@
               });
             }, { rootMargin: '-20% 0px -70% 0px' });
             document.querySelectorAll('.project-body h2').forEach(h => obs.observe(h));
+            initVideoObserver();
           });
 
         } else {
@@ -443,7 +445,34 @@
               <div class="project-body" id="proj-body">${html}</div>
               ${sidebarHTML}
             </div>`;
+          requestAnimationFrame(initVideoObserver);
         }
+      }
+
+      /* ─── Video: autoplay on scroll into view, pause on scroll out ───────
+         Called directly by injectLayout once the DOM is settled — no race.
+         All <video> elements get muted + playsinline (required for autoplay),
+         controls always shown, play at 40% in-view, pause on exit.
+      ──────────────────────────────────────────────────────────────────── */
+      function initVideoObserver() {
+        const videos = document.querySelectorAll('.project-body video, .project-layout video');
+        if (!videos.length) return;
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            const v = entry.target;
+            if (entry.isIntersecting) {
+              v.play().catch(() => {});
+            } else {
+              v.pause();
+            }
+          });
+        }, { threshold: 0.4 });
+        videos.forEach(v => {
+          v.muted    = true;
+          v.controls = true;
+          if (!v.hasAttribute('playsinline')) v.setAttribute('playsinline', '');
+          obs.observe(v);
+        });
       }
 
       fetch(`body-${id}.html`)
@@ -565,52 +594,6 @@
       document.getElementById('slidePrev').disabled = currentPage <= 1;
       document.getElementById('slideNext').disabled = currentPage >= (pdfDoc ? pdfDoc.numPages : 1);
     }
-  </script>
-
-  <script>
-    /* ─── Video: autoplay on scroll into view, pause on scroll out ──────────
-       Runs once after the body HTML has been injected into the DOM.
-       All <video> elements in .project-body get:
-         • muted + playsinline by default (required for autoplay to work)
-         • controls always visible (pause / seek / restart)
-         • play when ≥40% of the video is in the viewport
-         • pause when it leaves
-    ────────────────────────────────────────────────────────────────────── */
-    function initVideoObserver() {
-      const videos = document.querySelectorAll('.project-body video, .project-layout video');
-      if (!videos.length) return;
-
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          const v = entry.target;
-          if (entry.isIntersecting) {
-            v.play().catch(() => {}); // catch AbortError if navigating away quickly
-          } else {
-            v.pause();
-          }
-        });
-      }, { threshold: 0.4 }); // 40% in view triggers play
-
-      videos.forEach(v => {
-        v.muted    = true;   // required for autoplay without user gesture
-        v.controls = true;   // always show native controls
-        if (!v.hasAttribute('playsinline')) v.setAttribute('playsinline', '');
-        obs.observe(v);
-      });
-    }
-
-    // The body HTML is injected asynchronously via fetch, so we wait for it.
-    // MutationObserver watches for the project-body/layout to appear, then wires up videos.
-    const _videoMO = new MutationObserver(() => {
-      const body = document.getElementById('proj-body') ||
-                   document.querySelector('.project-body');
-      if (body) {
-        _videoMO.disconnect();
-        // Give any dynamic content a tick to finish rendering
-        requestAnimationFrame(initVideoObserver);
-      }
-    });
-    _videoMO.observe(document.body, { childList: true, subtree: true });
   </script>
 
   <script src="crane-count.js"></script>

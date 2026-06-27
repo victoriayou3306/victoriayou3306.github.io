@@ -74,7 +74,7 @@ const PROJECTS = [
       {image: "/finalslides/Slide8.PNG", videos: [{src: "slide8.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}]},
       {image: "/finalslides/Slide9.PNG", videos: [{src: "slide9top.mp4", top: 2, left:   69, width:  32,  height: 36.65, loop:  true, muted:    true, controls: true,}, {src: "slide9bottom.mp4", top: 39, left:69, width:32,  height: 60.65, loop: true, muted:false, controls: true,}]},
       {image: "/finalslides/Slide10.PNG", videos: [{src: "slide10left.mp4", top: 0, left:   0, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}, {src: "slide10right.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    false, controls: true,}]},],
-    coverImage: "main.PNG",
+    coverImage: "main.jpg",
     tags: ["MATLAB", "Robotics"],
     link: ""
   },

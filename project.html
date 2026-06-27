@@ -22,14 +22,11 @@
       position: relative;
       overflow: hidden;
       width: 100%;
-      /* no border-radius — spans edge to edge */
     }
     .header-banner-bg {
       position: absolute; inset: 0;
       background-size: cover; background-position: center;
-      /* opacity set inline per-project: 0.0 (invisible) → 1.0 (fully opaque) */
     }
-    /* Text content is constrained to the same max-width as the rest of the page */
     .header-banner-content {
       position: relative;
       max-width: 900px;
@@ -48,8 +45,6 @@
     .project-body li { margin-bottom: 0.3rem; }
 
     /* ── Body + sidebar/TOC layout ── */
-    /* The body stays at full container width.
-       TOC and sidebar are pulled outside via absolute positioning. */
     .project-layout {
       position: relative;
       padding: 2rem 0;
@@ -66,20 +61,29 @@
       left: -220px;
       top: 2rem;
       width: 180px;
+      /* Sit above the section-divider hr so it doesn't appear to cut through */
+      z-index: 1;
+      background: var(--bg);
     }
     .project-toc.sticky-toc {
       position: fixed;
       top: calc(var(--nav-height) + 1.5rem);
+      /* left is set dynamically by JS when sticky kicks in */
     }
     .toc-label {
       font-size: 0.7rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.07em;
       color: var(--text-muted); margin-bottom: 0.6rem;
+      /* Fix 3: ensure no border leaks from global styles */
+      border: none;
     }
     .toc-list {
       list-style: none; padding: 0; margin: 0;
       border-left: 2px solid var(--border);
+      /* Fix 3: explicitly zero out other sides so no horizontal line appears */
+      border-top: none; border-bottom: none; border-right: none;
     }
+    .toc-list li { border: none; }
     .toc-list li a {
       display: block;
       padding: 0.3rem 0 0.3rem 0.85rem;
@@ -92,12 +96,18 @@
     .toc-list li a:hover  { color: var(--accent); }
     .toc-list li a.active { color: var(--accent); border-left-color: var(--accent); }
 
-    /* Right sidebar — absolutely positioned to the RIGHT of the body text */
+    /* Right sidebar — each box is its own <aside> with top set inline per-box */
     .project-sidebar {
       position: absolute;
       right: -220px;
-      top: 2rem;
       width: 180px;
+      /* top is set inline per box in JS */
+    }
+    .sidebar-box img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      display: block;
     }
     .sidebar-box {
       background: var(--surface);
@@ -120,41 +130,60 @@
     @media (max-width: 1160px) { .project-sidebar { display: none; } }
 
     /* ── Image helpers (use these classes in your body HTML) ── */
-
-    /* Full-width image */
     .img-full { width: 100%; border-radius: 8px; margin: 1.5rem 0; display: block; }
-
-    /* Centered image at a specific width — use style="--w:500px" to control */
     .img-center { display: block; margin: 1.5rem auto; border-radius: 8px; width: var(--w, 100%); max-width: 100%; }
-
-    /* Float right — text wraps left */
     .img-right { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
-
-    /* Float left — text wraps right */
     .img-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
-
-    /* Clear floats */
     .clear { clear: both; }
-
-    /* Side-by-side pair */
     .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
     .img-pair img { width: 100%; border-radius: 8px; }
-
-    /* Three across */
     .img-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
     .img-trio img { width: 100%; border-radius: 8px; }
-
-    /* Caption under any image */
     .img-caption { font-size: 0.82rem; color: var(--text-muted); text-align: center; margin-top: -0.9rem; margin-bottom: 1.5rem; }
-
-    /* Clickable image — add class "lb" and onclick="lb(this)" to open in lightbox */
     img.lb { cursor: zoom-in; }
+
+    /* ── Video helpers — mirrors image helpers; use on <video> or a .vid-wrap div ── */
+    /* Full-width self-hosted video */
+    .vid-full { width: 100%; border-radius: 8px; margin: 1.5rem 0; display: block; }
+
+    /* Centered at a specific width — add style="--w:560px" to control */
+    .vid-center { display: block; margin: 1.5rem auto; border-radius: 8px; width: var(--w, 100%); max-width: 100%; }
+
+    /* Float right, text wraps left — add style="--w:320px" to control */
+    .vid-right { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
+
+    /* Float left, text wraps right */
+    .vid-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
+
+    /* Responsive iframe embed (YouTube / Vimeo) — wrap an <iframe> in this div  */
+    /* Usage: <div class="vid-embed[ vid-embed-right]" style="--w:480px"><iframe ...></iframe></div> */
+    .vid-embed {
+      position: relative; width: var(--w, 100%); max-width: 100%;
+      margin: 1.5rem auto; border-radius: 8px; overflow: hidden;
+    }
+    .vid-embed iframe {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      border: none; border-radius: 8px;
+    }
+    /* Aspect ratios for vid-embed — default 16:9 */
+    .vid-embed::before          { content: ''; display: block; padding-top: 56.25%; }
+    .vid-embed.ar-4-3::before   { padding-top: 75%; }
+    .vid-embed.ar-1-1::before   { padding-top: 100%; }
+    .vid-embed.ar-9-16::before  { padding-top: 177.78%; }
+
+    /* Float variants for embeds */
+    .vid-embed-right { float: right; margin: 0.25rem 0 1rem 1.75rem; width: var(--w, 320px); }
+    .vid-embed-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; width: var(--w, 320px); }
+
+    @media (max-width: 640px) {
+      .vid-right, .vid-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
+      .vid-embed-right, .vid-embed-left { float: none; width: 100% !important; margin: 1rem 0; }
+    }
 
     /* ── PDF Slideshow ── */
     .slideshow-section { margin: 2.5rem 0; }
     .slideshow-label { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
     .slideshow-wrap { background: #1a1a1a; border-radius: 10px; overflow: hidden; }
-    /* No fixed height — canvas sets its own height based on PDF aspect ratio */
     .slideshow-canvas-row { display: flex; justify-content: center; align-items: center; padding: 0; line-height: 0; }
     #slideCanvas { width: 100%; height: auto; display: block; border-radius: 0; }
     .slideshow-controls {
@@ -170,8 +199,6 @@
     .slide-btn:disabled { opacity: 0.3; cursor: default; }
     .slide-counter { color: #aaa; font-size: 0.85rem; white-space: nowrap; }
     .slide-loading { color: #aaa; font-size: 0.9rem; padding: 2rem; text-align: center; width: 100%; }
-
-    /* Slide notes — shown below the slideshow, updates per slide */
     .slide-notes-wrap {
       background: #f5f4f1;
       border: 1px solid var(--border);
@@ -206,6 +233,8 @@
     @media (max-width: 640px) {
       .img-right, .img-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
       .img-pair, .img-trio { grid-template-columns: 1fr; }
+      .vid-right, .vid-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
+      .vid-embed-right, .vid-embed-left { float: none; width: 100% !important; margin: 1rem 0; }
     }
   </style>
 </head>
@@ -226,21 +255,12 @@
     </ul>
   </nav>
 
-  <!-- Header lives outside .container so the banner image can go full viewport width -->
   <div id="proj-header"></div>
 
-  <!-- Container width stays at 900px; TOC/sidebar float outside via absolute positioning -->
   <div class="container">
-
-    <!-- Body — loaded from body-<id>.html, else falls back to projects.js body field -->
     <div class="project-body" id="proj-body"></div>
-
-    <!-- Slideshow -->
     <div id="proj-slides"></div>
-
-    <!-- Prev/Next nav -->
     <div id="proj-nav"></div>
-
   </div>
 
   <!-- Lightbox -->
@@ -307,27 +327,44 @@
           </div>`;
       }
 
-      /* ── Body: try body-<id>.html first, fall back to project.body ── */
-
-      /* Build sidebar HTML from project.sidebar array (if present). */
-      const sidebarBoxes = (project.sidebar || []).map(box => `
-        <div class="sidebar-box">
-          ${box.title ? `<div class="sidebar-box-title">${box.title}</div>` : ''}
-          <p>${box.content}</p>
-        </div>`).join('');
-      const sidebarHTML = sidebarBoxes
-        ? `<aside class="project-sidebar">${sidebarBoxes}</aside>` : '';
+      /* ── Body ── */
+      // Each sidebar box is its own <aside> so each can have an independent top offset.
+      // In projects.js, set box.top (e.g. "18rem") to position it alongside the right
+      // section of body text. Set box.image to a filename for an image box.
+      const sidebarHTML = (project.sidebar || []).map(box => {
+        const top    = box.top !== undefined ? box.top : '2rem';
+        const imgHTML = box.image
+          ? `<img src="assets/projects/${id}/${box.image}" alt="${box.imageAlt || ''}">`
+          : '';
+        return `
+          <aside class="project-sidebar" style="top:${top}">
+            <div class="sidebar-box">
+              ${box.title ? `<div class="sidebar-box-title">${box.title}</div>` : ''}
+              ${imgHTML}
+              ${box.content ? `<p>${box.content}</p>` : ''}
+            </div>
+          </aside>`;
+      }).join('');
 
       const bodyWrapper = document.getElementById('proj-body');
 
       function injectLayout(html) {
-        bodyWrapper.innerHTML = html;
 
         if (project.toc) {
+          // ── Fix 1: inject section IDs directly into the html string ──
+          // This ensures IDs survive the outerHTML swap that follows.
+          let sectionIndex = 0;
+          html = html.replace(/<h2([^>]*)>/gi, (match, attrs) => {
+            if (/\bid=/.test(attrs)) return match; // already has an id, leave it
+            return `<h2${attrs} id="section-${sectionIndex++}">`;
+          });
+
+          // Set innerHTML so we can query the headings for their text content
+          bodyWrapper.innerHTML = html;
           const headings = [...bodyWrapper.querySelectorAll('h2')];
-          headings.forEach((h, i) => { if (!h.id) h.id = `section-${i}`; });
 
           const tocItemsClean = headings.map(h => {
+            // Use only direct text nodes so icon/badge children don't appear in the TOC
             const firstText = [...h.childNodes]
               .filter(n => n.nodeType === 3)
               .map(n => n.textContent.trim())
@@ -350,22 +387,43 @@
 
           // Scroll spy + sticky TOC
           requestAnimationFrame(() => {
-            const toc     = document.getElementById('projToc');
-            const layout  = document.getElementById('projLayout');
-            const links   = document.querySelectorAll('.toc-list a');
-            const navH    = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height') || '64');
+            const toc    = document.getElementById('projToc');
+            const layout = document.getElementById('projLayout');
+            const links  = document.querySelectorAll('.toc-list a');
+            const navH   = parseInt(getComputedStyle(document.documentElement)
+                             .getPropertyValue('--nav-height') || '64');
 
-            // Sticky: switch to fixed once layout top scrolls past nav
+            // ── Fix 2: compute correct left position when switching to fixed ──
+            // When position:fixed, left is relative to the viewport, not the
+            // container. We derive it from the layout's current bounding rect.
+            // Capture the TOC's natural left position in viewport coords once,
+            // before any scrolling moves it. We need this for the fixed state.
+            let tocNaturalLeft = toc.getBoundingClientRect().left;
+
             window.addEventListener('scroll', () => {
-              const rect = layout.getBoundingClientRect();
-              if (rect.top < navH + 24) {
-                toc.classList.add('sticky-toc');
+              const tocRect    = toc.getBoundingClientRect();
+              const layoutRect = layout.getBoundingClientRect();
+
+              if (!toc.classList.contains('sticky-toc')) {
+                // Not yet sticky — check if the TOC's top is about to go behind the nav
+                if (tocRect.top <= navH) {
+                  // Snapshot left before going fixed (it won't change while sticky)
+                  tocNaturalLeft = layoutRect.left - 220;
+                  toc.style.left = tocNaturalLeft + 'px';
+                  toc.classList.add('sticky-toc');
+                }
               } else {
-                toc.classList.remove('sticky-toc');
+                // Already sticky — un-stick if layout has scrolled back down enough
+                // that the TOC's natural absolute position would be below the nav
+                const naturalTop = layoutRect.top + 32; // layout top + TOC's top:2rem offset
+                if (naturalTop > navH) {
+                  toc.classList.remove('sticky-toc');
+                  toc.style.left = '';
+                }
               }
             }, { passive: true });
 
-            // Active link
+            // Active link highlight via IntersectionObserver
             const obs = new IntersectionObserver(entries => {
               entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -379,6 +437,7 @@
           });
 
         } else {
+          bodyWrapper.innerHTML = html;
           bodyWrapper.outerHTML = `
             <div class="project-layout">
               <div class="project-body" id="proj-body">${html}</div>
@@ -433,10 +492,7 @@
         </div>`;
     }
 
-    /* ─── Lightbox ───────────────────────────────────────────────
-       Use in body HTML:
-         <img class="lb" src="assets/projects/mitll/photo.jpg" alt="caption" onclick="lb(this)">
-    ─────────────────────────────────────────────────────────────── */
+    /* ─── Lightbox ─────────────────────────────────────────────── */
     function lb(imgEl) {
       document.getElementById('lbImg').src = imgEl.src;
       document.getElementById('lbCaption').textContent = imgEl.alt || '';
@@ -449,7 +505,7 @@
       if (e.key === 'Escape') lbClose();
     });
 
-    /* ─── PDF Slideshow ──────────────────────────────────────────── */
+    /* ─── PDF Slideshow ─────────────────────────────────────────── */
     let pdfDoc = null, currentPage = 1;
 
     async function initSlideshow(url) {
@@ -471,21 +527,15 @@
       const page       = await pdfDoc.getPage(n);
       const canvas     = document.getElementById('slideCanvas');
       const containerW = canvas.parentElement.clientWidth;
-
-      // Render at 2x device pixel ratio for sharpness, scaled to container width
       const vp0    = page.getViewport({ scale: 1 });
       const scale  = (containerW / vp0.width) * (window.devicePixelRatio || 1);
       const vp     = page.getViewport({ scale });
-
-      // Physical canvas pixels = high-res; CSS size = container width, auto height
       canvas.width  = vp.width;
       canvas.height = vp.height;
       canvas.style.width  = containerW + 'px';
       canvas.style.height = Math.round(containerW * (vp0.height / vp0.width)) + 'px';
-
       await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
       document.getElementById('slideCounter').textContent = `${n} / ${pdfDoc.numPages}`;
-
       const notes   = (project.notes || [])[n - 1] || '';
       const notesEl = document.getElementById('slideNotes');
       if (notes.trim()) {
@@ -497,7 +547,6 @@
       }
     }
 
-    // Re-render current slide if window is resized (keeps canvas sharp at new width)
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
@@ -516,6 +565,52 @@
       document.getElementById('slidePrev').disabled = currentPage <= 1;
       document.getElementById('slideNext').disabled = currentPage >= (pdfDoc ? pdfDoc.numPages : 1);
     }
+  </script>
+
+  <script>
+    /* ─── Video: autoplay on scroll into view, pause on scroll out ──────────
+       Runs once after the body HTML has been injected into the DOM.
+       All <video> elements in .project-body get:
+         • muted + playsinline by default (required for autoplay to work)
+         • controls always visible (pause / seek / restart)
+         • play when ≥40% of the video is in the viewport
+         • pause when it leaves
+    ────────────────────────────────────────────────────────────────────── */
+    function initVideoObserver() {
+      const videos = document.querySelectorAll('.project-body video, .project-layout video');
+      if (!videos.length) return;
+
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            v.play().catch(() => {}); // catch AbortError if navigating away quickly
+          } else {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.4 }); // 40% in view triggers play
+
+      videos.forEach(v => {
+        v.muted    = true;   // required for autoplay without user gesture
+        v.controls = true;   // always show native controls
+        if (!v.hasAttribute('playsinline')) v.setAttribute('playsinline', '');
+        obs.observe(v);
+      });
+    }
+
+    // The body HTML is injected asynchronously via fetch, so we wait for it.
+    // MutationObserver watches for the project-body/layout to appear, then wires up videos.
+    const _videoMO = new MutationObserver(() => {
+      const body = document.getElementById('proj-body') ||
+                   document.querySelector('.project-body');
+      if (body) {
+        _videoMO.disconnect();
+        // Give any dynamic content a tick to finish rendering
+        requestAnimationFrame(initVideoObserver);
+      }
+    });
+    _videoMO.observe(document.body, { childList: true, subtree: true });
   </script>
 
   <script src="crane-count.js"></script>

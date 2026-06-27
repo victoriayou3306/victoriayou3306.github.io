@@ -38,7 +38,9 @@ const PROJECTS = [
     body: "This project was a gift to my mother, who's a Professor at Vanderbilt, after she expressed her discomfort and unsatisfaction with her office setup ergonomics (kind of). Ergonomic mice are relatively cheap with common designs. Keyboards had too much variety based on personal comfort, and were too expensive for my liking. As every engineer/tinkerer/middle-aged father has said, 'I can build that better, and cheaper.' \n Though this also gave me many more constraints than my usual projects. Lots of keyboard design choices are subjective to the user, and this was a surprise gift. Also, my mother isn't very tech-savvy. I had hundreds of ideas to implement, but I also knew she wouldn't use anything that was even slightly overcomplicated.",
     tags: ["KiCad", "Soldering", "3D Printing", "Rapid Prototyping", "Autodesk Inventor"],
     headerImage: "banner.png",
-    sidebar: [{title: "^Banner^", content: "I've started using oneNote to organize my thoughts for personal projects and thought it'd be cool to share what kind of stuff I used in ideation/planning. I've decided my criteria for personal projects to get their own page is if they needed enough planning/documentation to fill this banner."}],
+    sidebar: [{title: "^Banner^", content: "I've started using oneNote to organize my thoughts for personal projects and thought it'd be cool to share what kind of stuff I used in ideation/planning. I've decided my criteria for personal projects to get their own page is if they needed enough planning/documentation to fill this banner."},
+      {image: "extra.jpg", top: "165rem", content: "#RapidPrototyping"}
+    ],
     headerOpacity: .30,
     coverImage:  "main.jpeg",
     link: ""
@@ -145,6 +147,7 @@ const PROJECTS = [
     body: "",
     tags: ["Fusion 360", "Autodesk Inventor", "Blender", "3D Printing", "Rapid Prototyping"],
     link: "",
+    sidebar:[{title: "Note", content: "VEX Robotics took up about 70% of my camera roll in high school, especially since I led most of the documentation. Almost none of the design process, testing, or iterations are shown here, but I learned the importance of iterative design and documentation very early. I'm just keeping this section relatively small to leave room for bigger/cooler (hopefully) projects. :). I also served as President senior year and Vice President junior year for the school organization as a whole, not just the Goose team.", top: "132rem"}],
     toc: true,
     coverImage: "random.jpeg"
   },

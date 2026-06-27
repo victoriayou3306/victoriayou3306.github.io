@@ -310,7 +310,6 @@ nav {
 .nav-crane-icon {
   width: 18px; height: 18px; object-fit: contain;
   opacity: 0.6; transition: opacity 0.2s;
-  /* Tint to match the green accent on active/hover */
   filter: none;
 }
 .nav-crane:hover .nav-crane-icon,
@@ -348,4 +347,13 @@ footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center;
   .contact-line { text-align: center; }
   .skill-popup { left: 0; transform: none; }
   .skill-popup::after, .skill-popup::before { left: 20px; }
+}
+
+/* ── TOC: kill any inherited list borders ── */
+/* Fix 3: prevent global ul/li styles from adding horizontal lines */
+.project-toc ul,
+.project-toc li {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-right: none !important;
 }

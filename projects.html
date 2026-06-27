@@ -74,6 +74,71 @@
     PROJECTS.forEach(p => cardGrid.appendChild(buildCard(p)));
 
     document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+
+    /* ── Tag overflow: max 2 lines, excess replaced with "+N more" bubble ──
+       Runs after all cards are in the DOM so real widths are available.
+       Works by measuring each tag's offsetTop relative to the container —
+       any tag starting on a 3rd (or later) row gets hidden, and a "+N" pill
+       replaces the last visible tag on row 2 if needed.
+    ── */
+    function trimAllCardTags() {
+      document.querySelectorAll('.card-tags').forEach(container => {
+        const tags = [...container.querySelectorAll('.card-tag')];
+        if (!tags.length) return;
+
+        // Remove any existing overflow pill from a previous run (e.g. resize)
+        const existing = container.querySelector('.card-tags-more');
+        if (existing) existing.remove();
+        tags.forEach(t => t.style.display = '');   // reset hidden tags
+
+        // Force a layout read — needed so offsetTop values are fresh
+        container.getBoundingClientRect();
+
+        // Find the top of row 1. Any tag whose offsetTop is more than
+        // ~1.5× the first tag's height away from row 1 is on row 3+.
+        const rowOneTop  = tags[0].offsetTop;
+        const tagHeight  = tags[0].offsetHeight;
+        const maxTop     = rowOneTop + tagHeight * 1.5; // anything above this = row 1 or 2
+
+        // Identify which tags fall on row 3+
+        const overflowStart = tags.findIndex(t => t.offsetTop > maxTop);
+        if (overflowStart === -1) return; // all fit in 2 lines — nothing to do
+
+        const hiddenCount = tags.length - overflowStart;
+
+        // Hide the overflow tags
+        tags.slice(overflowStart).forEach(t => t.style.display = 'none');
+
+        // Build the "+N" pill
+        const pill = document.createElement('span');
+        pill.className   = 'card-tags-more';
+        pill.textContent = `+${hiddenCount}`;
+        container.appendChild(pill);
+
+        // If adding the pill pushes onto row 3, remove the last row-2 tag
+        // and increment the count — repeat until the pill fits.
+        let safetyLimit = tags.length;
+        while (pill.offsetTop > maxTop && safetyLimit-- > 0) {
+          // Find the last currently visible tag
+          const visible = [...container.querySelectorAll('.card-tag')]
+            .filter(t => t.style.display !== 'none');
+          if (!visible.length) break;
+          const last = visible[visible.length - 1];
+          last.style.display = 'none';
+          pill.textContent = `+${parseInt(pill.textContent.slice(1)) + 1}`;
+        }
+      });
+    }
+
+    // Run once after paint so the browser has laid out the cards
+    requestAnimationFrame(() => requestAnimationFrame(trimAllCardTags));
+
+    // Re-run on resize since card widths change and line breaks shift
+    let _tagResizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(_tagResizeTimer);
+      _tagResizeTimer = setTimeout(trimAllCardTags, 150);
+    });
   </script>
 </body>
 </html>

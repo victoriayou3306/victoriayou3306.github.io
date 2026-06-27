@@ -24,7 +24,7 @@ const PROJECTS = [
     date: "present",
     desc: "Project Lead for building 6-Axis Robotic Arm for nonplanar 3d printing. 3D printed, assembled, controlled with ROS via CAN.",
     body: "",
-    tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management"],
+    tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management", "Robotics"],
     // coverImage: "main.jpeg",
     sidebar:[{title: "Key Contributors:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'>Sergio Bahena</a>"}, {title: "Mentored by:", content: "<a href = 'https://grainger.illinois.edu/about/directory/faculty/lmclemon'>Mickey Clemon</a>", top: "9rem"}],
     link: ""
@@ -59,13 +59,23 @@ const PROJECTS = [
   // },
   {
     id: "meca",
-    name: "6-Axis Robot Arm Control & Simulation",
+    name: "6-Axis Robot Control & Sim.",
     cat: "Class",
     dateStart: "2023-09",
     date: "2023-12",
     desc: "Final Project for Vanderbilt University's ME 4271: Introduction to Robotics, implementing Resolved Rates for Mecademic's MECA500.",
     body: "",
-    tags: ["MATLAB"],
+    deckLabel: "Final Presentation",
+    deck: [{image: "/finalslides/Slide1.PNG"}, {image: "/finalslides/Slide2.PNG"},{image: "/finalslides/Slide3.PNG"},
+      {image: "/finalslides/Slide4.PNG", videos: [{src: "slide4top.mp4", top: 2, left:   65, width:  35,  height: 48.65, loop:     true, muted:    true, controls: true,}, {src: "slide4bottom.mp4", top: 51.5, left:   65, width:  35,  height: 48.65, loop:     true, muted:    true, controls: true,}]},
+      {image: "/finalslides/Slide5.PNG", videos: [{src: "slide5top.mp4", top: 2, left:   65, width:  35,  height: 48.65, loop:  true, muted:    true, controls: true,}, {src: "slide5bottom.mp4", top: 51.5, left:65, width:35,  height: 48.65, loop: true, muted:true, controls: true,}]},
+      {image: "/finalslides/Slide6.PNG", videos: [{src: "slide6top.mp4", top: 2, left:   65, width:  35,  height: 48.65, loop:  true, muted:    true, controls: true,}, {src: "slide6bottom.mp4", top: 51.5, left:65, width:35,  height: 48.65, loop: true, muted:true, controls: true,}]},
+      {image: "/finalslides/Slide7.PNG", videos: [{src: "slide7.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}]},
+      {image: "/finalslides/Slide8.PNG", videos: [{src: "slide8.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}]},
+      {image: "/finalslides/Slide9.PNG", videos: [{src: "slide9top.mp4", top: 2, left:   69, width:  32,  height: 36.65, loop:  true, muted:    true, controls: true,}, {src: "slide9bottom.mp4", top: 39, left:69, width:32,  height: 60.65, loop: true, muted:false, controls: true,}]},
+      {image: "/finalslides/Slide10.PNG", videos: [{src: "slide10left.mp4", top: 0, left:   0, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}, {src: "slide10right.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    false, controls: true,}]},],
+    coverImage: "main.PNG",
+    tags: ["MATLAB", "Robotics"],
     link: ""
   },
   {
@@ -76,7 +86,7 @@ const PROJECTS = [
     date: "2023-08",
     desc: "Modeled the kinematics of a simple continuum segment in MATLAB. Designed a 3D printed model and implemented control via Arduino",
     body: "",
-    tags: ["MATLAB", "Arduino"],
+    tags: ["MATLAB", "Arduino", "Robotics"],
     link: ""
   },
   // {

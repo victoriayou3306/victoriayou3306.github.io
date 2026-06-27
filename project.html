@@ -180,6 +180,73 @@
       .vid-embed-right, .vid-embed-left { float: none; width: 100% !important; margin: 1rem 0; }
     }
 
+    /* ── Inline PDF viewer (scrollable, all pages rendered) ──
+       Usage in body-*.html:
+         <div class="pdf-viewer"
+              data-src="assets/projects/myproject/report.pdf"
+              data-label="My Report"
+              data-download="true"
+              style="--pdf-w:100%;--pdf-h:700px">
+         </div>
+       --pdf-w : width of the viewer (default 100%)
+       --pdf-h : height of the scrollable area (default 800px)
+       data-label    : heading shown above (omit to hide)
+       data-download : set to "false" to hide download link (default true)
+    */
+    .pdf-viewer-wrap {
+      margin: 2rem 0;
+      width: var(--pdf-w, 100%);
+    }
+    .pdf-viewer-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+    .pdf-viewer-label {
+      font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+    }
+    .pdf-viewer-download { font-size: 0.82rem; color: var(--accent); }
+    .pdf-viewer-download:hover { text-decoration: underline; }
+    .pdf-viewer-box {
+      background: #2a2a2a;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    /* Scrollable page stack */
+    .pdf-viewer-scroll {
+      height: var(--pdf-h, 800px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      /* Custom scrollbar */
+      scrollbar-width: thin;
+      scrollbar-color: #555 #2a2a2a;
+    }
+    .pdf-viewer-scroll::-webkit-scrollbar { width: 7px; }
+    .pdf-viewer-scroll::-webkit-scrollbar-track { background: #2a2a2a; border-radius: 10px; }
+    .pdf-viewer-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 10px; }
+    /* Each rendered page canvas */
+    .pdf-viewer-page {
+      width: 100%; height: auto;
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+    /* Toolbar below the scroll area */
+    .pdf-viewer-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.55rem 1rem; background: #111;
+      font-size: 0.8rem; color: #aaa; gap: 0.75rem;
+    }
+    .pdf-viewer-page-count { white-space: nowrap; }
+    .pdf-viewer-loading {
+      color: #aaa; font-size: 0.88rem;
+      padding: 2.5rem; text-align: center; width: 100%;
+    }
+
     /* ── PDF Slideshow ── */
     .slideshow-section { margin: 2.5rem 0; }
     .slideshow-label { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
@@ -216,6 +283,51 @@
       white-space: pre-wrap;
     }
     .slide-notes-empty { color: var(--text-muted); font-size: 0.88rem; font-style: italic; }
+
+    /* ── Image Deck (PNG slides + MP4 video overlays) ── */
+    .deck-section { margin: 2.5rem 0; }
+    .deck-label { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; }
+    .deck-wrap { background: #1a1a1a; border-radius: 10px; overflow: hidden; }
+    /* Slide stage: image fills width, video overlaid on top */
+    .deck-stage {
+      position: relative;
+      width: 100%;
+      line-height: 0;
+      /* height is set by the image's natural aspect ratio */
+    }
+    .deck-stage img.deck-slide-img {
+      width: 100%; height: auto; display: block; border-radius: 0;
+    }
+    /* Video overlay — sized/positioned via inline % styles set in JS */
+    .deck-stage video.deck-video {
+      position: absolute;
+      object-fit: cover;
+      border-radius: 2px;
+      background: #000;
+    }
+    .deck-controls {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1.25rem; background: #111; gap: 1rem;
+    }
+    .deck-btn {
+      background: rgba(255,255,255,0.1); border: none; color: #fff;
+      padding: 0.4rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.88rem;
+      transition: background 0.15s;
+    }
+    .deck-btn:hover:not(:disabled) { background: rgba(255,255,255,0.22); }
+    .deck-btn:disabled { opacity: 0.3; cursor: default; }
+    .deck-counter { color: #aaa; font-size: 0.85rem; white-space: nowrap; }
+    .deck-notes-wrap {
+      background: #f5f4f1; border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 10px 10px;
+      padding: 1rem 1.5rem; min-height: 3rem;
+    }
+    .deck-notes-label {
+      font-size: 0.72rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.4rem;
+    }
+    .deck-notes-text { font-size: 0.92rem; color: var(--text); line-height: 1.7; white-space: pre-wrap; }
+    .deck-notes-empty { color: var(--text-muted); font-size: 0.88rem; font-style: italic; }
 
     /* ── Prev/Next project nav ── */
     .proj-nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); margin-bottom: 2rem; }
@@ -436,6 +548,8 @@
             }, { rootMargin: '-20% 0px -70% 0px' });
             document.querySelectorAll('.project-body h2').forEach(h => obs.observe(h));
             initVideoObserver();
+            initInlinePDFs();
+            initDeck();
           });
 
         } else {
@@ -445,7 +559,11 @@
               <div class="project-body" id="proj-body">${html}</div>
               ${sidebarHTML}
             </div>`;
-          requestAnimationFrame(initVideoObserver);
+          requestAnimationFrame(() => {
+            initVideoObserver();
+            initInlinePDFs();
+            initDeck();
+          });
         }
       }
 
@@ -472,6 +590,103 @@
           v.controls = true;
           if (!v.hasAttribute('playsinline')) v.setAttribute('playsinline', '');
           obs.observe(v);
+        });
+      }
+
+      /* ─── Inline PDF viewers ─────────────────────────────────────────────
+         Finds every <div class="pdf-viewer" data-src="..."> in the body and
+         builds a self-contained paginated canvas viewer inside it.
+         Each viewer is fully independent — multiple per page is fine.
+      ──────────────────────────────────────────────────────────────────── */
+      function initInlinePDFs() {
+        const containers = document.querySelectorAll('.pdf-viewer[data-src]');
+        if (!containers.length) return;
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        containers.forEach((container, idx) => {
+          const src      = container.getAttribute('data-src');
+          const label    = container.getAttribute('data-label');
+          const download = container.getAttribute('data-download') !== 'false';
+          const uid      = `pdfv-${idx}-${Date.now()}`;
+
+          // Inherit --pdf-w and --pdf-h from the container element so the
+          // wrapper picks them up via CSS var inheritance
+          const wrapStyle = container.style.cssText || '';
+
+          container.innerHTML = `
+            <div class="pdf-viewer-wrap" style="${wrapStyle}">
+              ${(label || download) ? `
+              <div class="pdf-viewer-header">
+                ${label ? `<span class="pdf-viewer-label">${label}</span>` : '<span></span>'}
+                ${download ? `<a class="pdf-viewer-download" href="${src}" download>↓ Download PDF</a>` : ''}
+              </div>` : ''}
+              <div class="pdf-viewer-box">
+                <div class="pdf-viewer-scroll" id="${uid}-scroll">
+                  <div class="pdf-viewer-loading" id="${uid}-loading">Loading…</div>
+                </div>
+                <div class="pdf-viewer-toolbar">
+                  <span class="pdf-viewer-page-count" id="${uid}-count">Loading…</span>
+                </div>
+              </div>
+            </div>`;
+
+          const scrollEl = document.getElementById(`${uid}-scroll`);
+          const loadEl   = document.getElementById(`${uid}-loading`);
+          const countEl  = document.getElementById(`${uid}-count`);
+
+          pdfjsLib.getDocument(src).promise.then(async pdfDoc => {
+            loadEl.remove();
+            const total = pdfDoc.numPages;
+            countEl.textContent = `${total} page${total !== 1 ? 's' : ''}`;
+
+            // Render all pages sequentially into individual canvases
+            for (let n = 1; n <= total; n++) {
+              const pg      = await pdfDoc.getPage(n);
+              const canvas  = document.createElement('canvas');
+              canvas.className = 'pdf-viewer-page';
+
+              const containerW = scrollEl.clientWidth - 24; // subtract padding
+              const vp0   = pg.getViewport({ scale: 1 });
+              const scale = (containerW / vp0.width) * (window.devicePixelRatio || 1);
+              const vp    = pg.getViewport({ scale });
+
+              canvas.width        = vp.width;
+              canvas.height       = vp.height;
+              canvas.style.width  = containerW + 'px';
+              canvas.style.height = Math.round(containerW * (vp0.height / vp0.width)) + 'px';
+
+              scrollEl.appendChild(canvas);
+              await pg.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+            }
+
+            // Re-render all pages on resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+              clearTimeout(resizeTimer);
+              resizeTimer = setTimeout(async () => {
+                const canvases = scrollEl.querySelectorAll('.pdf-viewer-page');
+                for (let n = 1; n <= total; n++) {
+                  const pg     = await pdfDoc.getPage(n);
+                  const canvas = canvases[n - 1];
+                  if (!canvas) continue;
+                  const containerW = scrollEl.clientWidth - 24;
+                  const vp0   = pg.getViewport({ scale: 1 });
+                  const scale = (containerW / vp0.width) * (window.devicePixelRatio || 1);
+                  const vp    = pg.getViewport({ scale });
+                  canvas.width        = vp.width;
+                  canvas.height       = vp.height;
+                  canvas.style.width  = containerW + 'px';
+                  canvas.style.height = Math.round(containerW * (vp0.height / vp0.width)) + 'px';
+                  await pg.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+                }
+              }, 200);
+            });
+
+          }).catch(() => {
+            loadEl.textContent = `Could not load PDF: ${src}`;
+          });
         });
       }
 
@@ -508,6 +723,144 @@
           </div>`;
         initSlideshow(`assets/projects/${id}/${project.slides}`);
       }
+
+      /* ── Image Deck (PNG slides + MP4 overlays) ───────────────── */
+      // initDeck() is called from injectLayout() so #deck-anchor is guaranteed
+      // to be in the DOM (it lives inside the fetched body HTML).
+      function initDeck() {
+        if (!project.deck || !project.deck.length) return;
+        // Prefer #deck-anchor inside body HTML for inline placement;
+        // fall back to #proj-slides if no anchor is present.
+        const deckEl = document.getElementById('deck-anchor') ||
+                       document.getElementById('proj-slides');
+        const hasNotes = project.deck.some(s => s.note);
+        deckEl.innerHTML = `
+          <div class="deck-section">
+            <div class="deck-label">${project.deckLabel || 'Slides'}</div>
+            <div class="deck-wrap">
+              <div class="deck-stage" id="deckStage">
+                <img class="deck-slide-img" id="deckImg" src="" alt="Slide 1">
+              </div>
+              <div class="deck-controls">
+                <button class="deck-btn" id="deckPrev" disabled>‹ Prev</button>
+                <span class="deck-counter" id="deckCounter">1 / ${project.deck.length}</span>
+                <button class="deck-btn" id="deckNext" ${project.deck.length <= 1 ? 'disabled' : ''}>Next ›</button>
+              </div>
+            </div>
+            ${hasNotes ? `
+            <div class="deck-notes-wrap">
+              <div class="deck-notes-label">Notes</div>
+              <div id="deckNotes"></div>
+            </div>` : ''}
+          </div>`;
+
+        let deckPage = 0;
+        const slides  = project.deck;
+        const base    = `assets/projects/${id}/`;
+        const imgEl   = document.getElementById('deckImg');
+        const stage   = document.getElementById('deckStage');
+        const counter = document.getElementById('deckCounter');
+        const btnPrev = document.getElementById('deckPrev');
+        const btnNext = document.getElementById('deckNext');
+        const notesEl = document.getElementById('deckNotes');
+
+        function deckShow(n) {
+          const slide = slides[n];
+
+          // Remove ALL video overlays from the previous slide
+          stage.querySelectorAll('video.deck-video').forEach(v => { v.pause(); v.remove(); });
+
+          // Swap slide image
+          imgEl.src = base + slide.image;
+          imgEl.alt = `Slide ${n + 1}`;
+
+          // Overlay videos if this slide has any.
+          // Accepts either slide.videos (array) or slide.video (single object, back-compat).
+          const videoList = slide.videos
+            ? slide.videos
+            : (slide.video ? [slide.video] : []);
+
+          if (videoList.length) {
+            const mountVideos = () => {
+              const iw = imgEl.naturalWidth  || imgEl.offsetWidth;
+              const ih = imgEl.naturalHeight || imgEl.offsetHeight;
+              const sw = stage.offsetWidth;
+              const sh = sw * (ih / iw);
+
+              videoList.forEach(v => {
+                const vid = document.createElement('video');
+                vid.className   = 'deck-video';
+                vid.muted       = v.muted    !== false; // default muted
+                vid.loop        = v.loop     !== false; // default loop
+                vid.controls    = v.controls !== false; // default show controls
+                vid.playsInline = true;
+
+                vid.style.left   = (v.left   / 100 * sw) + 'px';
+                vid.style.top    = (v.top    / 100 * sh) + 'px';
+                vid.style.width  = (v.width  / 100 * sw) + 'px';
+                vid.style.height = (v.height / 100 * sh) + 'px';
+
+                const source = document.createElement('source');
+                source.src  = base + v.src;
+                source.type = v.src.endsWith('.mov') ? 'video/quicktime' : 'video/mp4';
+                vid.appendChild(source);
+                stage.appendChild(vid);
+                vid.play().catch(() => {});
+              });
+            };
+
+            if (imgEl.complete && imgEl.naturalWidth) {
+              mountVideos();
+            } else {
+              imgEl.addEventListener('load', mountVideos, { once: true });
+            }
+          }
+
+          // Update counter and buttons
+          counter.textContent  = `${n + 1} / ${slides.length}`;
+          btnPrev.disabled     = n <= 0;
+          btnNext.disabled     = n >= slides.length - 1;
+          deckPage             = n;
+
+          // Notes
+          if (notesEl) {
+            const note = slide.note || '';
+            if (note.trim()) {
+              notesEl.className   = 'deck-notes-text';
+              notesEl.textContent = note;
+            } else {
+              notesEl.className   = 'deck-notes-empty';
+              notesEl.textContent = 'No notes for this slide.';
+            }
+          }
+        }
+
+        btnPrev.addEventListener('click', () => { if (deckPage > 0) deckShow(deckPage - 1); });
+        btnNext.addEventListener('click', () => { if (deckPage < slides.length - 1) deckShow(deckPage + 1); });
+
+        // Re-position all video overlays on window resize
+        window.addEventListener('resize', () => {
+          const currentVideos = slide.videos
+            ? slide.videos
+            : (slides[deckPage].video ? [slides[deckPage].video] : []);
+          if (!currentVideos.length) return;
+          const vids = [...stage.querySelectorAll('video.deck-video')];
+          const iw = imgEl.naturalWidth || imgEl.offsetWidth;
+          const ih = imgEl.naturalHeight || imgEl.offsetHeight;
+          const sw = stage.offsetWidth;
+          const sh = sw * (ih / iw);
+          vids.forEach((vid, i) => {
+            const v = currentVideos[i];
+            if (!v) return;
+            vid.style.left   = (v.left   / 100 * sw) + 'px';
+            vid.style.top    = (v.top    / 100 * sh) + 'px';
+            vid.style.width  = (v.width  / 100 * sw) + 'px';
+            vid.style.height = (v.height / 100 * sh) + 'px';
+          });
+        });
+
+        deckShow(0);
+      }   // end initDeck
 
       /* ── Prev / Next nav ─────────────────────────────────────── */
       sortProjects(PROJECTS);

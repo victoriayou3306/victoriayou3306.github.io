@@ -160,7 +160,7 @@ const PROJECTS = [
     tags: ["Fusion 360", "Autodesk Inventor", "Blender", "3D Printing", "Rapid Prototyping"],
     link: "",
     sidebar:[{title: "Note", content: "VEX Robotics took up about 70% of my camera roll in high school, especially since I led most of the documentation. Almost none of the design process, testing, or iterations are shown here, but I learned the importance of iterative design and documentation very early. I'm just keeping this section relatively small to leave room for bigger/cooler (hopefully) projects. :). I also served as President senior year and Vice President junior year for the school organization as a whole, not just the Goose team.", top: "178rem"},
-      {image: "vex/suitedgoose.PNG", content: "Logo drawn by my friend Emma :)", top:"223rem"}
+      {image: "vex/suitedgoose.PNG", content: "Logo drawn by my friend Emma :)", top:"218rem"}
     ],
     toc: true,
     coverImage: "random.jpeg"

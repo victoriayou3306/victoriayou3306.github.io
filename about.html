@@ -24,6 +24,88 @@
       text-transform: uppercase; letter-spacing: 0.05em;
       margin-top: 0.75rem; margin-bottom: 0.3rem; display: block;
     }
+
+    /* ── Bio photo gallery ── */
+    .bio-gallery {
+      width: 350px;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .bio-gallery-stage {
+      position: relative;
+      width: 350px;
+      height: 350px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--accent-light);
+      cursor: grab;
+    }
+    .bio-gallery-stage:active { cursor: grabbing; }
+    .bio-gallery-track {
+      display: flex;
+      height: 100%;
+      /* width and transform set by JS */
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+    .bio-gallery-track img {
+      width: 350px;
+      height: 350px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 0;
+      display: block;
+      pointer-events: none; /* prevent drag-image ghost */
+    }
+
+    /* Prev / Next arrow buttons */
+    .bio-gallery-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.75);
+      border: none; border-radius: 50%;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.9rem; color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      transition: background 0.15s, opacity 0.15s;
+      z-index: 2;
+      padding: 0;
+      line-height: 1;
+    }
+    .bio-gallery-btn:hover { background: rgba(255,255,255,0.95); }
+    .bio-gallery-btn:disabled { opacity: 0; pointer-events: none; }
+    .bio-gallery-btn.prev { left: 6px; }
+    .bio-gallery-btn.next { right: 6px; }
+
+    /* Dot indicators */
+    .bio-gallery-dots {
+      display: flex; justify-content: center; gap: 5px;
+      margin-top: 8px;
+    }
+    .bio-gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: none; padding: 0;
+    }
+    .bio-gallery-dot.active {
+      background: var(--accent);
+      transform: scale(1.25);
+    }
+
+    /* Caption */
+    .bio-gallery-caption {
+      min-height: 1.4em;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
+      font-style: italic;
+    }
   </style>
   <script src="crane-count.js"></script>
 </head>
@@ -47,24 +129,38 @@
   <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
 
     <!-- BIO -->
-    <section style="display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:start;margin-bottom:3rem;">
-      <div>
-        <h1 class="section-title" style="font-size:2.5rem;margin-bottom:1rem;">About Me</h1>
-        <p style="margin-bottom:1rem;">
-          I'm originally from Nashville, TN, and I'm studying Mechanical Engineering &amp; Computational Physics with a minor in Semiconductor Engineering at the University of Illinois Urbana Champaign. I've been fortunate enough to explore many different states throughout internship opportunities and will probably continue to bounce around for a while.
-        </p>
-        <p style="color:var(--text-muted);">
-          I'm basically using this website as another side project. Maybe sometime I'll add more non-technical hobbies, but for now, most of my project descriptions will be more informal blog-style just for fun (and to prove I'm not a robot). Check out my resume if you want the shortened, pretty version of my experiences.
-        </p>
-        <div class="btn-row" style="margin-top:1.5rem;">
-          <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
-          <a class="btn btn-outline" href="mailto:vyou2@illinois.edu">Email Me</a>
+    <section style="margin-bottom:3rem;">
+      <!-- Row 1: title + first paragraph beside the photo -->
+      <div style="display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:start;">
+        <div>
+          <h1 class="section-title" style="font-size:2.5rem;margin-bottom:1rem;">About Me</h1>
+          <p style="margin-bottom:0;">
+            I'm originally from Nashville, TN, and I'm studying Mechanical Engineering &amp; Computational Physics with a minor in Semiconductor Engineering at the University of Illinois Urbana Champaign. I've been fortunate enough to explore many different states throughout internship opportunities and will probably continue to bounce around for a while.
+          </p>
+          <p style="color:var(--text-muted);margin-top:1.25rem;">
+            I'm basically using this website as another side project. Maybe sometime I'll add more non-technical hobbies, but for now, most of my project descriptions will be more informal blog-style just for fun (and to prove I'm not a robot). Check out my resume if you want the shortened, pretty version of my experiences.
+          </p>
+        </div>
+
+        <!-- ── Bio photo gallery ──────────────────────────────────────
+             Edit BIO_PHOTOS in the script below to change images.
+             Each entry: { src: "path/to/img.jpg", caption: "optional" }
+        ──────────────────────────────────────────────────────────── -->
+        <div class="bio-gallery" id="bioGallery">
+          <div class="bio-gallery-stage" id="bioStage">
+            <div class="bio-gallery-track" id="bioTrack"></div>
+            <button class="bio-gallery-btn prev" id="bioPrev" aria-label="Previous">&#8249;</button>
+            <button class="bio-gallery-btn next" id="bioNext" aria-label="Next">&#8250;</button>
+          </div>
+          <div class="bio-gallery-dots" id="bioDots"></div>
+          <div class="bio-gallery-caption" id="bioCaption"></div>
         </div>
       </div>
-      <img
-        style="width:220px;height:220px;border-radius:12px;object-fit:cover;border:1px solid var(--border);background:var(--accent-light);"
-        src="assets/baozi.jpg" alt="Victoria You"
-        onerror="this.style.background='#c8ddd9';this.removeAttribute('src')" />
+
+      <div class="btn-row" style="margin-top:1.5rem;">
+        <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
+        <a class="btn btn-outline" href="mailto:vyou2@illinois.edu">Email Me</a>
+      </div>
     </section>
 
     <hr class="section-divider" />
@@ -113,7 +209,6 @@
           <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Increased multi-wafer uniformity of HZO Atomic Layer Deposition films by 88% with iterative recipe optimization</p>
           <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Refined stability and conditioning for metals E-beam Evaporation, improving Hf deposition conductivity by 49%</p>
           <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Developed Selective Si Epitaxial Growth processes for in-house fabrication of RSD transistors and sub 90nm CMOS</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);"></p>
         </li>
 
         <li class="timeline-item">
@@ -154,10 +249,10 @@
       <ul style="list-style:none;padding:0;">
         <li style="margin-bottom:0.75rem;">
           <strong>DaRin Butz Foundation Research Scholar</strong> · <span style="color:var(--text-muted);">UIUC Grainger · 2026</span>
-        </li> 
+        </li>
         <li style="margin-bottom:0.75rem;">
           <strong>2nd Place Visitor's Favorite Award</strong> · <span style="color:var(--text-muted);">Illinois Engineering Open House · 2025</span>
-        </li> 
+        </li>
         <li style="margin-bottom:0.75rem;">
           <strong>Semiconductor Technology Scholarship</strong> · <span style="color:var(--text-muted);">Samsung · 2026</span>
         </li>
@@ -168,12 +263,12 @@
           <strong>Engineering Visionary Scholarship</strong> · <span style="color:var(--text-muted);">UIUC Grainger · 2025</span>
         </li>
         <li style="margin-bottom:0.75rem;">
-            <strong>Illinois Scholar of Undergraduate Research</strong> · <span style="color:var(--text-muted);">UIUC Grainger · 2025</span>
-        </li> 
-        <li style="margin-bottom:0.75rem;">
-            <strong>3rd Place Distinguished Technology Award</strong> · <span style="color:var(--text-muted);">Illinois Engineering Open House · 2025</span>
+          <strong>Illinois Scholar of Undergraduate Research</strong> · <span style="color:var(--text-muted);">UIUC Grainger · 2025</span>
         </li>
-      </ul> 
+        <li style="margin-bottom:0.75rem;">
+          <strong>3rd Place Distinguished Technology Award</strong> · <span style="color:var(--text-muted);">Illinois Engineering Open House · 2025</span>
+        </li>
+      </ul>
     </section>
 
   </div>
@@ -187,10 +282,101 @@
   <script src="courses.js"></script>
   <script src="projects-utils.js"></script>
   <script>
+    /* ════════════════════════════════════════════════════════════════
+       BIO PHOTO GALLERY
+       Add / remove entries here. caption is optional (omit or use "").
+    ════════════════════════════════════════════════════════════════ */
+    const BIO_PHOTOS = [
+      { src: "assets/baozi.jpg",  caption: "" },
+      // { src: "assets/photo2.jpg", caption: "Nashville, TN" },
+      // { src: "assets/photo3.jpg", caption: "At UIUC" },
+    ];
+
+    (function initBioGallery() {
+      const photos  = BIO_PHOTOS;
+      const track   = document.getElementById('bioTrack');
+      const dotsEl  = document.getElementById('bioDots');
+      const caption = document.getElementById('bioCaption');
+      const btnPrev = document.getElementById('bioPrev');
+      const btnNext = document.getElementById('bioNext');
+      const W = 350; // matches .bio-gallery-stage width in px
+
+      if (!photos.length) return;
+
+      // Build slides
+      track.style.width = (photos.length * W) + 'px';
+      photos.forEach((p, i) => {
+        const img = document.createElement('img');
+        img.src   = p.src;
+        img.alt   = p.caption || `Photo ${i + 1}`;
+        img.onerror = () => { img.style.background = '#c8ddd9'; img.removeAttribute('src'); };
+        track.appendChild(img);
+      });
+
+      // Build dots (only if more than one photo)
+      if (photos.length > 1) {
+        photos.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = 'bio-gallery-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('aria-label', `Photo ${i + 1}`);
+          dot.addEventListener('click', () => goTo(i));
+          dotsEl.appendChild(dot);
+        });
+      }
+
+      let current = 0;
+
+      function goTo(n) {
+        current = Math.max(0, Math.min(n, photos.length - 1));
+        track.style.transform = `translateX(-${current * W}px)`;
+        // Update dots
+        dotsEl.querySelectorAll('.bio-gallery-dot').forEach((d, i) =>
+          d.classList.toggle('active', i === current));
+        // Update caption
+        caption.textContent = photos[current].caption || '';
+        // Update buttons
+        btnPrev.disabled = current <= 0;
+        btnNext.disabled = current >= photos.length - 1;
+      }
+
+      btnPrev.addEventListener('click', () => goTo(current - 1));
+      btnNext.addEventListener('click', () => goTo(current + 1));
+
+      // Touch / mouse swipe
+      let startX = null;
+      const stage = document.getElementById('bioStage');
+
+      stage.addEventListener('pointerdown', e => {
+        startX = e.clientX;
+        track.style.transition = 'none'; // disable during drag
+      });
+      stage.addEventListener('pointermove', e => {
+        if (startX === null) return;
+        const dx = e.clientX - startX;
+        track.style.transform = `translateX(${-current * W + dx}px)`;
+      });
+      stage.addEventListener('pointerup', e => {
+        if (startX === null) return;
+        const dx = e.clientX - startX;
+        track.style.transition = 'transform 0.3s ease';
+        if (dx < -40)      goTo(current + 1);
+        else if (dx > 40)  goTo(current - 1);
+        else               goTo(current); // snap back
+        startX = null;
+      });
+      stage.addEventListener('pointercancel', () => {
+        track.style.transition = 'transform 0.3s ease';
+        goTo(current);
+        startX = null;
+      });
+
+      goTo(0); // initialise
+    })();
+
     /* ── Combine project tags + course skills into one unified count ── */
     const tagCounts   = {};
-    const projectsMap = {};  // tag → [{name, cat}]
-    const coursesMap  = {};  // tag → ["Course Name", ...]
+    const projectsMap = {};
+    const coursesMap  = {};
 
     PROJECTS.flatMap(p => p.tags).forEach(t => {
       tagCounts[t] = (tagCounts[t] || 0) + 1;
@@ -235,9 +421,8 @@
       `;
       eduList.appendChild(li);
     });
-  </script>
-  <script>
-      document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+
+    document.getElementById('navCraneCount').textContent = CRANE_COUNT;
   </script>
 </body>
 </html>

@@ -25,8 +25,9 @@ const PROJECTS = [
     desc: "Project Lead for building 6-Axis Robotic Arm for nonplanar 3d printing. 3D printed, assembled, controlled with ROS via CAN.",
     body: "",
     tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management", "Robotics"],
+    toc: true,    tocOffset: '2rem',   tocTop: '-0.75rem',
     // coverImage: "main.jpeg",
-    sidebar:[{title: "Key Contributors:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'>Sergio Bahena</a>"}, {title: "Mentored by:", content: "<a href = 'https://grainger.illinois.edu/about/directory/faculty/lmclemon'>Mickey Clemon</a>", top: "9rem"}],
+    sidebar:[{title: "Key Collaborators:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'><strong>Sergio Bahena</strong></a>"}, {title: "Mentored by:", content: "<a href = 'https://grainger.illinois.edu/about/directory/faculty/lmclemon'>Mickey Clemon</a>", top: "9rem"}],
     link: ""
   },
   {
@@ -74,7 +75,7 @@ const PROJECTS = [
       {image: "finalslides/Slide8.PNG", videos: [{src: "slide8.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}]},
       {image: "finalslides/Slide9.PNG", videos: [{src: "slide9top.mp4", top: 2, left:   69, width:  32,  height: 36.65, loop:  true, muted:    true, controls: true,}, {src: "slide9bottom.mp4", top: 39, left:69, width:32,  height: 60.65, loop: true, muted:false, controls: true,}]},
       {image: "finalslides/Slide10.PNG", videos: [{src: "slide10left.mp4", top: 0, left:   0, width:  35,  height: 100, loop:     true, muted:    true, controls: true,}, {src: "slide10right.mp4", top: 0, left:   65, width:  35,  height: 100, loop:     true, muted:    false, controls: true,}]},],
-    coverImage: "main.jpg",
+    coverImage: "main.png",
     tags: ["MATLAB", "Robotics"],
     link: ""
   },
@@ -154,12 +155,12 @@ const PROJECTS = [
     cat: "Personal",
     dateStart: "2020",
     date: "0000",
-    desc: "Miscellaneous projects that are undeserving of their own page. But interesting enough to appear at all",
+    desc: "Miscellaneous projects that aren't really big enough for their own page. But I think all of these are relatively interesting.",
     body: "",
     tags: ["Fusion 360", "Autodesk Inventor", "Blender", "3D Printing", "Rapid Prototyping"],
     link: "",
-    sidebar:[{title: "Note", content: "VEX Robotics took up about 70% of my camera roll in high school, especially since I led most of the documentation. Almost none of the design process, testing, or iterations are shown here, but I learned the importance of iterative design and documentation very early. I'm just keeping this section relatively small to leave room for bigger/cooler (hopefully) projects. :). I also served as President senior year and Vice President junior year for the school organization as a whole, not just the Goose team.", top: "132rem"},
-      {image: "vex/suitedgoose.PNG", content: "Logo drawn by my friend Emma :)", top:"173rem"}
+    sidebar:[{title: "Note", content: "VEX Robotics took up about 70% of my camera roll in high school, especially since I led most of the documentation. Almost none of the design process, testing, or iterations are shown here, but I learned the importance of iterative design and documentation very early. I'm just keeping this section relatively small to leave room for bigger/cooler (hopefully) projects. :). I also served as President senior year and Vice President junior year for the school organization as a whole, not just the Goose team.", top: "178rem"},
+      {image: "vex/suitedgoose.PNG", content: "Logo drawn by my friend Emma :)", top:"223rem"}
     ],
     toc: true,
     coverImage: "random.jpeg"

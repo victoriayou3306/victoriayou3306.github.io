@@ -63,7 +63,7 @@ nav {
 .hero-photo { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border); background: var(--accent-light); }
 
 /* --- Buttons --- */
-.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0; }
 .btn { display: inline-block; padding: 0.55rem 1.3rem; border-radius: 6px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 500; letter-spacing: 0.02em; transition: all 0.2s; border: 1.5px solid transparent; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: #2e5248; text-decoration: none; }

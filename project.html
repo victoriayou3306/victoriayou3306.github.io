@@ -44,6 +44,11 @@
     .project-body ul, .project-body ol { padding-left: 1.5rem; margin-bottom: 1.25rem; color: var(--text); line-height: 1.8; font-size: 1.02rem; }
     .project-body li { margin-bottom: 0.3rem; }
 
+    .project-body section:first-child > :is(h2,h3,h4):first-child,
+    .project-body > :is(h2,h3,h4):first-child {
+      margin-top: -3rem;
+    }
+
     /* ── Body + sidebar/TOC layout ── */
     .project-layout {
       position: relative;
@@ -55,20 +60,25 @@
       margin: 0 auto;
     }
 
-    /* TOC — absolutely positioned to the LEFT of the container */
     .project-toc {
       position: absolute;
       left: -220px;
-      top: 2rem;
+      top: var(--toc-top, 2rem);
       width: 180px;
-      /* Sit above the section-divider hr so it doesn't appear to cut through */
-      z-index: 1;
+
+      z-index: 2;
+    }
+
+    .project-toc::before {
+      content: '';
+      position: absolute;
+      inset: -8px -12px;
       background: var(--bg);
+      z-index: -1;
     }
     .project-toc.sticky-toc {
       position: fixed;
-      top: calc(var(--nav-height) + 5.5rem);
-      /* left is set dynamically by JS when sticky kicks in */
+      top: calc(var(--nav-height) + var(--toc-offset, 5.5rem));
     }
     .toc-label {
       font-size: 0.7rem; font-weight: 700;
@@ -78,10 +88,16 @@
       border: none;
     }
     .toc-list {
-      list-style: none; padding: 0; margin: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
       border-left: 2px solid var(--border);
-      /* Fix 3: explicitly zero out other sides so no horizontal line appears */
-      border-top: none; border-bottom: none; border-right: none;
+      border-top: none;
+      border-bottom: none;
+      border-right: none;
+
+      background: var(--bg);
     }
     .toc-list li { border: none; }
     .toc-list li a {
@@ -135,12 +151,161 @@
     .img-right { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
     .img-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
     .clear { clear: both; }
-    .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
-    .img-pair img { width: 100%; border-radius: 8px; }
+    .img-pair {
+      display: flex;
+      gap: 10px;
+
+      width: 100%;
+      max-width: 900px;   /* or whatever your reading width is */
+      margin: 1.5rem auto; /* THIS centers it */
+
+      justify-content: center;
+    }
+    .img-pair img {
+      flex: 1;
+      min-width: 0;
+      border-radius: 8px;
+      display: block;
+      object-fit: cover;
+    }
+    .img-pair.float-right {
+      float: right;
+      width: var(--w, 520px);
+      margin: 0.25rem 0 1rem 1.75rem;
+    }
+
+    .img-pair.float-left {
+      float: left;
+      width: var(--w, 520px);
+      margin: 0.25rem 1.75rem 1rem 0;
+    }
+
     .img-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.5rem 0; }
-    .img-trio img { width: 100%; border-radius: 8px; }
+    /* Each cell inside img-pair/trio: image + optional caption stacked */
+    .img-pair-cell, .img-trio-cell { display: flex; flex-direction: column; }
+    .img-pair-cell img, .img-trio-cell img,
+    .img-pair > img,   .img-trio > img { width: 100%; border-radius: 8px; }
+    /* Caption sits directly under its image, left-aligned like a figure */
+    .img-pair-cell .img-caption,
+    .img-trio-cell .img-caption {
+      margin-top: 0.4rem; margin-bottom: 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+    }
     .img-caption { font-size: 0.82rem; color: var(--text-muted); text-align: center; margin-top: -0.9rem; margin-bottom: 1.5rem; }
     img.lb { cursor: zoom-in; }
+
+    /* ── Inline image gallery ──────────────────────────────────────────
+       Usage in body-*.html:
+
+       <div class="img-gallery" style="--gw:500px">
+         <img src="assets/projects/myproject/a.jpg" data-caption="Caption A">
+         <img src="assets/projects/myproject/b.jpg" data-caption="Caption B">
+         <img src="assets/projects/myproject/c.jpg">
+       </div>
+
+       --gw  : width of the gallery (default 100%). Accepts any CSS value:
+               px, %, rem, etc. Same system as --w on individual images.
+       float variants — add a class alongside .img-gallery:
+         .img-gallery-right  floats right, text wraps left  (use --gw for width)
+         .img-gallery-left   floats left,  text wraps right
+       Lightbox: clicking any image opens it full-screen.
+       Captions: set data-caption on each <img>; shown below stage.
+    ── */
+    .img-gallery {
+      display: block;
+      width: var(--gw, 100%);
+      max-width: 100%;
+      margin: 1.5rem auto;
+      user-select: none;
+    }
+    .img-gallery-right {
+      float: right;
+      margin: 0.25rem 0 1rem 1.75rem;
+      width: var(--gw, 320px);
+      max-width: 48%;
+    }
+    .img-gallery-left {
+      float: left;
+      margin: 0.25rem 1.75rem 1rem 0;
+      width: var(--gw, 320px);
+      max-width: 48%;
+    }
+    .img-gallery-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;   /* overridden to natural ratio once first image loads */
+      overflow: hidden;
+      border-radius: 8px;
+      background: var(--accent-light);
+      cursor: zoom-in;
+    }
+    .img-gallery-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+    .img-gallery-track img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border-radius: 0;
+      display: block;
+      pointer-events: none;
+    }
+    /* Prev / Next */
+    .img-gallery-btn {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.78);
+      border: none; border-radius: 50%;
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1rem; color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      transition: background 0.15s, opacity 0.15s;
+      z-index: 2; padding: 0; line-height: 1;
+    }
+    .img-gallery-btn:hover { background: rgba(255,255,255,0.97); }
+    .img-gallery-btn:disabled { opacity: 0; pointer-events: none; }
+    .img-gallery-btn.prev { left: 7px; }
+    .img-gallery-btn.next { right: 7px; }
+    /* Counter badge */
+    .img-gallery-counter {
+      position: absolute;
+      bottom: 8px; right: 10px;
+      background: rgba(0,0,0,0.45);
+      color: #fff; font-size: 0.72rem;
+      padding: 2px 7px; border-radius: 10px;
+      pointer-events: none;
+    }
+    /* Dots */
+    .img-gallery-dots {
+      display: flex; justify-content: center; gap: 5px;
+      margin-top: 7px;
+    }
+    .img-gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer; border: none; padding: 0;
+    }
+    .img-gallery-dot.active { background: var(--accent); transform: scale(1.3); }
+    /* Caption */
+    .img-gallery-caption {
+      min-height: 1.3em;
+      font-size: 0.82rem; color: var(--text-muted);
+      text-align: center; font-style: italic;
+      margin-top: 5px; line-height: 1.4;
+    }
+    @media (max-width: 640px) {
+      .img-gallery-right, .img-gallery-left {
+        float: none; width: 100% !important; max-width: 100%; margin: 1rem 0;
+      }
+    }
 
     /* ── Video helpers — mirrors image helpers; use on <video> or a .vid-wrap div ── */
     /* Full-width self-hosted video */
@@ -466,14 +631,14 @@
           // ── Fix 1: inject section IDs directly into the html string ──
           // This ensures IDs survive the outerHTML swap that follows.
           let sectionIndex = 0;
-          html = html.replace(/<h2([^>]*)>/gi, (match, attrs) => {
+          html = html.replace(/<h[2-4]([^>]*)>/gi, (match, attrs) => {
             if (/\bid=/.test(attrs)) return match; // already has an id, leave it
             return `<h2${attrs} id="section-${sectionIndex++}">`;
           });
 
           // Set innerHTML so we can query the headings for their text content
           bodyWrapper.innerHTML = html;
-          const headings = [...bodyWrapper.querySelectorAll('h2')];
+          const headings = [...bodyWrapper.querySelectorAll('h2, h3, h4')];
 
           const tocItemsClean = headings.map(h => {
             // Use only direct text nodes so icon/badge children don't appear in the TOC
@@ -504,6 +669,11 @@
             const links  = document.querySelectorAll('.toc-list a');
             const navH   = parseInt(getComputedStyle(document.documentElement)
                              .getPropertyValue('--nav-height') || '64');
+            const tocOffset = project.tocOffset || '5.5rem';
+            const tocTop    = project.tocTop || '2rem';
+
+            toc.style.setProperty('--toc-offset', tocOffset);
+            toc.style.setProperty('--toc-top', tocTop);
 
             // ── Fix 2: compute correct left position when switching to fixed ──
             // When position:fixed, left is relative to the viewport, not the
@@ -516,10 +686,7 @@
               const tocRect    = toc.getBoundingClientRect();
               const layoutRect = layout.getBoundingClientRect();
 
-              // ── TOC sticky ──
-              // Trigger at navH+24 (the fixed resting position) so the TOC snaps
-              // to fixed exactly where it already sits — no jump.
-              const stickyThreshold = navH + 90;
+              const stickyThreshold = navH + parseFloat(getComputedStyle(toc).getPropertyValue('--toc-offset')) * 16;
               if (!toc.classList.contains('sticky-toc')) {
                 if (tocRect.top <= stickyThreshold) {
                   tocNaturalLeft = layoutRect.left - 220;
@@ -546,10 +713,12 @@
                 }
               });
             }, { rootMargin: '-20% 0px -70% 0px' });
-            document.querySelectorAll('.project-body h2').forEach(h => obs.observe(h));
+            document.querySelectorAll('.project-body h2, .project-body h3, .project-body h4').forEach(h => obs.observe(h));
             initVideoObserver();
             initInlinePDFs();
             initDeck();
+            initGalleries();
+            initPairCaptions();
           });
 
         } else {
@@ -563,6 +732,8 @@
             initVideoObserver();
             initInlinePDFs();
             initDeck();
+            initGalleries();
+            initPairCaptions();
           });
         }
       }
@@ -572,6 +743,141 @@
          All <video> elements get muted + playsinline (required for autoplay),
          controls always shown, play at 40% in-view, pause on exit.
       ──────────────────────────────────────────────────────────────────── */
+      /* ─── Inline image galleries ─────────────────────────────────────────
+         Activates every .img-gallery container in the body. Each gallery
+         wraps its <img> children in a swipeable stage with prev/next buttons,
+         dot indicators, a counter badge, captions from data-caption, and
+         lightbox on click.
+      ──────────────────────────────────────────────────────────────────── */
+      function initGalleries() {
+        document.querySelectorAll('.img-gallery').forEach((container, gi) => {
+          const imgs = [...container.querySelectorAll('img')];
+          if (!imgs.length) return;
+
+          // Collect sources and captions before rebuilding DOM
+          const slides = imgs.map(img => ({
+            src:     img.getAttribute('src') || img.src,
+            alt:     img.getAttribute('alt') || '',
+            caption: img.getAttribute('data-caption') || ''
+          }));
+
+          const uid = `gal-${gi}-${Date.now()}`;
+          const showDots    = slides.length > 1;
+          const showCounter = slides.length > 1;
+
+          container.innerHTML = `
+            <div class="img-gallery-stage" id="${uid}-stage">
+              <div class="img-gallery-track" id="${uid}-track">
+                ${slides.map(s =>
+                  `<img src="${s.src}" alt="${s.alt}" style="width:100%;height:100%;object-fit:cover;flex-shrink:0;border-radius:0;display:block;pointer-events:none;">`
+                ).join('')}
+              </div>
+              ${showDots ? `<button class="img-gallery-btn prev" id="${uid}-prev">&#8249;</button>` : ''}
+              ${showDots ? `<button class="img-gallery-btn next" id="${uid}-next">&#8250;</button>` : ''}
+              ${showCounter ? `<span class="img-gallery-counter" id="${uid}-counter">1 / ${slides.length}</span>` : ''}
+            </div>
+            ${showDots ? `<div class="img-gallery-dots" id="${uid}-dots">
+              ${slides.map((_, i) => `<button class="img-gallery-dot${i===0?' active':''}" data-i="${i}"></button>`).join('')}
+            </div>` : ''}
+            <div class="img-gallery-caption" id="${uid}-caption">${slides[0].caption}</div>`;
+
+          const stage   = document.getElementById(`${uid}-stage`);
+          const track   = document.getElementById(`${uid}-track`);
+          const dotsEl  = document.getElementById(`${uid}-dots`);
+          const capEl   = document.getElementById(`${uid}-caption`);
+          const countEl = document.getElementById(`${uid}-counter`);
+          const btnP    = document.getElementById(`${uid}-prev`);
+          const btnN    = document.getElementById(`${uid}-next`);
+
+          // Set track width so all slides sit side-by-side
+          track.style.width = (slides.length * 100) + '%';
+          track.querySelectorAll('img').forEach(img => img.style.width = (100 / slides.length) + '%');
+
+          // Adjust stage aspect ratio to the first image's natural ratio once loaded
+          const firstImg = track.querySelector('img');
+          firstImg.addEventListener('load', () => {
+            if (firstImg.naturalWidth && firstImg.naturalHeight) {
+              stage.style.aspectRatio = `${firstImg.naturalWidth} / ${firstImg.naturalHeight}`;
+            }
+          }, { once: true });
+
+          let cur = 0;
+
+          function goTo(n) {
+            cur = Math.max(0, Math.min(n, slides.length - 1));
+            track.style.transform = `translateX(-${cur * (100 / slides.length)}%)`;
+            if (capEl)   capEl.textContent   = slides[cur].caption;
+            if (countEl) countEl.textContent = `${cur + 1} / ${slides.length}`;
+            if (btnP) btnP.disabled = cur <= 0;
+            if (btnN) btnN.disabled = cur >= slides.length - 1;
+            if (dotsEl) dotsEl.querySelectorAll('.img-gallery-dot').forEach((d, i) =>
+              d.classList.toggle('active', i === cur));
+          }
+
+          if (btnP) btnP.addEventListener('click', e => { e.stopPropagation(); goTo(cur - 1); });
+          if (btnN) btnN.addEventListener('click', e => { e.stopPropagation(); goTo(cur + 1); });
+          if (dotsEl) dotsEl.addEventListener('click', e => {
+            const i = e.target.dataset.i;
+            if (i !== undefined) goTo(+i);
+          });
+
+          // Click stage to open lightbox
+          stage.addEventListener('click', () => {
+            lb({ src: slides[cur].src, alt: slides[cur].caption || slides[cur].alt });
+          });
+
+          // Touch / pointer swipe
+          let startX = null;
+          stage.addEventListener('pointerdown', e => {
+            startX = e.clientX;
+            track.style.transition = 'none';
+          });
+          stage.addEventListener('pointermove', e => {
+            if (startX === null) return;
+            const dx = e.clientX - startX;
+            const pct = (cur * (100 / slides.length)) - (dx / stage.offsetWidth * (100 / slides.length));
+            track.style.transform = `translateX(-${pct}%)`;
+          });
+          stage.addEventListener('pointerup', e => {
+            if (startX === null) return;
+            const dx = e.clientX - startX;
+            track.style.transition = 'transform 0.3s ease';
+            if      (dx < -40) goTo(cur + 1);
+            else if (dx >  40) goTo(cur - 1);
+            else               goTo(cur);
+            startX = null;
+          });
+          stage.addEventListener('pointercancel', () => {
+            track.style.transition = 'transform 0.3s ease';
+            goTo(cur); startX = null;
+          });
+
+          goTo(0);
+        });
+      }
+
+      /* ─── img-pair / img-trio caption wiring ────────────────────────────
+         For any <img data-caption="..."> that is a direct child of .img-pair
+         or .img-trio, wrap it in a .img-pair-cell / .img-trio-cell div and
+         append a caption paragraph beneath it.
+         Plain <img> without data-caption are left unwrapped.
+      ──────────────────────────────────────────────────────────────────── */
+      function initPairCaptions() {
+        document.querySelectorAll('.img-pair > img[data-caption], .img-trio > img[data-caption]').forEach(img => {
+          const caption = img.getAttribute('data-caption');
+          if (!caption) return;
+          const isPair = img.parentElement.classList.contains('img-pair');
+          const cell   = document.createElement('div');
+          cell.className = isPair ? 'img-pair-cell' : 'img-trio-cell';
+          img.parentElement.insertBefore(cell, img);
+          cell.appendChild(img);
+          const cap = document.createElement('p');
+          cap.className   = 'img-caption';
+          cap.textContent = caption;
+          cell.appendChild(cap);
+        });
+      }
+
       function initVideoObserver() {
         const videos = document.querySelectorAll('.project-body video, .project-layout video');
         if (!videos.length) return;
@@ -876,8 +1182,11 @@
 
     /* ─── Lightbox ─────────────────────────────────────────────── */
     function lb(imgEl) {
-      document.getElementById('lbImg').src = imgEl.src;
-      document.getElementById('lbCaption').textContent = imgEl.alt || '';
+      // Accepts either a DOM <img> element or a plain {src, alt} object
+      const src = imgEl.src || imgEl.getAttribute?.('src') || '';
+      const alt = imgEl.alt || '';
+      document.getElementById('lbImg').src = src;
+      document.getElementById('lbCaption').textContent = alt;
       document.getElementById('lightbox').classList.add('open');
     }
     function lbClose() {

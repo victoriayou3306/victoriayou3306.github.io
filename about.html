@@ -96,6 +96,30 @@
       transform: scale(1.25);
     }
 
+    /* ── Experience thumbnail ── */
+    .timeline-thumb {
+      float: right;
+      margin: 0 0 0.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .timeline-thumb img {
+      height: 2.6rem;   /* matches ~two lines of title text */
+      width: auto;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      display: block;
+    }
+    .timeline-thumb a {
+      font-size: 0.72rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .timeline-thumb a:hover { text-decoration: underline; }
+
     /* Caption */
     .bio-gallery-caption {
       min-height: 1.4em;
@@ -156,7 +180,6 @@
           <div class="bio-gallery-caption" id="bioCaption"></div>
         </div>
       </div>
-
       <div class="btn-row" style="margin-top:1.5rem;">
         <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
         <a class="btn btn-outline" href="mailto:vyou2@illinois.edu">Email Me</a>
@@ -174,63 +197,10 @@
 
     <hr class="section-divider" />
 
-    <!-- EXPERIENCE -->
+    <!-- EXPERIENCE — rendered from EXPERIENCE_LIST below -->
     <section style="margin-bottom:3rem;">
       <h2 class="section-title">Experience</h2>
-      <ul class="timeline">
-
-        <li class="timeline-item">
-          <div class="timeline-date">May 2026 – August 2026</div>
-          <div class="timeline-title">Mechatronics Intern</div>
-          <div class="timeline-sub">KLA · <em>Ann Arbor, MI</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">Developing System Identification Pipeline for model-based controls</p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">March 2026 – <em>Present</em></div>
-          <div class="timeline-title">Undergraduate Research</div>
-          <div class="timeline-sub">Quantum and Nanoscale Photonics Laboratory · <em>Champaign, IL</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">Embedding nanodiamonds in SiN for scalable quantum technologies</p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">February 2026 – May 2026</div>
-          <div class="timeline-title">Web Content Developer</div>
-          <div class="timeline-sub">UIUC Mechanical Sciences &amp; Engineering · <em>Champaign, IL</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Developing and maintaining online reference pages for ME 270: Design for Manufacturing coursework and materials</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Typesetting lecture slides as technical documents in LaTeX and generating supplemental examples and figures</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Managing version control and collaborative workflows with GitHub while optimizing functionality and accessibility</p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">September 2025 – January 2026</div>
-          <div class="timeline-title">Microfabrication Process Engineering Co-Op</div>
-          <div class="timeline-sub">MIT Lincoln Laboratory · <em>Lexington, MA</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Increased multi-wafer uniformity of HZO Atomic Layer Deposition films by 88% with iterative recipe optimization</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Refined stability and conditioning for metals E-beam Evaporation, improving Hf deposition conductivity by 49%</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Developed Selective Si Epitaxial Growth processes for in-house fabrication of RSD transistors and sub 90nm CMOS</p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">February 2025 – August 2025</div>
-          <div class="timeline-title">R&amp;D Engineering Intern</div>
-          <div class="timeline-sub">Cygnus Photonics · <em>Champaign, IL</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Manufactured UV/VUV exposure systems for customer research and performed post-use troubleshooting and repair</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Facilitated incoming quality control to drive design revisions; created 25+ technical part drawings for manufacturing</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Designed and iterated modular experimentation units from 3D-printed and laser cut prototypes to machined products</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Reprogrammed a 3D-Printing Gantry using LabVIEW to determine uniformity for lamp area increases of up to 500%</p>
-        </li>
-
-        <li class="timeline-item">
-          <div class="timeline-date">May 2024 – August 2024</div>
-          <div class="timeline-title">Restoration Mechanic Intern</div>
-          <div class="timeline-sub">Nashville Motorcycle Repair · <em>Nashville, TN</em></div>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Fully restored non-running motorcycles for resale: Honda Z50 Minibike; 1982 Suzuki GS1100EZ</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Partially restored motorcycles in poor condition for resale: 1996 Moto Guzzi Sport 1000; Suzuki LS650 Savage Ryca</p>
-          <p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">- Rebuilt and serviced all customer Ural Motorcycle wheels affected by the 2011-2017 Ural Factory Rim Recalls</p>
-        </li>
-
-      </ul>
+      <ul class="timeline" id="experienceList"></ul>
     </section>
 
     <hr class="section-divider" />
@@ -372,6 +342,109 @@
 
       goTo(0); // initialise
     })();
+
+    /* ════════════════════════════════════════════════════════════════
+       EXPERIENCE LIST
+       Add/edit entries here. All fields except date, title, sub, bullets
+       are optional.
+         thumb   : path to a small image (logo or project photo)
+         link    : URL for the "See more →" link (use "project.html?id=X"
+                   for project pages, or any external URL)
+         linkLabel : override the default "See more →" text
+         bullets : array of strings, each rendered as a <p>
+    ════════════════════════════════════════════════════════════════ */
+    const EXPERIENCE_LIST = [
+      {
+        date:  "May 2026 – August 2026",
+        title: "Mechatronics Intern",
+        sub:   "KLA · <em>Ann Arbor, MI</em>",
+        bullets: ["Developing System Identification Pipeline for model-based controls"],
+      },
+      {
+        date:  "March 2026 – <em>Present</em>",
+        title: "Undergraduate Research",
+        sub:   "Quantum and Nanoscale Photonics Laboratory · <em>Champaign, IL</em>",
+        bullets: ["Embedding nanodiamonds in SiN for scalable quantum technologies"],
+      },
+      {
+        date:  "February 2026 – May 2026",
+        title: "Web Content Developer",
+        sub:   "UIUC Mechanical Sciences &amp; Engineering · <em>Champaign, IL</em>",
+        bullets: [
+          "Developing and maintaining online reference pages for ME 270: Design for Manufacturing coursework and materials",
+          "Typesetting lecture slides as technical documents in LaTeX and generating supplemental examples and figures",
+          "Managing version control and collaborative workflows with GitHub while optimizing functionality and accessibility",
+        ],
+      },
+      {
+        date:  "September 2025 – January 2026",
+        title: "Microfabrication Process Engineering Co-Op",
+        sub:   "MIT Lincoln Laboratory · <em>Lexington, MA</em>",
+        thumb: "assets/projects/mitll/wafer.jpg",
+        link:  "project.html?id=mitll",
+        bullets: [
+          "Increased multi-wafer uniformity of HZO Atomic Layer Deposition films by 88% with iterative recipe optimization",
+          "Refined stability and conditioning for metals E-beam Evaporation, improving Hf deposition conductivity by 49%",
+          "Developed Selective Si Epitaxial Growth processes for in-house fabrication of RSD transistors and sub 90nm CMOS",
+        ],
+      },
+      {
+        date:  "February 2025 – August 2025",
+        title: "R&amp;D Engineering Intern",
+        sub:   "Cygnus Photonics · <em>Champaign, IL</em>",
+        bullets: [
+          "Manufactured UV/VUV exposure systems for customer research and performed post-use troubleshooting and repair",
+          "Facilitated incoming quality control to drive design revisions; created 25+ technical part drawings for manufacturing",
+          "Designed and iterated modular experimentation units from 3D-printed and laser cut prototypes to machined products",
+          "Reprogrammed a 3D-Printing Gantry using LabVIEW to determine uniformity for lamp area increases of up to 500%",
+        ],
+      },
+      {
+        date:  "May 2024 – August 2024",
+        title: "Restoration Mechanic Intern",
+        sub:   "Nashville Motorcycle Repair · <em>Nashville, TN</em>",
+        bullets: [
+          "Fully restored non-running motorcycles for resale: Honda Z50 Minibike; 1982 Suzuki GS1100EZ",
+          "Partially restored motorcycles in poor condition for resale: 1996 Moto Guzzi Sport 1000; Suzuki LS650 Savage Ryca",
+          "Rebuilt and serviced all customer Ural Motorcycle wheels affected by the 2011-2017 Ural Factory Rim Recalls",
+        ],
+      },
+    ];
+
+    /* Render experience list */
+    const expList = document.getElementById('experienceList');
+    EXPERIENCE_LIST.forEach(exp => {
+      const thumbHTML = (exp.thumb && exp.link) ? `
+        <div class="timeline-thumb">
+          <a href="${exp.link}">
+            <img src="${exp.thumb}" alt="${exp.title}">
+          </a>
+          <a href="${exp.link}">${exp.linkLabel || 'See more →'}</a>
+        </div>` : (exp.thumb ? `
+        <div class="timeline-thumb">
+          <img src="${exp.thumb}" alt="${exp.title}">
+        </div>` : (exp.link ? `
+        <div class="timeline-thumb">
+          <a href="${exp.link}">${exp.linkLabel || 'See more →'}</a>
+        </div>` : ''));
+
+      const bulletsHTML = (exp.bullets || [])
+        .map(b => `<p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">${b}</p>`)
+        .join('');
+
+      const li = document.createElement('li');
+      li.className = 'timeline-item';
+      li.innerHTML = `
+        <div class="timeline-date">${exp.date}</div>
+        <div class="timeline-title">
+          ${thumbHTML}
+          ${exp.title}
+        </div>
+        <div class="timeline-sub">${exp.sub}</div>
+        ${bulletsHTML}
+      `;
+      expList.appendChild(li);
+    });
 
     /* ── Combine project tags + course skills into one unified count ── */
     const tagCounts   = {};

@@ -146,6 +146,7 @@ const PROJECTS = [
     ],
     tags: ["JMP", "Microfabrication", "CVD", "E-beam Evaporation", "ALD", "SEM", "Ellipsometry"],
     coverImage: "wafer.jpg",
+    sidebar: [{title: "Role:", content: "Microfabrication Process Engineering Co-Op. Microelectronics Laboratory (Group 08-35)"}],
     link: "",
     slides: "full_presentation.pdf"
   },

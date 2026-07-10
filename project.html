@@ -340,6 +340,68 @@
     .vid-embed-right { float: right; margin: 0.25rem 0 1rem 1.75rem; width: var(--w, 320px); }
     .vid-embed-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; width: var(--w, 320px); }
 
+    .vid-pair {
+      display: flex;
+      gap: 10px;
+      margin: 1.5rem 0;
+      width: var(--vw, 100%);
+      align-items: stretch;
+    }
+    .vid-pair.float-right {
+      float: right;
+      margin: 0.25rem 0 1rem 1.75rem;
+    }
+    .vid-pair.float-left {
+      float: left;
+      margin: 0.25rem 1.75rem 1rem 0;
+    }
+    /* Each cell: flex-1 so both videos are equal width */
+    .vid-pair-cell {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    /* The crop wrapper — height controlled by --vh, clips top/bottom */
+    .vid-pair-crop {
+      flex: none;          /* don't grow — keep exact --vh height */
+      overflow: hidden;
+      border-radius: 8px;
+      height: var(--vh, auto);
+      aspect-ratio: var(--vh, 9/16);
+    }
+    /* When --vh IS set, kill the aspect-ratio so height wins */
+    .vid-pair[style*="--vh"] .vid-pair-crop {
+      aspect-ratio: unset;
+    }
+    .vid-pair-crop video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;    /* fills cell, crops top/bottom symmetrically */
+      object-position: center center;
+      display: block;
+      border-radius: 0;
+    }
+    /* Caption — matches .img-caption, flex:1 fills remaining space so short
+       captions sit at the same vertical position as tall ones */
+    .vid-pair-caption {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-style: italic;
+      margin-top: 0.4rem;
+      margin-bottom: 0;
+      flex: 1;
+    }
+    @media (max-width: 640px) {
+      .vid-pair, .vid-pair.float-right, .vid-pair.float-left {
+        flex-direction: column;
+        float: none;
+        width: 100% !important;
+        margin: 1rem 0;
+      }
+    }
+
     @media (max-width: 640px) {
       .vid-right, .vid-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
       .vid-embed-right, .vid-embed-left { float: none; width: 100% !important; margin: 1rem 0; }
@@ -894,7 +956,9 @@
         videos.forEach(v => {
           v.muted    = true;
           v.controls = true;
-          if (!v.hasAttribute('playsinline')) v.setAttribute('playsinline', '');
+          v.setAttribute('playsinline', '');
+          v.setAttribute('controlsList', 'nodownload');       // hides download button in controls bar
+          v.setAttribute('oncontextmenu', 'return false;');   // blocks right-click on the video
           obs.observe(v);
         });
       }

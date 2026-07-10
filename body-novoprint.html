@@ -6,7 +6,10 @@
           onclick="lb(this)">
 
      <p>This project took the majority of my freshman/sophomore spring semesters.<span class="footnote">*<span class="footnote-tip">Easily counted double digits in all-nighters, multiple 60+ hour weeks, lots and lots of class/homework skipped... (sorry professors).</span></span>
-          This began under ASME@Illinois Product Development Committee. The goal was to 3D print a 6-axis robotic arm to be used for nonplanar 3D printing, and then manufacture multiple for simultaneous printing. I was fortunate enough to have serial robotics and 3d printing experience and was chosen as one of the project leads at the beginning of the project. Logistical issues were inevitable, and the first semester (2.5 months) of the project pretty much had a team of 4 people and a time-crunched dream. Literally everything that could have went wrong did. Wrong electrical parts were ordered from alternate vendors (they needed to be department-approved) when rushing tight deadlines, parts got lost in the receiving office, parts were out of stock, Amazon shipped us a faulty part, and my laptop somehow blew up.
+          This began under ASME@Illinois Product Development Committee. The goal was to 3D print a 6-axis robotic arm to be used for nonplanar 3D printing, and then manufacture multiple for simultaneous printing. I was fortunate enough to have serial robotics and 3d printing experience and was chosen as one of the project leads at the beginning of the project. </p>
+          
+          <p>This page won't have the most glorious camera work, since its mostly just WIP update videos I'd send my professor at 4am. Hopefully sometime in the near future I can make a pretty results section, but for now its just me complaining and yapping about the process.</p>
+          <p>Logistical issues were inevitable, and the first semester (2.5 months) of the project pretty much had a team of 4 people and a time-crunched dream. Literally everything that could have went wrong did. Wrong electrical parts were ordered from alternate vendors (they needed to be department-approved) when rushing tight deadlines, parts got lost in the receiving office, parts were out of stock, Amazon shipped us a faulty part, and my laptop somehow blew up.
           <span class="footnote">*<span class="footnote-tip">I think my mishaps/frustrations with this project could be an essay in itself. But this isn't the place for that unfortunately.</span></span> So the goal for the second year was to try to mitigate these unfortunate series of events.</p>
 
      <div class="img-gallery img-gallery-right" style="--gw:320px">
@@ -45,7 +48,7 @@
      alt="ILL-INI"
      onclick="lb(this)">
      <p>Wow this is pretty. I'm leaving it at that.</p>
-     <p>Jk. This was mostly planned on a whim while slicing, but I think it turned out great. I actually think I knew the robot better than my bedroom. I definitely saw it more.</p>
+     <p>Jk. This was mostly planned on a whim while slicing- eyeballing and guessing what colors went where while maximizing build plate surface area, but I think it turned out great. I actually think I knew the robot better than my bedroom. <span class="footnote">*<span class="footnote-tip">I definitely saw it more.</span></span></p>
      <p>So obviously our second arm was new and improved. I forgot to take a backlash comparison video, but you can see the difference in the Software section where I show the robot motion.</p>
      <div class="clear"></div>
 </section>
@@ -54,4 +57,52 @@
 </section>
 <section>
      <h3>Software</h3>
+     <div class="img-pair">
+          <img src="assets/projects/novoprint/software dump/ros_what.png"  alt="hello VM" class="lb">
+          <img src="assets/projects/novoprint/software dump/ros_ok.png"   alt="VM" class="lb">
+     </div>
+    <p>This was pretty much my first time using ROS, and I've also only ever used Windows machines before. It honestly took an embarrassingly long time to set up a functional Virtual Machine, and then even longer to get the simulator/visualizer working. We eventually got a dedicated laptop for the project running Ubuntu, and it made the process a lot easier.</p>
+    <div class="clear"></div>
+
+    <div class="vid-pair float-left" style="--vw:460px;--vh:300px">
+          <div class="vid-pair-cell">
+               <div class="vid-pair-crop">
+                    <video><source src="assets/projects/novoprint/software dump/wow_vscode.mp4" type="video/mp4"></video>
+               </div>
+               <p class="vid-pair-caption">Python Control</p>
+          </div>
+          <div class="vid-pair-cell">
+               <div class="vid-pair-crop">
+                    <video><source src="assets/projects/novoprint/software dump/ugly_robot.mp4" type="video/mp4"></video>
+               </div>
+               <p class="vid-pair-caption">ROS GUI Control</p>
+          </div>
+     </div>
+     <p>The left video shows a python script sending CAN messages to the motors using predetermined angles, and visualizing the angles separately in RVIZ.</p>
+     <p>The right side sends commands from ROS using the Arctos GUI. Both were just testing single coordinate/pose motions, and setting up the control pipeline.</p>
+     <div class="clear"></div>
+     <div class="vid-pair float-right" style="--vw:460px;--vh:360px">
+          <div class="vid-pair-cell">
+               <div class="vid-pair-crop">
+                    <video><source src="assets/projects/novoprint/software dump/weird_traj.mp4" type="video/mp4"></video>
+               </div>
+               <p class="vid-pair-caption">First try at multi-pose trajectory</p>
+          </div>
+          <div class="vid-pair-cell">
+               <div class="vid-pair-crop">
+                    <video><source src="assets/projects/novoprint/software dump/clean_robot.mp4" type="video/mp4"></video>
+               </div>
+               <p class="vid-pair-caption">Pretty okay trajectory</p>
+          </div>
+     </div>
+     <p>It's not an apples-to-apples comparison, but I think you can see the backlash improvements between the two arms here. </p>
+     <p>But here was where we were getting close to actually controlling a robot arm rather than spamming random motors.</p>
+     <div class="clear"></div>
+
+     <video class="vid-left" style="--w:300px">
+        <source src="assets/projects/novoprint/software dump/near_final.mp4" type="video/mp4">
+    </video>
+
+    <div class="clear"></div>
+    
 </section>

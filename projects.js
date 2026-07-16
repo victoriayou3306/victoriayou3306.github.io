@@ -26,9 +26,8 @@ const PROJECTS = [
     body: "",
     tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management", "Robotics"],
     toc: true,    tocOffset: '2rem',   tocTop: '-0.75rem',
-    // coverImage: "main.jpeg",
     sidebar:[{title: "Key Collaborators:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'><strong>Sergio Bahena</strong></a>"}, {title: "Mentored by:", content: "<a href = 'https://grainger.illinois.edu/about/directory/faculty/lmclemon'>Mickey Clemon</a>", top: "9rem"}],
-    link: ""
+    coverImage: "main.jpeg",
   },
   {
     id: "keyboard",

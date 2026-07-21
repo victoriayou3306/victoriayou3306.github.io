@@ -96,14 +96,16 @@
       transform: scale(1.25);
     }
 
-    /* ── Experience thumbnail ── */
+    /* ── Experience thumbnail ──
+         Image + "See more" link sit side by side (row), so the float block
+         stays short and doesn't force bullet-point text onto extra lines. */
     .timeline-thumb {
       float: right;
       margin: 0 0 0.5rem 1rem;
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
     }
     .timeline-thumb img {
       height: 2.6rem;   /* matches ~two lines of title text */
@@ -358,6 +360,11 @@
     ════════════════════════════════════════════════════════════════ */
     const EXPERIENCE_LIST = [
       {
+        date:  "July 2026 – <em>Present</em>",
+        title: "Undergraduate Research",
+        sub:   "Hooberman High Energy Physics Group · <em>Champaign, IL</em>",
+        bullets: ["Designing muon tomography enclosures for rare mineral and metal detection"],
+      },{
         date:  "May 2026 – August 2026",
         title: "Mechatronics Intern",
         sub:   "KLA · <em>Ann Arbor, MI</em>",
@@ -419,10 +426,10 @@
     EXPERIENCE_LIST.forEach(exp => {
       const thumbHTML = (exp.thumb && exp.link) ? `
         <div class="timeline-thumb">
+          <a href="${exp.link}">${exp.linkLabel || 'See more →'}</a>
           <a href="${exp.link}">
             <img src="${exp.thumb}" alt="${exp.title}">
           </a>
-          <a href="${exp.link}">${exp.linkLabel || 'See more →'}</a>
         </div>` : (exp.thumb ? `
         <div class="timeline-thumb">
           <img src="${exp.thumb}" alt="${exp.title}">

@@ -61,9 +61,11 @@ nav {
 .hero-text h1 { font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
 .hero-text .tagline { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 480px; }
 .hero-photo { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid var(--border); background: var(--accent-light); }
+.hero-photo-wrap { display: flex; flex-direction: column; align-items: center; }
+.hero-photo-caption { margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-muted); text-align: center; font-style: italic; max-width: 180px; }
 
 /* --- Buttons --- */
-.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
 .btn { display: inline-block; padding: 0.55rem 1.3rem; border-radius: 6px; font-family: var(--font-body); font-size: 0.88rem; font-weight: 500; letter-spacing: 0.02em; transition: all 0.2s; border: 1.5px solid transparent; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: #2e5248; text-decoration: none; }
@@ -310,6 +312,7 @@ nav {
 .nav-crane-icon {
   width: 18px; height: 18px; object-fit: contain;
   opacity: 0.6; transition: opacity 0.2s;
+  /* Tint to match the green accent on active/hover */
   filter: none;
 }
 .nav-crane:hover .nav-crane-icon,
@@ -327,8 +330,6 @@ nav {
 .img-pair img, .img-trio img { width: 100%; border-radius: 8px; }
 .img-caption { font-size: 0.82rem; color: var(--text-muted); text-align: center; margin-top: -0.9rem; margin-bottom: 1.5rem; }
 img.lb       { cursor: zoom-in; }
-
-
 
 /* --- Lightbox (available on every page that includes lightbox HTML) --- */
 .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000; align-items: center; justify-content: center; padding: 2rem; }
@@ -349,13 +350,4 @@ footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center;
   .contact-line { text-align: center; }
   .skill-popup { left: 0; transform: none; }
   .skill-popup::after, .skill-popup::before { left: 20px; }
-}
-
-/* ── TOC: kill any inherited list borders ── */
-/* Fix 3: prevent global ul/li styles from adding horizontal lines */
-.project-toc ul,
-.project-toc li {
-  border-top: none !important;
-  border-bottom: none !important;
-  border-right: none !important;
 }

@@ -3,7 +3,7 @@
     tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
   };
 </script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-cml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
 <p>I spent the summer after my junior year at Vanderbilt University's laboratory for Advanced Robotics and Mechanism Applications. Under the grad students' guidance, I had the opportunity to learn about continuum robotics and simulated their motion and kinematics in MATLAB. This project was based on lab director Dr. Nabil Simaan’s 2004 ICRA paper, “A Dexterous System for Laryngeal Surgery.” </p>
 
@@ -29,5 +29,6 @@
      src="assets/projects/continuum/static_snake.png"
      alt="static model"
      onclick="lb(this)">
-
+<p>This was the first time I ever used MATLAB, and also the first time I appreciated Linear Algebra lol. </p>
+<p>The static model was fairly trivial. Compute the actuator lengths given a desired pose (angle $\theta$ from $\hat{z}$ and $\delta$ from the XY plane), and then visualize. The intermediate coordinate frames represent the transformation to the spacer disks' reference frames.</p>
 <div class="clear"></div>

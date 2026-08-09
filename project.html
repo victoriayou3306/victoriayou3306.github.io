@@ -691,19 +691,16 @@
 
         if (project.toc) {
           // ── Fix 1: inject section IDs directly into the html string ──
-          // This ensures IDs survive the outerHTML swap that follows.
           let sectionIndex = 0;
           html = html.replace(/<h[2-4]([^>]*)>/gi, (match, attrs) => {
-            if (/\bid=/.test(attrs)) return match; // already has an id, leave it
+            if (/\bid=/.test(attrs)) return match;
             return `<h2${attrs} id="section-${sectionIndex++}">`;
           });
 
-          // Set innerHTML so we can query the headings for their text content
           bodyWrapper.innerHTML = html;
           const headings = [...bodyWrapper.querySelectorAll('h2, h3, h4')];
 
           const tocItemsClean = headings.map(h => {
-            // Use only direct text nodes so icon/badge children don't appear in the TOC
             const firstText = [...h.childNodes]
               .filter(n => n.nodeType === 3)
               .map(n => n.textContent.trim())
@@ -724,24 +721,18 @@
               ${sidebarHTML}
             </div>`;
 
-          // Scroll spy + sticky TOC
           requestAnimationFrame(() => {
             const toc    = document.getElementById('projToc');
             const layout = document.getElementById('projLayout');
             const links  = document.querySelectorAll('.toc-list a');
             const navH   = parseInt(getComputedStyle(document.documentElement)
-                             .getPropertyValue('--nav-height') || '64');
+                            .getPropertyValue('--nav-height') || '64');
             const tocOffset = project.tocOffset || '5.5rem';
             const tocTop    = project.tocTop || '2rem';
 
             toc.style.setProperty('--toc-offset', tocOffset);
             toc.style.setProperty('--toc-top', tocTop);
 
-            // ── Fix 2: compute correct left position when switching to fixed ──
-            // When position:fixed, left is relative to the viewport, not the
-            // container. We derive it from the layout's current bounding rect.
-            // Capture the TOC's natural left position in viewport coords once,
-            // before any scrolling moves it. We need this for the fixed state.
             let tocNaturalLeft = toc.getBoundingClientRect().left;
 
             window.addEventListener('scroll', () => {
@@ -765,7 +756,6 @@
 
             }, { passive: true });
 
-            // Active link highlight via IntersectionObserver
             const obs = new IntersectionObserver(entries => {
               entries.forEach(e => {
                 if (e.isIntersecting) {
@@ -798,8 +788,18 @@
             initPairCaptions();
           });
         }
+
+        // ── Re-typeset MathJax now that body-*.html content is in the DOM ──
+        typesetMath();
       }
 
+      function typesetMath() {
+        if (window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise().catch(err => console.error('MathJax typeset error:', err));
+        } else {
+          setTimeout(typesetMath, 100);
+        }
+      }
       /* ─── Video: autoplay on scroll into view, pause on scroll out ───────
          Called directly by injectLayout once the DOM is settled — no race.
          All <video> elements get muted + playsinline (required for autoplay),

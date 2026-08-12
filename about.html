@@ -45,7 +45,6 @@
     .bio-gallery-track {
       display: flex;
       height: 100%;
-      /* width and transform set by JS */
       transition: transform 0.3s ease;
       will-change: transform;
     }
@@ -56,10 +55,9 @@
       flex-shrink: 0;
       border-radius: 0;
       display: block;
-      pointer-events: none; /* prevent drag-image ghost */
+      pointer-events: none;
     }
 
-    /* Prev / Next arrow buttons */
     .bio-gallery-btn {
       position: absolute;
       top: 50%; transform: translateY(-50%);
@@ -79,7 +77,6 @@
     .bio-gallery-btn.prev { left: 6px; }
     .bio-gallery-btn.next { right: 6px; }
 
-    /* Dot indicators */
     .bio-gallery-dots {
       display: flex; justify-content: center; gap: 5px;
       margin-top: 8px;
@@ -108,7 +105,7 @@
       gap: 8px;
     }
     .timeline-thumb img {
-      height: 2.6rem;   /* matches ~two lines of title text */
+      height: 2.6rem;
       width: auto;
       border-radius: 5px;
       border: 1px solid var(--border);
@@ -122,7 +119,19 @@
     }
     .timeline-thumb a:hover { text-decoration: underline; }
 
-    /* Caption */
+    /* ── Experience bullet list ── */
+    .timeline-bullets {
+      margin: 0.5rem 0 0;
+      padding-left: 1.15rem;
+      list-style: disc;
+    }
+    .timeline-bullets li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+      line-height: 1.55;
+    }
+
     .bio-gallery-caption {
       min-height: 1.4em;
       text-align: center;
@@ -156,7 +165,6 @@
 
     <!-- BIO -->
     <section style="margin-bottom:3rem;">
-      <!-- Row 1: title + first paragraph beside the photo -->
       <div style="display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:start;">
         <div>
           <h1 class="section-title" style="font-size:2.5rem;margin-bottom:1rem;">About Me</h1>
@@ -168,10 +176,6 @@
           </p>
         </div>
 
-        <!-- ── Bio photo gallery ──────────────────────────────────────
-             Edit BIO_PHOTOS in the script below to change images.
-             Each entry: { src: "path/to/img.jpg", caption: "optional" }
-        ──────────────────────────────────────────────────────────── -->
         <div class="bio-gallery" id="bioGallery">
           <div class="bio-gallery-stage" id="bioStage">
             <div class="bio-gallery-track" id="bioTrack"></div>
@@ -190,16 +194,16 @@
 
     <hr class="section-divider" />
 
-    <!-- SKILLS — auto-generated from projects + courses, collapses to 2 rows -->
+    <!-- SKILLS — auto-generated from projects + courses + experience, collapses to 2 rows -->
     <section style="margin-bottom:3rem;">
       <h2 class="section-title">Skills</h2>
-      <p class="section-subtitle">Hover any skill to see where it appears</p>
+      <p class="section-subtitle">Hover over any skill to see related projects & experiences</p>
       <div class="skill-pills-row" id="skillPills"></div>
     </section>
 
     <hr class="section-divider" />
 
-    <!-- EXPERIENCE — rendered from EXPERIENCE_LIST below -->
+    <!-- EXPERIENCE — rendered from experience.js -->
     <section style="margin-bottom:3rem;">
       <h2 class="section-title">Experience</h2>
       <ul class="timeline" id="experienceList"></ul>
@@ -255,16 +259,14 @@
 
   <script src="projects.js"></script>
   <script src="courses.js"></script>
+  <script src="experience.js"></script>
   <script src="projects-utils.js"></script>
   <script>
     /* ════════════════════════════════════════════════════════════════
        BIO PHOTO GALLERY
-       Add / remove entries here. caption is optional (omit or use "").
     ════════════════════════════════════════════════════════════════ */
     const BIO_PHOTOS = [
       { src: "assets/baozi.jpg",  caption: "" },
-      // { src: "assets/photo2.jpg", caption: "Nashville, TN" },
-      // { src: "assets/photo3.jpg", caption: "At UIUC" },
     ];
 
     (function initBioGallery() {
@@ -274,11 +276,10 @@
       const caption = document.getElementById('bioCaption');
       const btnPrev = document.getElementById('bioPrev');
       const btnNext = document.getElementById('bioNext');
-      const W = 350; // matches .bio-gallery-stage width in px
+      const W = 350;
 
       if (!photos.length) return;
 
-      // Build slides
       track.style.width = (photos.length * W) + 'px';
       photos.forEach((p, i) => {
         const img = document.createElement('img');
@@ -288,7 +289,6 @@
         track.appendChild(img);
       });
 
-      // Build dots (only if more than one photo)
       if (photos.length > 1) {
         photos.forEach((_, i) => {
           const dot = document.createElement('button');
@@ -304,12 +304,9 @@
       function goTo(n) {
         current = Math.max(0, Math.min(n, photos.length - 1));
         track.style.transform = `translateX(-${current * W}px)`;
-        // Update dots
         dotsEl.querySelectorAll('.bio-gallery-dot').forEach((d, i) =>
           d.classList.toggle('active', i === current));
-        // Update caption
         caption.textContent = photos[current].caption || '';
-        // Update buttons
         btnPrev.disabled = current <= 0;
         btnNext.disabled = current >= photos.length - 1;
       }
@@ -317,13 +314,12 @@
       btnPrev.addEventListener('click', () => goTo(current - 1));
       btnNext.addEventListener('click', () => goTo(current + 1));
 
-      // Touch / mouse swipe
       let startX = null;
       const stage = document.getElementById('bioStage');
 
       stage.addEventListener('pointerdown', e => {
         startX = e.clientX;
-        track.style.transition = 'none'; // disable during drag
+        track.style.transition = 'none';
       });
       stage.addEventListener('pointermove', e => {
         if (startX === null) return;
@@ -336,7 +332,7 @@
         track.style.transition = 'transform 0.3s ease';
         if (dx < -40)      goTo(current + 1);
         else if (dx > 40)  goTo(current - 1);
-        else               goTo(current); // snap back
+        else               goTo(current);
         startX = null;
       });
       stage.addEventListener('pointercancel', () => {
@@ -345,84 +341,12 @@
         startX = null;
       });
 
-      goTo(0); // initialise
+      goTo(0);
     })();
 
     /* ════════════════════════════════════════════════════════════════
-       EXPERIENCE LIST
-       Add/edit entries here. All fields except date, title, sub, bullets
-       are optional.
-         thumb   : path to a small image (logo or project photo)
-         link    : URL for the "See more →" link (use "project.html?id=X"
-                   for project pages, or any external URL)
-         linkLabel : override the default "See more →" text
-         bullets : array of strings, each rendered as a <p>
+       EXPERIENCE LIST — data lives in experience.js
     ════════════════════════════════════════════════════════════════ */
-    const EXPERIENCE_LIST = [
-      {
-        date:  "July 2026 – <em>Present</em>",
-        title: "Undergraduate Research",
-        sub:   "Hooberman High Energy Physics Group · <em>Champaign, IL</em>",
-        bullets: ["Designing muon tomography enclosures for rare mineral and metal detection"],
-      },{
-        date:  "May 2026 – August 2026",
-        title: "Mechatronics Intern",
-        sub:   "KLA · <em>Ann Arbor, MI</em>",
-        bullets: ["Developing System Identification Pipeline for model-based controls"],
-      },
-      {
-        date:  "March 2026 – <em>Present</em>",
-        title: "Undergraduate Research",
-        sub:   "Quantum and Nanoscale Photonics Laboratory · <em>Champaign, IL</em>",
-        bullets: ["Embedding nanodiamonds in SiN for scalable quantum technologies"],
-      },
-      {
-        date:  "February 2026 – May 2026",
-        title: "Web Content Developer",
-        sub:   "UIUC Mechanical Sciences &amp; Engineering · <em>Champaign, IL</em>",
-        bullets: [
-          "Developing and maintaining online reference pages for ME 270: Design for Manufacturing coursework and materials",
-          "Typesetting lecture slides as technical documents in LaTeX and generating supplemental examples and figures",
-          "Managing version control and collaborative workflows with GitHub while optimizing functionality and accessibility",
-        ],
-      },
-      {
-        date:  "September 2025 – January 2026",
-        title: "Microfabrication Process Engineering Co-Op",
-        sub:   "MIT Lincoln Laboratory · <em>Lexington, MA</em>",
-        thumb: "assets/projects/mitll/wafer.jpg",
-        link:  "project.html?id=mitll",
-        bullets: [
-          "Increased multi-wafer uniformity of HZO Atomic Layer Deposition films by 88% with iterative recipe optimization",
-          "Identified an 8% ellipsometry measurement error via XRR cross-validation and generated revised optical models",
-          "Refined stability and conditioning for metals E-beam Evaporation, improving Hf deposition conductivity by 49%",
-          "Developed Selective Si Epitaxial Growth processes for in-house fabrication of RSD transistors and sub 90nm CMOS",
-        ],
-      },
-      {
-        date:  "February 2025 – August 2025",
-        title: "R&amp;D Engineering Intern",
-        sub:   "Cygnus Photonics · <em>Champaign, IL</em>",
-        bullets: [
-          "Manufactured UV/VUV exposure systems for customer research and performed post-use troubleshooting and repair",
-          "Facilitated incoming quality control to drive design revisions; created 25+ technical part drawings for manufacturing",
-          "Designed and iterated modular experimentation units from 3D-printed and laser cut prototypes to machined products",
-          "Reprogrammed a 3D-Printing Gantry using LabVIEW to determine uniformity for lamp area increases of up to 500%",
-        ],
-      },
-      {
-        date:  "May 2024 – August 2024",
-        title: "Restoration Mechanic Intern",
-        sub:   "Nashville Motorcycle Repair · <em>Nashville, TN</em>",
-        bullets: [
-          "Fully restored non-running motorcycles for resale: Honda Z50 Minibike; 1982 Suzuki GS1100EZ",
-          "Partially restored motorcycles in poor condition for resale: 1996 Moto Guzzi Sport 1000; Suzuki LS650 Savage Ryca",
-          "Rebuilt and serviced all customer Ural Motorcycle wheels affected by the 2011-2017 Ural Factory Rim Recalls",
-        ],
-      },
-    ];
-
-    /* Render experience list */
     const expList = document.getElementById('experienceList');
     EXPERIENCE_LIST.forEach(exp => {
       const thumbHTML = (exp.thumb && exp.link) ? `
@@ -439,9 +363,10 @@
           <a href="${exp.link}">${exp.linkLabel || 'See more →'}</a>
         </div>` : ''));
 
-      const bulletsHTML = (exp.bullets || [])
-        .map(b => `<p style="font-size:0.9rem;margin-top:0.4rem;color:var(--text-muted);">${b}</p>`)
-        .join('');
+      /* Bullets render as a real <ul><li> list */
+      const bulletsHTML = (exp.bullets || []).length
+        ? `<ul class="timeline-bullets">${(exp.bullets || []).map(b => `<li>${b}</li>`).join('')}</ul>`
+        : '';
 
       const li = document.createElement('li');
       li.className = 'timeline-item';
@@ -457,7 +382,7 @@
       expList.appendChild(li);
     });
 
-    /* ── Combine project tags + course skills into one unified count ── */
+    /* ── Combine project tags + course skills + experience skills ── */
     const tagCounts   = {};
     const projectsMap = {};
     const coursesMap  = {};
@@ -479,6 +404,16 @@
           if (!coursesMap[t]) coursesMap[t] = [];
           if (!coursesMap[t].includes(course.name)) coursesMap[t].push(course.name);
         });
+      });
+    });
+
+    /* Experience skills merge into projectsMap — same {name, cat} shape,
+       so they show up in the same "Used in" popup list as projects. */
+    EXPERIENCE_LIST.forEach(exp => {
+      (exp.skills || []).forEach(t => {
+        tagCounts[t] = (tagCounts[t] || 0) + 1;
+        if (!projectsMap[t]) projectsMap[t] = [];
+        projectsMap[t].push({ name: exp.title.replace(/&amp;/g, '&'), cat: expCategory(exp.title) });
       });
     });
 

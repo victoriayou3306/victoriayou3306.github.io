@@ -32,7 +32,7 @@
         <p class="tagline">
           Mechanical Engineering // Computational Physics
         </p>
-        <p>This website showcases some of the work I've done throughout the past few years. I've thoroughly enjoyed exploring robotics, mechatronics, and semiconductor fabrication. I'm extremely interested in gaining more experience in experimental physics and instrumentation, especially for quantum information.</p>
+        <p>This website showcases some of the work I've done throughout the past few years. I've thoroughly enjoyed exploring robotics, mechatronics, and semiconductor fabrication. I'm extremely interested in gaining more experience in experimental physics and instrumentation.</p>
         <p>I am always looking for new things to build or learn about, so please reach out if you have ideas or want to collaborate. I have a dedicated oneNote filled with projects in the planning/brainstorming phase, and it always needs more ideas.</p>
         
         <div class="btn-row" style="margin-top:3rem; margin-bottom:-3rem">
@@ -50,10 +50,10 @@
 
     <hr class="section-divider" />
 
-    <!-- SKILLS — auto-generated from projects.js -->
+    <!-- SKILLS — auto-generated from projects.js + courses.js + experience.js -->
     <section class="skills-section">
       <h2 class="section-title">Skills &amp; Tools</h2>
-      <p class="section-subtitle">Hover any skill to see related projects</p>
+      <p class="section-subtitle">Hover over any skill to see related projects & experiences</p>
       <div class="skill-pills-row" id="skillPills"></div>
     </section>
 
@@ -95,6 +95,7 @@
 
   <script src="projects.js"></script>
   <script src="courses.js"></script>
+  <script src="experience.js"></script>
   <script src="projects-utils.js"></script>
   <script>
     sortProjects(PROJECTS);
@@ -117,6 +118,15 @@
         if (!coursesMap[t].includes(course.name)) coursesMap[t].push(course.name);
       });
     }));
+
+    /* Experience skills merge into projectsMap — same shape as project popups */
+    EXPERIENCE_LIST.forEach(exp => {
+      (exp.skills || []).forEach(t => {
+        tagCounts[t] = (tagCounts[t] || 0) + 1;
+        if (!projectsMap[t]) projectsMap[t] = [];
+        projectsMap[t].push({ name: exp.title.replace(/&amp;/g, '&'), cat: expCategory(exp.title) });
+      });
+    });
 
     const allTags  = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a] || a.localeCompare(b));
     const maxCount = Math.max(...Object.values(tagCounts));

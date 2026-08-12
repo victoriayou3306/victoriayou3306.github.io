@@ -7,6 +7,8 @@
 /* "YYYY-MM" or "YYYY"  →  "May 2024" or "2024" */
 function fmtDate(d) {
   if (!d) return '';
+  if (d === 'present' || d === '9999') return 'Present';
+  if (d === '0000' || d === '0001') return '';
   const [y, m] = d.split('-');
   if (!m) return y;
   return new Date(+y, +m - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
@@ -25,6 +27,26 @@ function fmtDateRange(dateStart, dateEnd) {
 /* Sort PROJECTS in-place: newest end date first */
 function sortProjects(arr) {
   return arr.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+}
+
+/* ── Experience category label (for skill popups) ──────────────────────────
+   "Undergraduate Research" → "Research"
+   Any title containing "Intern" → "Internship"
+   Otherwise, the title itself is used as the category. */
+function expCategory(title) {
+  if (/^Undergraduate Research/i.test(title)) return 'Research';
+  if (/Intern/i.test(title)) return 'Internship';
+  return title;
+}
+
+/* ── Experience category label (for skill popups) ──────────────────────────
+   "Undergraduate Research" → "Research"
+   Any title containing "Intern" → "Internship"
+   Otherwise, the title itself is used as the category. */
+function expCategory(title) {
+  if (/^Undergraduate Research/i.test(title)) return 'Research';
+  if (/Intern/i.test(title)) return 'Internship';
+  return title;
 }
 
 /* ── Skill pill color ──────────────────────────────────────────────────────
@@ -153,7 +175,7 @@ function buildCard(p, { clickable = true } = {}) {
   ).join('');
 
   card.innerHTML = `
-    <div class="card-body" style="padding-bottom:0.6rem;">
+    <div class="card-body card-body-top" style="padding-bottom:0.6rem;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;">
         <div class="card-category" style="margin-bottom:0;">${p.cat}</div>
         ${dateStr ? `<span class="card-date">${dateStr}</span>` : ''}
@@ -161,7 +183,7 @@ function buildCard(p, { clickable = true } = {}) {
       <h3>${p.name}</h3>
     </div>
     ${coverHTML}
-    <div class="card-body" style="padding-top:0.6rem;">
+    <div class="card-body card-body-bottom" style="padding-top:0.6rem;">
       ${!imgPath ? `<div class="card-desc-inline">${p.desc}</div>` : ''}
       <div class="card-tags">${tagsHTML}</div>
       ${p.link ? `<p style="margin-top:0.6rem;margin-bottom:0;"><a href="${p.link}" target="_blank" class="card-ext-link" onclick="event.stopPropagation()">${p.linkLabel || 'View project'} →</a></p>` : ''}

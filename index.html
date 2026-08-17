@@ -53,7 +53,7 @@
     <!-- SKILLS — auto-generated from projects.js + courses.js + experience.js -->
     <section class="skills-section">
       <h2 class="section-title">Skills &amp; Tools</h2>
-      <p class="section-subtitle">Hover over any skill to see related projects & experiences</p>
+      <p class="section-subtitle">Hover any skill to see related projects</p>
       <div class="skill-pills-row" id="skillPills"></div>
     </section>
 
@@ -119,12 +119,20 @@
       });
     }));
 
-    /* Experience skills merge into projectsMap — same shape as project popups */
+    /* Experience skills merge into projectsMap — same shape as project popups.
+       For Internship/Research entries, show the org name (from `sub`)
+       instead of the role title — everything else still uses the title. */
     EXPERIENCE_LIST.forEach(exp => {
+      const cat = expCategory(exp.title);
+      const isOrgLabeled = cat === 'Internship' || cat === 'Research';
+      const popupName = isOrgLabeled
+        ? exp.sub.replace(/&amp;/g, '&').split('·')[0].trim().replace(/<[^>]+>/g, '')
+        : exp.title.replace(/&amp;/g, '&');
+
       (exp.skills || []).forEach(t => {
         tagCounts[t] = (tagCounts[t] || 0) + 1;
         if (!projectsMap[t]) projectsMap[t] = [];
-        projectsMap[t].push({ name: exp.title.replace(/&amp;/g, '&'), cat: expCategory(exp.title) });
+        projectsMap[t].push({ name: popupName, cat });
       });
     });
 

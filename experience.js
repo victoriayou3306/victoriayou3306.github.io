@@ -26,7 +26,7 @@ const EXPERIENCE_LIST = [
     date:  "July 2026 – <em>Present</em>",
     title: "Undergraduate Research",
     sub:   "Hooberman High Energy Physics Group · <em>Champaign, IL</em>",
-    bullets: ["Designing muon tomography enclosures for rare mineral and metal detection"],
+    bullets: ["Designing muon tomography for rare mineral and metal detection"],
     skills: [],
   },
   {

@@ -28,6 +28,7 @@ const PROJECTS = [
     toc: true,    tocOffset: '2rem',   tocTop: '-0.75rem',
     sidebar:[{title: "Key Collaborators:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'><strong>Sergio Bahena</strong></a>"}, {title: "Mentored by:", content: "<a href = 'https://grainger.illinois.edu/about/directory/faculty/lmclemon'>Mickey Clemon</a>", top: "9rem"}],
     coverImage: "main.JPG",
+    featured: true,
   },
   {
     id: "keyboard",
@@ -44,7 +45,8 @@ const PROJECTS = [
     ],
     headerOpacity: .30,
     coverImage:  "main.jpeg",
-    link: ""
+    link: "",
+    featured: true,
   },
   // {
   //   id: "boids",
@@ -147,7 +149,8 @@ const PROJECTS = [
     coverImage: "wafer.jpg",
     sidebar: [{title: "Role:", content: "Microfabrication Process Engineering Co-Op. Microelectronics Laboratory (Group 08-35)"}],
     link: "",
-    slides: "full_presentation.pdf"
+    slides: "full_presentation.pdf",
+    featured: true,
   },
   {
     id: "3dp",

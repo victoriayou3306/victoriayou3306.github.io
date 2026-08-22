@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Victoria You — Garage" />
+  <title>Garage | Victoria You</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="crane-count.js"></script>
+</head>
+<body>
+
+  <nav>
+    <span class="nav-name">Victoria You</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="about.html">About Me</a></li>
+      <li><a href="garage.html">Garage</a></li>
+      <li>
+        <a href="crane.html" class="nav-crane" aria-label="Crane">
+          <img src="assets/crane.png" alt="" class="nav-crane-icon">
+          <span class="nav-crane-count" id="navCraneCount"></span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
+
+    <!-- ═══════════════════ Intro — edit freely ═══════════════════ -->
+    <h1 class="section-title" style="font-size:2.5rem;margin-bottom:0.4rem;">Garage</h1>
+    <p class="section-subtitle"> </p>
+    <p>
+      Almost making adult money and that means project vehicles :). My friend Jonny Pang named all his vehicles after Pokémon, so I'm continuing the tradition.
+    </p>
+    <!-- ═════════════════════════════════════════════════════════ -->
+
+    <hr class="section-divider" />
+
+    <div class="card-grid garage-grid" id="garageCards"></div>
+
+  </div>
+
+  <footer>
+    © <span id="year"></span> Victoria You
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <!-- Lightbox (not currently used on this page, kept for consistency) -->
+  <div class="lightbox" id="lightbox" onclick="if(event.target===this)lbClose()">
+    <button class="lb-close" onclick="lbClose()">×</button>
+    <img id="lbImg" src="" alt="" />
+    <div class="lb-caption" id="lbCaption"></div>
+  </div>
+
+  <script src="garage.js"></script>
+  <script src="projects-utils.js"></script>
+  <script>
+    function lb(imgEl) {
+      document.getElementById('lbImg').src = imgEl.src;
+      document.getElementById('lbCaption').textContent = imgEl.alt || '';
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function lbClose() { document.getElementById('lightbox').classList.remove('open'); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lbClose(); });
+
+    const garageGrid = document.getElementById('garageCards');
+    GARAGE.forEach(v => garageGrid.appendChild(buildGarageCard(v)));
+
+    document.getElementById('navCraneCount').textContent = CRANE_COUNT;
+  </script>
+</body>
+</html>

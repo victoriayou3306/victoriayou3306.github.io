@@ -27,7 +27,7 @@ const EXPERIENCE_LIST = [
     title: "Undergraduate Research",
     sub:   "Hooberman High Energy Physics Group · <em>Champaign, IL</em>",
     bullets: ["Designing muon tomography for rare mineral and metal detection"],
-    skills: [],
+    skills: ["Autodesk Inventor"],
   },
   {
     date:  "May 2026 – August 2026",
@@ -46,7 +46,7 @@ const EXPERIENCE_LIST = [
     title: "Undergraduate Research",
     sub:   "Quantum and Nanoscale Photonics Laboratory · <em>Champaign, IL</em>",
     bullets: ["Embedding nanodiamonds in SiN for scalable quantum technologies"],
-    skills: [],
+    skills: ["Microfabrication", "Ellipsometry", "SEM", "XRR"],
   },
   {
     date:  "February 2026 – May 2026",

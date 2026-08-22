@@ -15,6 +15,7 @@
       <li><a href="index.html" class="active">Home</a></li>
       <li><a href="projects.html">Projects</a></li>
       <li><a href="about.html">About Me</a></li>
+      <!-- <li><a href="garage.html">Garage</a></li> -->
       <li>
         <a href="crane.html" class="nav-crane" aria-label="Crane">
           <img src="assets/crane.png" alt="" class="nav-crane-icon">
@@ -59,7 +60,8 @@
 
     <hr class="section-divider" />
 
-    <!-- FEATURED PROJECTS — shows first 3, auto-generated -->
+    <!-- FEATURED PROJECTS — shows projects flagged featured:true in projects.js,
+         falls back to the 3 most recent if none are flagged -->
     <section>
       <h2 class="section-title">Featured Work</h2>
       <p class="section-subtitle">A selection of projects — <a href="projects.html">see all →</a></p>
@@ -73,19 +75,16 @@
       <div>
         <h2 class="section-title">About Me</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          [A few sentences about your background, interests, and goals.]
+          For more info about me and experiences without project showcase:
         </p>
         <a href="about.html" class="btn btn-outline">Learn more →</a>
       </div>
       <div>
-        <h2 class="section-title">Projects</h2>
+        <h2 class="section-title">Cranes</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          [A short description of the kind of work or projects you do.]
+          Paper cranes are a weird side project/hobby of mine. More info:
         </p>
-        <a href="projects.html" class="btn btn-outline">Explore projects →</a>
-      </div>
-    </section>
-
+        <a href="crane.html" class="btn btn-outline">Learn more →</a>
   </div>
 
   <footer>
@@ -143,9 +142,14 @@
       allTags, tagCounts, maxCount, projectsMap, coursesMap
     });
 
-    /* ---- Render first 3 projects as featured cards ---- */
+    /* ---- Render featured cards ----
+       Uses any project with featured:true in projects.js, in the order
+       they appear there. If none are flagged, falls back to the 3 most
+       recent projects (already sorted above by sortProjects). ---- */
     const featuredContainer = document.getElementById('featuredCards');
-    PROJECTS.slice(0, 3).forEach(p => {
+    const flaggedFeatured = PROJECTS.filter(p => p.featured);
+    const featured = flaggedFeatured.length ? flaggedFeatured : PROJECTS.slice(0, 3);
+    featured.forEach(p => {
       featuredContainer.appendChild(buildCard(p));
     });
   </script>

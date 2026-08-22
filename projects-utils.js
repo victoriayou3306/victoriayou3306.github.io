@@ -39,16 +39,6 @@ function expCategory(title) {
   return title;
 }
 
-/* ── Experience category label (for skill popups) ──────────────────────────
-   "Undergraduate Research" → "Research"
-   Any title containing "Intern" → "Internship"
-   Otherwise, the title itself is used as the category. */
-function expCategory(title) {
-  if (/^Undergraduate Research/i.test(title)) return 'Research';
-  if (/Intern/i.test(title)) return 'Internship';
-  return title;
-}
-
 /* ── Skill pill color ──────────────────────────────────────────────────────
    Interpolates from light mint (1 use) to deep forest green (max uses).
    Returns { bg, text } CSS color strings. */
@@ -217,6 +207,50 @@ function buildCard(p, { clickable = true } = {}) {
       window.location.href = `project.html?id=${encodeURIComponent(p.id)}`;
     });
   }
+
+  return card;
+}
+
+/* ── Build a garage card ─────────────────────────────────────────────────
+   Structure: title bar (with circular profile badge overlapping top-right,
+   bleeding onto both the title and the image below) → full image, no hover
+   description → spec text box below.
+
+   v fields:
+     id            — unique string, used for image paths
+     name          — vehicle name, shown in title bar
+     image         — filename in assets/garage/<id>/
+     profileImage  — filename in assets/garage/<id>/ for the circular badge
+     specs         — HTML string shown in the box below the image
+                     (plain text or your own <br>/<ul> markup)
+*/
+function buildGarageCard(v) {
+  const card = document.createElement('div');
+  card.className = 'garage-card';
+
+  const imgPath     = v.image        ? `assets/garage/${v.id}/${v.image}`        : null;
+  const profilePath = v.profileImage ? `assets/garage/${v.id}/${v.profileImage}` : null;
+
+  const profileHTML = profilePath ? `
+    <div class="garage-card-profile">
+      <img src="${profilePath}" alt="${v.name} profile" loading="lazy"
+           onerror="this.parentElement.style.display='none'">
+    </div>` : '';
+
+  const coverHTML = imgPath ? `
+    <div class="garage-card-cover">
+      <img src="${imgPath}" alt="${v.name}" loading="lazy"
+           onerror="this.parentElement.style.background='var(--accent-light)'">
+    </div>` : '';
+
+  card.innerHTML = `
+    <div class="garage-card-title">
+      <h3>${v.name}</h3>
+      ${profileHTML}
+    </div>
+    ${coverHTML}
+    <div class="garage-card-specs">${v.specs || ''}</div>
+  `;
 
   return card;
 }

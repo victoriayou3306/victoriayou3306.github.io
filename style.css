@@ -339,6 +339,68 @@ img.lb       { cursor: zoom-in; }
 .lb-close:hover { opacity: 1; }
 .lb-caption { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 0.85rem; text-align: center; max-width: 600px; }
 
+/* --- Garage --- */
+.garage-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 640px) {
+  .garage-grid { grid-template-columns: 1fr; }
+}
+
+.garage-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.garage-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+
+/* Title bar */
+.garage-card-title {
+  padding: 1rem 1.1rem 0.6rem;
+  position: relative;
+}
+.garage-card-title h3 {
+  font-family: var(--font-display); font-size: 1.15rem;
+  line-height: 1.3;
+  padding-right: 4.5rem; /* keep text clear of the profile badge */
+}
+
+/* Cover image — no hover overlay, no description */
+.garage-card-cover {
+  width: 100%; aspect-ratio: 16/9;
+  overflow: hidden; flex-shrink: 0;
+  background: var(--accent-light);
+  position: relative;
+}
+.garage-card-cover img {
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0;
+}
+
+/* Circular profile badge — overlaps the title bar and the top of the image */
+.garage-card-profile {
+  position: absolute;
+  top: 0.6rem; right: 0.9rem;
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 3px solid var(--surface);
+  overflow: hidden;
+  background: var(--accent-light);
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.garage-card-profile img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 0;
+}
+
+/* Spec text box below the image */
+.garage-card-specs {
+  padding: 1rem 1.1rem 1.1rem;
+  font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;
+  flex: 1;
+}
+
 /* --- Footer --- */
 footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 4rem; }
 

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Victoria You — Coming Soon" />
+  <title>Coming Soon | Victoria You</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="crane-count.js"></script>
+  <style>
+    /* ── WIP slideshow — auto-populated from assets/wip/ via GitHub API ── */
+    .wip-gallery {
+      max-width: 640px;
+      margin: 2.5rem auto 0;
+      user-select: none;
+    }
+    .wip-gallery-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--accent-light);
+      border: 1px solid var(--border);
+    }
+    .wip-gallery-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.3s ease;
+      will-change: transform;
+    }
+    .wip-gallery-track img {
+      width: 100%; height: 100%; object-fit: cover;
+      flex-shrink: 0; border-radius: 0; display: block;
+      pointer-events: none;
+    }
+    .wip-gallery-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.78); border: none; border-radius: 50%;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.1rem; color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+      transition: background 0.15s, opacity 0.15s;
+      z-index: 2; padding: 0; line-height: 1;
+    }
+    .wip-gallery-btn:hover { background: rgba(255,255,255,0.97); }
+    .wip-gallery-btn:disabled { opacity: 0; pointer-events: none; }
+    .wip-gallery-btn.prev { left: 10px; }
+    .wip-gallery-btn.next { right: 10px; }
+    .wip-gallery-counter {
+      position: absolute; bottom: 10px; right: 12px;
+      background: rgba(0,0,0,0.45); color: #fff;
+      font-size: 0.75rem; padding: 2px 8px; border-radius: 10px;
+      pointer-events: none;
+    }
+    .wip-gallery-dots {
+      display: flex; justify-content: center; gap: 5px; margin-top: 9px;
+    }
+    .wip-gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--border);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer; border: none; padding: 0;
+    }
+    .wip-gallery-dot.active { background: var(--accent); transform: scale(1.3); }
+    .wip-gallery-status {
+      text-align: center; color: var(--text-muted);
+      font-size: 0.85rem; margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="nav-name">Victoria You</span>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="about.html">About Me</a></li>
+      <!-- <li><a href="garage.html">Garage</a></li> -->
+      <li>
+        <a href="crane.html" class="nav-crane" aria-label="Crane">
+          <img src="assets/crane.png" alt="" class="nav-crane-icon">
+          <span class="nav-crane-count" id="navCraneCount"></span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container" style="padding-top:6rem;padding-bottom:6rem;text-align:center;">
+    <h1 class="section-title" style="font-size:2.5rem;">Coming Soon</h1>
+    <p class="section-subtitle" style="max-width:480px;margin-left:auto;margin-right:auto;">
+      Let's see when I'll have time to finish these projects...
+    </p>
+
+    <!-- ── Auto-populated slideshow — pulls every image from assets/wip/ ── -->
+    <div class="wip-gallery" id="wipGallery" style="display:none;">
+      <div class="wip-gallery-stage" id="wipStage">
+        <div class="wip-gallery-track" id="wipTrack"></div>
+        <button class="wip-gallery-btn prev" id="wipPrev" aria-label="Previous">&#8249;</button>
+        <button class="wip-gallery-btn next" id="wipNext" aria-label="Next">&#8250;</button>
+        <span class="wip-gallery-counter" id="wipCounter"></span>
+      </div>
+      <div class="wip-gallery-dots" id="wipDots"></div>
+    </div>
+
+    <a href="index.html" class="btn btn-outline" style="margin-top:2rem;">← Back to Home</a>
+  </div>
+
+  <footer>
+    © <span id="year"></span> Victoria You
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <script>document.getElementById("navCraneCount").textContent = CRANE_COUNT;</script>
+
+  <script>
+    /* ════════════════════════════════════════════════════════════════
+       WIP GALLERY
+       List every image filename here — same pattern as BIO_PHOTOS on
+       about.html. Files live in assets/wip/. Add or remove lines as
+       you add/remove images; order here is the slideshow order.
+    ════════════════════════════════════════════════════════════════ */
+    const WIP_IMAGES = [
+      "image.jpg",
+      "image2.jpg",
+      "image4.jpg",
+      "image3.jpg",
+      // "photo2.png",
+      // "sketch.webp",
+    ];
+
+    (function initWipGallery() {
+      const galleryEl = document.getElementById('wipGallery');
+      const track      = document.getElementById('wipTrack');
+      const dotsEl     = document.getElementById('wipDots');
+      const counterEl  = document.getElementById('wipCounter');
+      const btnPrev    = document.getElementById('wipPrev');
+      const btnNext    = document.getElementById('wipNext');
+
+      if (!WIP_IMAGES.length) return; // nothing to show, gallery stays hidden
+
+      galleryEl.style.display = 'block';
+
+      track.style.width = (WIP_IMAGES.length * 100) + '%';
+      WIP_IMAGES.forEach(filename => {
+        const img = document.createElement('img');
+        img.src = `assets/wip/${filename}`;
+        img.alt = filename.replace(/\.[^.]+$/, '');
+        img.style.width = (100 / WIP_IMAGES.length) + '%';
+        img.onerror = () => { img.style.display = 'none'; };
+        track.appendChild(img);
+      });
+
+      const showControls = WIP_IMAGES.length > 1;
+      btnPrev.style.display = showControls ? '' : 'none';
+      btnNext.style.display = showControls ? '' : 'none';
+
+      if (showControls) {
+        WIP_IMAGES.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = 'wip-gallery-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('aria-label', `Image ${i + 1}`);
+          dot.addEventListener('click', () => goTo(i));
+          dotsEl.appendChild(dot);
+        });
+      }
+
+      let current = 0;
+
+      function goTo(n) {
+        current = Math.max(0, Math.min(n, WIP_IMAGES.length - 1));
+        track.style.transform = `translateX(-${current * (100 / WIP_IMAGES.length)}%)`;
+        dotsEl.querySelectorAll('.wip-gallery-dot').forEach((d, i) =>
+          d.classList.toggle('active', i === current));
+        counterEl.textContent = WIP_IMAGES.length > 1 ? `${current + 1} / ${WIP_IMAGES.length}` : '';
+        btnPrev.disabled = current <= 0;
+        btnNext.disabled = current >= WIP_IMAGES.length - 1;
+      }
+
+      btnPrev.addEventListener('click', () => goTo(current - 1));
+      btnNext.addEventListener('click', () => goTo(current + 1));
+
+      // Touch / mouse swipe
+      let startX = null;
+      const stage = document.getElementById('wipStage');
+      stage.addEventListener('pointerdown', e => {
+        startX = e.clientX;
+        track.style.transition = 'none';
+      });
+      stage.addEventListener('pointermove', e => {
+        if (startX === null) return;
+        const dx = e.clientX - startX;
+        const pct = (current * (100 / WIP_IMAGES.length)) - (dx / stage.offsetWidth * (100 / WIP_IMAGES.length));
+        track.style.transform = `translateX(-${pct}%)`;
+      });
+      stage.addEventListener('pointerup', e => {
+        if (startX === null) return;
+        const dx = e.clientX - startX;
+        track.style.transition = 'transform 0.3s ease';
+        if (dx < -40)      goTo(current + 1);
+        else if (dx > 40)  goTo(current - 1);
+        else               goTo(current);
+        startX = null;
+      });
+      stage.addEventListener('pointercancel', () => {
+        track.style.transition = 'transform 0.3s ease';
+        goTo(current);
+        startX = null;
+      });
+
+      goTo(0);
+    })();
+  </script>
+</body>
+</html>

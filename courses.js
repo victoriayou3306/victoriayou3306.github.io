@@ -22,8 +22,8 @@ const EDUCATION = [
     degree: "BS · Mechanical Engineering",
     dates: "2024 – 2028",
     courses: [
-      { name: "Mechanical Design I",              skills: [] },
-      { name: "Dynamics of Mechanical Systems",   skills: [] },
+      { name: "Mechanical Design I",              skills: ["Fusion 360"] },
+      { name: "Dynamics of Mechanical Systems",   skills: ["MATLAB"] },
       { name: "Design for Manufacturing",         skills: [] },
       { name: "Thermodynamics",                   skills: [] },
       { name: "Fluid Dynamics",                   skills: [] },
@@ -45,7 +45,7 @@ const EDUCATION = [
       { name: "Computer Science II",              skills: ["C++"] },
       { name: "Discrete Structures",              skills: [] },
       { name: "Semiconductor Devices",            skills: [] },
-      { name: "Quantum Information Theory",       skills: [] },
+      { name: "Atomic Physics & Quantum Theory",  skills: [] },
       { name: "Electromagnetic Fields",           skills: [] },
     ]
   },

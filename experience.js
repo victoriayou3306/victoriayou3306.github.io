@@ -19,6 +19,12 @@
  *                  "Undergraduate Research..." → "Research"
  *                  title containing "Intern"   → "Internship"
  *                  otherwise                   → the title itself
+ *   photos     — (optional) array of { src, caption } objects, same shape
+ *                as BIO_PHOTOS on about.html. When present, a "📷 Photos"
+ *                link appears on that entry — clicking it opens a
+ *                fullscreen slideshow popup. Use this for experiences
+ *                that don't have a project page (no `link` field) but you
+ *                still want to show a few photos.
  */
 
 const EXPERIENCE_LIST = [
@@ -26,8 +32,12 @@ const EXPERIENCE_LIST = [
     date:  "July 2026 – <em>Present</em>",
     title: "Undergraduate Research",
     sub:   "Hooberman High Energy Physics Group · <em>Champaign, IL</em>",
-    bullets: ["Designing muon tomography for rare mineral and metal detection"],
+    bullets: ["Designing cosmic-ray muon tomography for rare mineral and metal detection"],
     skills: ["Autodesk Inventor"],
+    // photos: [
+    //   { src: "assets/experience/hooberman/1.jpg", caption: "" },
+    //   { src: "assets/experience/hooberman/2.jpg", caption: "" },
+    // ],
   },
   {
     date:  "May 2026 – August 2026",
@@ -40,6 +50,9 @@ const EXPERIENCE_LIST = [
       "Designed a live update GUI for loop shaping to visualize system stability margins using plant & controller Bode Plots",
     ],
     skills: ["Python"],
+    // photos: [
+    //   { src: "assets/experiences/KLAphoto.jpg", caption: "" },
+    // ],
   },
   {
     date:  "March 2026 – <em>Present</em>",
@@ -84,6 +97,9 @@ const EXPERIENCE_LIST = [
       "Reprogrammed a 3D-Printing Gantry using LabVIEW to determine uniformity for lamp area increases of up to 500%",
     ],
     skills: ["3D Printing", "Laser Cutting", "Autodesk Inventor", "LabVIEW", "Rapid Prototyping"],
+    // photos: [
+    //   { src: "assets/experience/cygnus/1.jpg", caption: "" },
+    // ],
   },
   {
     date:  "May 2024 – August 2024",
@@ -95,5 +111,9 @@ const EXPERIENCE_LIST = [
       "Rebuilt and serviced all customer Ural Motorcycle wheels affected by the 2011-2017 Ural Factory Rim Recalls",
     ],
     skills: [],
+    // photos: [
+    //   { src: "assets/experience/motorcycle/1.jpg", caption: "" },
+    //   { src: "assets/experience/motorcycle/2.jpg", caption: "" },
+    // ],
   },
 ];

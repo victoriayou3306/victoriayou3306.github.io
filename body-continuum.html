@@ -11,7 +11,7 @@
 <img class="img-center lb"
      style="--w: 500px"
      src="assets/projects/continuum/main.png"
-     alt="Layouts"
+     alt="Continuum Segment Model"
      onclick="lb(this)">
 
 <p>The snake-like unit consists of a rigid base disk, a rigid end disk, several equally-spaced spacer disks, and flexible backbones running through them.
@@ -29,6 +29,53 @@
      src="assets/projects/continuum/static_snake.png"
      alt="static model"
      onclick="lb(this)">
-<p>This was the first time I ever used MATLAB, and also the first time I appreciated Linear Algebra lol. </p>
+<p>This was the first time I ever used MATLAB, and also the first time I started to truly appreciate Linear Algebra lol. </p>
 <p>The static model was fairly trivial. Compute the actuator lengths given a desired pose (angle $\theta$ from $\hat{z}$ and $\delta$ from the XY plane), and then visualize. The intermediate coordinate frames represent the transformation to the spacer disks' reference frames.</p>
 <div class="clear"></div>
+<p>Using equations from the paper: </p>
+<p>$$
+\theta_L = \theta_0 \frac{L - L_i}{\Delta_i} \quad(5)$$ 
+$$[(L-L_1)\cos(\beta) - (L - L_2)]\cos(\delta l) - [(L - L_1)\sin(\beta)]\sin(\delta l) \quad (6)$$
+and then deriving:
+$$\dot{\theta} = \frac{-L_i}{r\cos(\delta)} + \frac{(L-L_i)\sin(\delta)\dot{\delta}}{r{\cos(\delta)}^{2}}$$
+$$\dot{\delta} = \frac{\dot{L_1}\cos(\delta)\cos(\beta) - \dot{L_2}\cos(\delta) - \dot{L_1}\sin(\beta)\sin(\delta)}{(L-L_2)\sin(\delta) - (L - L_1)\sin(\beta)\cos(\delta) - (L - L_1)\sin(\delta)}$$
+Defining $\dot{\Psi} = {[\dot{\theta_L}, \dot{\delta}]}^{t}$, you get:
+$$\dot{\Psi} = 
+\begin{bmatrix}
+J_{\theta_L q} \\
+J_{\delta q}
+\end{bmatrix}\dot{q} = J_{\Psi q}\dot{q}, \quad J_{\Psi q} = 
+\begin{bmatrix}
+J_{\theta_L q} \\
+J_{\delta q}
+\end{bmatrix} \quad (11)$$
+For simulation, I defined theta = $\theta_0 - \theta_L$ from the paper's notation, so my Jacobian was actually defined $J_{\theta q} = -J_{\theta_L q}$:
+</p>
+<img class="img-center lb"
+     style="--w: 700px"
+     src="assets/projects/continuum/jacobianMATLAB.png"
+     alt="MATLAB function for getJacobian()"
+     onclick="lb(this)">
+<p>And then implemented in a resolved rates loop:</p>
+<img class="img-center lb"
+     style="--w: 700px"
+     src="assets/projects/continuum/rrMATLAB.png"
+     alt="MATLAB implementation"
+     onclick="lb(this)">
+
+<video id="continuumSnakeVid" class="vid-center" style="--w:500px">
+    <source src="assets/projects/continuum/snake.mp4" type="video/mp4">
+</video>
+<script>
+  document.getElementById('continuumSnakeVid').playbackRate = 2;
+</script>
+<p>It converges nicely to the desired pose, slowing towards the end of the motion. Maybe I'll find time to get a better video with a clearer desired position, as well as segment length vs time plots, since those calculations are done on the backend and just not shown. TBH I'm not totally sure why I didn't download those videos originally.
+  The simulation was also done with variable parameters for the lab to use as demos. It isn't fixed to 3 secondary linkages- that was just the minimum for full DOF.
+</p>
+<div class="clear"></div>
+<div class="img-pair">
+    <img src="assets/projects/continuum/modelStraight.png"  alt="3D Printed" class="lb">
+    <img src="assets/projects/continuum/modelBent.png"   alt="3D Printed" class="lb">
+</div>
+<p>Here was a ~24 hour attempt to create a physical model. I scavenged some VEX Robotics parts from my garage, a pack of universal joints, and some crudely printed spacer discs and motor mounts. This was using a super cheap Arduino stepper motor kit with a joystick, but I think it was my first time actually playing around with Arduino.</p>
+<p>I've been wanting to make a bigger, better version (I'm writing this 2.5 years after the original project), but my list of project ideas is neverending. Maybe post grad... Pretty crude writeup, but it's a high school project that will go into archives soon. Trying to promise cooler builds in the near future.</p>

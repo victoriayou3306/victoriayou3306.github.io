@@ -38,15 +38,15 @@ const EDUCATION = [
     degree: "BS · Computational Physics",
     dates: "2024 – 2028",
     courses: [
+      { name: "Semiconductor Devices",            skills: [] },
+      { name: "Atomic Physics & Quantum Theory",  skills: [] },
+      { name: "Electromagnetic Fields",           skills: [] },
       { name: "Special Relativity",               skills: [] },
       { name: "Classical Mechanics",              skills: [] },
       { name: "Computational Physics",            skills: ["Python"] },
       { name: "Computer Science I",               skills: ["Java"] },
       { name: "Computer Science II",              skills: ["C++"] },
       { name: "Discrete Structures",              skills: [] },
-      { name: "Semiconductor Devices",            skills: [] },
-      { name: "Atomic Physics & Quantum Theory",  skills: [] },
-      { name: "Electromagnetic Fields",           skills: [] },
     ]
   },
   {

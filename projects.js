@@ -89,7 +89,8 @@ const PROJECTS = [
     desc: "Modeled the kinematics of a simple continuum segment in MATLAB. Designed a 3D printed model and implemented control via Arduino",
     body: "",
     tags: ["MATLAB", "Arduino", "Robotics"],
-    link: ""
+    link: "",
+    coverImage: "main.png"
   },
   // {
   //   id: "cvt",

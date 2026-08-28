@@ -6,6 +6,36 @@
   <meta name="description" content="Victoria You — [Your tagline here]" />
   <title>Victoria You</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Resume button — shows "Last Updated: <date>" on hover ── */
+    .btn-resume {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-resume .btn-resume-default,
+    .btn-resume .btn-resume-updated {
+      display: block;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .btn-resume .btn-resume-updated {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(4px);
+      white-space: nowrap;
+    }
+    .btn-resume:hover .btn-resume-default {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    .btn-resume:hover .btn-resume-updated {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
 
@@ -37,7 +67,10 @@
         <p>I am always looking for new things to build or learn about, so please reach out if you have ideas or want to collaborate. I have a dedicated oneNote filled with projects in the planning/brainstorming phase, and it always needs more ideas.</p>
         
         <div class="btn-row" style="margin-top:3rem; margin-bottom:-3rem">
-          <a class="btn btn-primary" href="assets/resume.pdf" target="_blank">Resume</a>
+          <a class="btn btn-primary btn-resume" href="assets/resume.pdf" target="_blank">
+            <span class="btn-resume-default">Resume</span>
+            <span class="btn-resume-updated">08/2026</span>
+          </a>
           <a class="btn btn-outline" href="https://linkedin.com/in/victoria-you" target="_blank">LinkedIn</a>
           <a class="btn btn-outline" href="https://github.com/victoriayou3306" target="_blank">GitHub</a>
         </div>
@@ -75,16 +108,16 @@
       <div>
         <h2 class="section-title">About Me</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          For more info and experiences without project showcase:
+          For more info about me and experiences without project showcase:
         </p>
         <a href="about.html" class="btn btn-outline">Learn more →</a>
       </div>
       <div>
-        <h2 class="section-title">Coming Soon</h2>
+        <h2 class="section-title">Cranes</h2>
         <p style="color:var(--text-muted);margin-bottom:1rem;">
-          Some WIP pictures with absolutely no descriptions yet.
+          Paper cranes are a weird side project/hobby of mine. More info:
         </p>
-        <a href="wip.html" class="btn btn-outline">Learn More →</a>
+        <a href="wip.html" class="btn btn-outline">Coming Soon →</a>
       </div>
     </section>
 

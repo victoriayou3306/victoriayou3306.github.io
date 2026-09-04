@@ -29,11 +29,21 @@
 
 const EXPERIENCE_LIST = [
   {
+    date:  "Aug 2026 – <em>Present</em>",
+    title: "Course Grader",
+    sub:   "UIUC Electrical and Computer Engineering · <em>Champaign, IL</em>",
+    bullets: ["Course Grader for ECE 205: Electrical and Electronic Circuits and ECE 340: Semiconductor Devices"],
+    // photos: [
+    //   { src: "assets/experience/hooberman/1.jpg", caption: "" },
+    //   { src: "assets/experience/hooberman/2.jpg", caption: "" },
+    // ],
+  },
+  {
     date:  "July 2026 – <em>Present</em>",
     title: "Undergraduate Research",
     sub:   "Hooberman High Energy Physics Group · <em>Champaign, IL</em>",
     bullets: ["Designing cosmic-ray muon tomography for rare mineral and metal detection"],
-    skills: ["Autodesk Inventor"],
+    skills: ["Autodesk Inventor", "3D Printing"],
     // photos: [
     //   { src: "assets/experience/hooberman/1.jpg", caption: "" },
     //   { src: "assets/experience/hooberman/2.jpg", caption: "" },

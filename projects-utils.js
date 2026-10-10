@@ -53,6 +53,145 @@ function pillColor(count, maxCount) {
   };
 }
 
+/* ── Skill popup (floating, viewport-aware) ───────────────────────────────
+   A single shared popup lives on <body> and is positioned with position:fixed
+   from the hovered pill's bounding box. Because it isn't nested inside the
+   pill (or any container), it can't be clipped by parents, and it adapts to
+   any screen size / aspect ratio:
+     • opens above the pill, or flips below when there isn't room above
+     • slides left/right to stay inside the viewport (the arrow keeps
+       pointing at the pill)
+     • tap a pill on touch screens to open it; tap anywhere else to close
+   Its styles are injected once from here, so no stylesheet edits are needed.
+*/
+const _SKILL_POPUP_CSS = `
+.skill-popup-float {
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 300;
+  box-sizing: border-box;
+  width: max-content;
+  min-width: min(210px, calc(100vw - 24px));
+  max-width: min(280px, calc(100vw - 24px));
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e2dd);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-align: left;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.12s ease, visibility 0.12s;
+}
+.skill-popup-float.show { opacity: 1; visibility: visible; }
+.skill-popup-inner { max-height: calc(100vh - 42px); overflow: hidden; }
+.skill-popup-float::before {
+  content: '';
+  display: none;
+  position: absolute;
+  left: var(--arrow-x, 50%);
+  width: 10px; height: 10px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e5e2dd);
+  transform: translateX(-50%) rotate(45deg);
+}
+.skill-popup-float[data-placement="top"]::before    { display: block; bottom: -6px; border-top: none;    border-left: none; }
+.skill-popup-float[data-placement="bottom"]::before { display: block; top: -6px;    border-bottom: none; border-right: none; }
+`;
+
+let _skillPopupEl   = null;   // the shared popup element
+let _skillPopupPill = null;   // the pill it's currently attached to
+
+function _ensureSkillPopup() {
+  if (_skillPopupEl) return _skillPopupEl;
+
+  const style = document.createElement('style');
+  style.id = 'skill-popup-styles';
+  style.textContent = _SKILL_POPUP_CSS;
+  document.head.appendChild(style);
+
+  const el = document.createElement('div');
+  el.className = 'skill-popup-float';
+  el.setAttribute('role', 'tooltip');
+  document.body.appendChild(el);
+  _skillPopupEl = el;
+
+  // Keep the popup glued to its pill if the page scrolls or resizes while open
+  let queued = false;
+  const reposition = () => {
+    if (!_skillPopupPill || queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; _positionSkillPopup(); });
+  };
+  window.addEventListener('scroll', reposition, { passive: true, capture: true });
+  window.addEventListener('resize', reposition);
+
+  // Touch: tapping anywhere that isn't a pill closes the popup
+  document.addEventListener('click', _hideSkillPopup);
+  document.addEventListener('touchstart', e => {
+    if (!(e.target && e.target.closest && e.target.closest('.skill-pill'))) _hideSkillPopup();
+  }, { passive: true });
+
+  return el;
+}
+
+function _positionSkillPopup() {
+  const el = _skillPopupEl, pill = _skillPopupPill;
+  if (!el || !pill) return;
+
+  const r = pill.getBoundingClientRect();
+  if (!r.width && !r.height) { _hideSkillPopup(); return; }   // pill is hidden/collapsed
+
+  const MARGIN = 8, GAP = 10, ARROW_PAD = 16;
+  const vw  = document.documentElement.clientWidth;
+  const vh  = document.documentElement.clientHeight;
+  const nav = document.querySelector('nav');
+  const topLimit = Math.max(0, nav ? nav.getBoundingClientRect().bottom : 0) + MARGIN;
+
+  const w = el.offsetWidth, h = el.offsetHeight;
+
+  // Vertical: prefer above, then below, else whichever side has more room
+  const spaceAbove = r.top - GAP - topLimit;
+  const spaceBelow = vh - MARGIN - (r.bottom + GAP);
+  let placement;
+  if (h <= spaceAbove)       placement = 'top';
+  else if (h <= spaceBelow)  placement = 'bottom';
+  else                       placement = spaceAbove >= spaceBelow ? 'top' : 'bottom';
+
+  let top = placement === 'top' ? r.top - GAP - h : r.bottom + GAP;
+  top = Math.min(Math.max(top, topLimit), vh - MARGIN - h);
+
+  // If it was squeezed so far that it covers the pill, drop the arrow
+  if (top < r.bottom && top + h > r.top) placement = 'none';
+
+  // Horizontal: center on the pill, then clamp inside the viewport
+  let left = r.left + r.width / 2 - w / 2;
+  left = Math.min(Math.max(left, MARGIN), vw - MARGIN - w);
+  const arrowX = Math.min(Math.max(r.left + r.width / 2 - left, ARROW_PAD), w - ARROW_PAD);
+
+  el.style.left = Math.round(left) + 'px';
+  el.style.top  = Math.round(top)  + 'px';
+  el.style.setProperty('--arrow-x', Math.round(arrowX) + 'px');
+  el.dataset.placement = placement;
+}
+
+function _showSkillPopup(pill, html) {
+  const el = _ensureSkillPopup();
+  _skillPopupPill = pill;
+  el.innerHTML = '<div class="skill-popup-inner">' + html + '</div>';
+  _positionSkillPopup();           // measure + place while still invisible
+  el.classList.add('show');
+}
+
+function _hideSkillPopup() {
+  _skillPopupPill = null;
+  if (_skillPopupEl) _skillPopupEl.classList.remove('show');
+}
+
 /* ── Build skill pills ─────────────────────────────────────────────────────
    container    : DOM element to append pills into
    allTags      : sorted array of tag strings (sorted by count desc before calling)
@@ -62,6 +201,8 @@ function pillColor(count, maxCount) {
    coursesMap   : { tagName: ["Course Name", ...] }   (pass {} if no courses data)
    options:
      collapse   : true = hide pills beyond 2 rows, show (+N) expander
+   Hovering (or tapping, on touch screens) a pill shows the shared floating
+   popup — see _showSkillPopup above.
 */
 function buildSkillPills(container, { allTags, tagCounts, maxCount, projectsMap, coursesMap = {}, collapse = false }) {
   container.innerHTML = '';
@@ -75,6 +216,7 @@ function buildSkillPills(container, { allTags, tagCounts, maxCount, projectsMap,
     const pill = document.createElement('div');
     pill.className = 'skill-pill';
     pill.style.cssText = `background:${bg};color:${text};border-color:transparent;`;
+    pill.textContent = tag;
 
     const projectRows = projects.map(p => `
       <div class="popup-project">
@@ -91,15 +233,24 @@ function buildSkillPills(container, { allTags, tagCounts, maxCount, projectsMap,
 
     const totalLabel = count === 1 ? '1 use' : `${count} uses`;
 
-    pill.innerHTML = `${tag}
-      <div class="skill-popup">
-        <div class="popup-heading">${totalLabel}</div>
-        ${projectRows}
-        ${courseRows}
-      </div>`;
+    const popupHTML = `
+      <div class="popup-heading">${totalLabel}</div>
+      ${projectRows}
+      ${courseRows}`;
 
-    pill.addEventListener('mouseenter', () => { pill.style.filter = 'brightness(0.88)'; });
-    pill.addEventListener('mouseleave', () => { pill.style.filter = ''; });
+    pill.addEventListener('mouseenter', () => {
+      pill.style.filter = 'brightness(0.88)';
+      _showSkillPopup(pill, popupHTML);
+    });
+    pill.addEventListener('mouseleave', () => {
+      pill.style.filter = '';
+      if (_skillPopupPill === pill) _hideSkillPopup();
+    });
+    // Touch screens have no hover: a tap opens the popup, tapping elsewhere closes it
+    pill.addEventListener('click', e => {
+      e.stopPropagation();
+      _showSkillPopup(pill, popupHTML);
+    });
 
     container.appendChild(pill);
   });
@@ -240,7 +391,7 @@ function buildGarageCard(v) {
   const coverHTML = imgPath ? `
     <div class="garage-card-cover">
       <img src="${imgPath}" alt="${v.name}" loading="lazy"
-           onerror="this.parentElement.style.background='var(--accent-light)'">
+           onerror="this.style.display='none';this.parentElement.style.background='var(--accent-light)'">
     </div>` : '';
 
   card.innerHTML = `

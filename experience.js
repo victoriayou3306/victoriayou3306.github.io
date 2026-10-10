@@ -69,7 +69,7 @@ const EXPERIENCE_LIST = [
     title: "Undergraduate Research",
     sub:   "Quantum and Nanoscale Photonics Laboratory · <em>Champaign, IL</em>",
     bullets: ["Embedding nanodiamonds in SiN for scalable quantum technologies"],
-    skills: ["Microfabrication", "Ellipsometry", "SEM", "XRR"],
+    skills: ["Microfabrication", "Ellipsometry", "SEM", "XRR", "AFM"],
   },
   {
     date:  "February 2026 – May 2026",

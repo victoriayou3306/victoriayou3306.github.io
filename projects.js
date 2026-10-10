@@ -24,7 +24,7 @@ const PROJECTS = [
     date: "2026-04",
     desc: "Project Lead for building 6-Axis Robotic Arm for nonplanar 3d printing. 3D printed, assembled, controlled with ROS via CAN.",
     body: "",
-    tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management", "Robotics"],
+    tags: ["Python", "ROS", "3D Printing", "Fusion 360", "Rapid Prototyping", "Project Management", "Robotics", "Soldering"],
     toc: true,    tocOffset: '2rem',   tocTop: '-0.75rem',
     sidebar:[{title: "Key Collaborators:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'><strong>Sergio Bahena</strong></a>"}, {title: "Mentored by:", content: "<a href = 'https://grainger.illinois.edu/about/directory/faculty/lmclemon'>Mickey Clemon</a>", top: "9rem"}],
     coverImage: "main.JPG",

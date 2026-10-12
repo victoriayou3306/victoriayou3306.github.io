@@ -141,9 +141,19 @@
     .sidebar-box p { margin: 0; font-size: 0.85rem; line-height: 1.6; }
     .sidebar-box a { color: var(--accent); }
 
-    /* Hide both on narrow screens */
-    @media (max-width: 1160px) { .project-toc    { display: none; } }
-    @media (max-width: 1160px) { .project-sidebar { display: none; } }
+    /* Narrow screens: there's no room for the 180px gutters either side of
+       the 900px container, so the TOC is dropped and the sidebar boxes drop
+       back into the page flow rather than vanishing with their content. */
+    @media (max-width: 1280px) {
+      .project-toc { display: none; }
+      .project-sidebar {
+        position: static;
+        right: auto;
+        top: auto !important;
+        width: 100%;
+        margin: 1.5rem 0;
+      }
+    }
 
     /* ── Image helpers (use these classes in your body HTML) ── */
     .img-full { width: 100%; border-radius: 8px; margin: 1.5rem 0; display: block; }
@@ -571,7 +581,16 @@
 
     @media (max-width: 640px) {
       .img-right, .img-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
-      .img-pair, .img-trio { grid-template-columns: 1fr; }
+      /* .img-pair is a flex row here (not a grid), so stack via flex-direction
+         and unfloat the float-left/right variants too. */
+      .img-pair { flex-direction: column; }
+      .img-pair.float-left, .img-pair.float-right {
+        float: none; width: 100% !important; margin: 1rem 0;
+      }
+      .img-pair > img { height: auto; object-fit: contain; }
+      .img-trio { grid-template-columns: 1fr; }
+      .media-row { flex-direction: column; }
+      .media-row > * { width: 100% !important; flex: none !important; }
       .vid-right, .vid-left { float: none; width: 100% !important; max-width: 100%; margin: 1rem 0; }
       .vid-embed-right, .vid-embed-left { float: none; width: 100% !important; margin: 1rem 0; }
     }
@@ -1211,9 +1230,13 @@
 
         // Re-position all video overlays on window resize
         window.addEventListener('resize', () => {
-          const currentVideos = slide.videos
-            ? slide.videos
-            : (slides[deckPage].video ? [slides[deckPage].video] : []);
+          // Read the *current* slide from `slides` — `slide` is local to
+          // deckShow() and isn't in scope here.
+          const cur = slides[deckPage];
+          if (!cur) return;
+          const currentVideos = cur.videos
+            ? cur.videos
+            : (cur.video ? [cur.video] : []);
           if (!currentVideos.length) return;
           const vids = [...stage.querySelectorAll('video.deck-video')];
           const iw = imgEl.naturalWidth || imgEl.offsetWidth;

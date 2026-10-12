@@ -404,12 +404,170 @@ img.lb       { cursor: zoom-in; }
 /* --- Footer --- */
 footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 4rem; }
 
-/* --- Responsive --- */
+/* ===========================================================
+   RESPONSIVE
+   Breakpoints:
+     900px — tablet / small laptop: tighten gutters, stack side images
+     720px — nav switches to two rows (name on top, links below)
+     640px — phone: single-column everything
+     380px — very narrow phones: shrink nav + type
+   =========================================================== */
+
+/* Global overflow guard — a single wide element shouldn't let the
+   whole page scroll sideways on a phone. */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+/* ---------- 900px: tablets ---------- */
+@media (max-width: 900px) {
+  .container { padding: 0 1.5rem; }
+  nav { padding: 0 1.5rem; }
+
+  /* Floating side images get wider at this size so text isn't
+     squeezed into a 2-word column. */
+  .img-right, .img-left { max-width: 42%; width: var(--w, 240px); }
+}
+
+/* ---------- 720px: two-row nav ---------- */
+@media (max-width: 720px) {
+  nav {
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.6rem 1rem 0.65rem;
+  }
+  .nav-name { font-size: 1.05rem; line-height: 1.2; }
+  .nav-links {
+    gap: 1.35rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+  }
+  .nav-links a { font-size: 0.8rem; letter-spacing: 0.02em; }
+  .nav-crane-count { font-size: 0.8rem; }
+  .nav-crane-icon { width: 16px; height: 16px; }
+
+  /* Hero starts lower on desktop to clear the tall nav — not needed here. */
+  .hero { padding-top: 2.5rem; }
+}
+
+/* ---------- 640px: phones ---------- */
 @media (max-width: 640px) {
-  .hero { grid-template-columns: 1fr; text-align: center; }
-  .hero-photo { margin: 0 auto; order: -1; }
+  .container { padding: 0 1.15rem; }
+
+  /* --- Hero --- */
+  .hero { grid-template-columns: 1fr; text-align: center; gap: 2rem; padding: 2rem 0 2rem; }
+  .hero-photo { margin: 0 auto; }
+  .hero-photo-wrap { order: -1; }
+  .hero-text .tagline { max-width: none; }
   .btn-row { justify-content: center; }
+  /* index.html sets margin-bottom:-3rem inline; wrapped buttons would
+     then collide with the divider below. */
+  .hero .btn-row { margin-top: 2rem !important; margin-bottom: 0 !important; }
   .contact-line { text-align: center; }
-  .skill-popup { left: 0; transform: none; }
-  .skill-popup::after, .skill-popup::before { left: 20px; }
+
+  /* --- Type / spacing --- */
+  .section-divider { margin: 2.25rem 0; }
+  .section-title { font-size: 1.4rem; }
+  h1.section-title { font-size: 1.9rem !important; }
+
+  /* --- Two-column sections stack --- */
+  .quick-about,
+  .bio-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 1.75rem !important; }
+  .quick-about > *, .bio-grid > * { min-width: 0; }
+  /* The gallery's fixed 350px would otherwise set the track's min-content
+     width and push the grid wider than the viewport. */
+  .bio-gallery { width: 100%; margin: 0 auto; }
+
+  /* Experience thumbnails float right at full width — keep them small
+     enough that bullet text still has room beside them. */
+  .timeline-thumb img { height: 2.2rem; width: 2.2rem; }
+
+  /* --- Crane page hero: shrink the icon so the title fits one line --- */
+  .crane-hero { gap: 0.7rem !important; }
+  .crane-hero-icon { width: 64px !important; height: 64px !important; }
+  .crane-hero .section-title { font-size: 1.9rem !important; }
+
+  /* --- Cards --- */
+  /* 260px min overflows a 320px viewport once gutters are counted. */
+  .card-grid { grid-template-columns: 1fr; gap: 1.15rem; margin: 1.5rem 0; }
+
+  /* --- Images: floats become full-width blocks, grids become one column --- */
+  .img-right, .img-left {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+  .img-center { width: 100% !important; }
+  .img-pair, .img-trio {
+    grid-template-columns: 1fr;
+    /* project.html makes .img-pair a flex row — override both models. */
+    flex-direction: column;
+  }
+  .media-row { flex-direction: column; }
+  .media-row > * { width: 100% !important; flex: none !important; }
+  .img-caption { margin-top: -0.6rem; margin-bottom: 1.25rem; }
+
+  /* --- Lightbox --- */
+  .lightbox { padding: 1rem; }
+  .lb-close { top: 0.5rem; right: 0.75rem; }
+
+  /* --- Footer --- */
+  footer { padding: 1.5rem 1rem; margin-top: 2.5rem; }
+}
+
+/* ---------- 380px: very narrow ---------- */
+@media (max-width: 380px) {
+  .container { padding: 0 0.9rem; }
+  .nav-links { gap: 0.95rem; }
+  .nav-links a { font-size: 0.74rem; }
+  .btn { padding: 0.5rem 1rem; font-size: 0.82rem; }
+}
+
+/* ===========================================================
+   TOUCH FALLBACKS
+   Hover-only affordances need a non-hover path on touch devices.
+   =========================================================== */
+@media (hover: none) {
+  /* Project card: the description normally only appears on hover over
+     the cover image. On touch there is no hover, so show it as a
+     permanent translucent strip across the bottom of the cover. */
+  .card-cover-desc {
+    opacity: 1;
+    pointer-events: none;
+    inset: auto 0 0 0;
+    background: rgba(255,255,255,0.93);
+    border-top: 1px solid var(--border);
+    padding: 0.6rem 0.85rem;
+    font-size: 0.8rem;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Footnote tooltips: 260px fixed width overflows a narrow screen,
+     and there's no hover to open them. Render inline instead. */
+  .footnote { border-bottom-style: solid; }
+  .footnote-tip {
+    display: block;
+    position: static;
+    width: auto;
+    max-width: 100%;
+    margin: 0.5rem 0;
+    box-shadow: none;
+    font-size: 0.8rem;
+  }
+  .footnote-tip::after, .footnote-tip::before { display: none; }
+
+  /* Resume button hover-swap would stick after a tap. */
+  .btn-resume .btn-resume-updated { display: none !important; }
+  .btn-resume .btn-resume-default { opacity: 1 !important; transform: none !important; }
+
+  /* Bigger hit targets for gallery / slideshow arrows. */
+  .bio-gallery-btn, .exp-photo-modal-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
 }

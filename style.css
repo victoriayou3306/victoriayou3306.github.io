@@ -415,7 +415,10 @@ footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center;
 
 /* Global overflow guard — a single wide element shouldn't let the
    whole page scroll sideways on a phone. */
-html, body { max-width: 100%; overflow-x: hidden; }
+/* `clip`, not `hidden`: hidden on both html and body turns <body> into its
+   own scroll container, which stops window scroll events from firing and
+   breaks position: sticky (the TOC and nav rely on both). */
+html, body { max-width: 100%; overflow-x: clip; }
 
 /* ---------- 900px: tablets ---------- */
 @media (max-width: 900px) {

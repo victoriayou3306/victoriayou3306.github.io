@@ -24,6 +24,21 @@
       text-transform: uppercase; letter-spacing: 0.05em;
       margin-top: 0.75rem; margin-bottom: 0.3rem; display: block;
     }
+    /* Degree + minor on one line. Flex with align-items: center keeps the
+       smaller minor text vertically centred on the degree instead of
+       sitting low on its baseline; it wraps underneath on narrow screens. */
+    .edu-title {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: 0.35em;
+    }
+    /* Minor — regular weight, muted, 1pt smaller than the degree */
+    .degree-minor {
+      font-weight: 400;
+      color: var(--text-muted);
+      font-size: calc(1em - 1pt);
+    }
 
     /* ── Bio photo gallery ── */
     .bio-gallery {
@@ -714,7 +729,8 @@
       li.className = 'timeline-item';
       li.innerHTML = `
         <div class="timeline-date">${school.dates}</div>
-        <div class="timeline-title">${school.degree}</div>
+        <div class="timeline-title edu-title"><span>${school.degree}</span>${school.minor
+          ? `<span class="degree-minor">· Minor in ${school.minor}</span>` : ''}</div>
         <div class="timeline-sub">${school.school}</div>
         ${school.courses.length ? `
           <span class="course-label">Relevant Coursework</span>

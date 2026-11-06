@@ -20,6 +20,7 @@ const EDUCATION = [
   {
     school: "University of Illinois Urbana-Champaign",
     degree: "BS · Mechanical Engineering",
+    minor: "Semiconductor Engineering",
     dates: "2024 – 2028",
     courses: [
       { name: "Mechanical Design I",              skills: ["Fusion 360"] },
@@ -36,6 +37,7 @@ const EDUCATION = [
   {
     school: "University of Illinois Urbana-Champaign",
     degree: "BS · Computational Physics",
+    minor: "Quantum Information Science",
     dates: "2024 – 2028",
     courses: [
       { name: "Semiconductor Devices",            skills: [] },

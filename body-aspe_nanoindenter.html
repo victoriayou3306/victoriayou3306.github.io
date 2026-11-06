@@ -4,6 +4,51 @@
 <section>
     <h3>Mechanical Design</h3>
     <p>Learning about flexure designs was really interesting, and to be honest, it took a while for us to even understand the project principles. We started a few CAD designs, thinking about minimizing the moving mass to reduce deflection due to gravity, as well as lowering the resonance frequency. We were given 10 leaf springs to use, but wanted to minimize their usage because <strong>a.</strong> we would probably bend and damage a few, and <strong>b. </strong>the notion that the indentation force being a larger percentage of our actuation force (compared to force in the flexure mechanism) would improve the precision of our measurements. </p>
+
+    <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/CADv0.png"  alt="1" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/firstTry.jpg"   alt="2"  class="lb" onclick="lb(this)">
+    </div>
+     <p>Our very first design was unideal... but it was a start. We also realized that it was rather difficult to align the leaf springs and hardware perfectly, as even small deviations would cause large unexpected nonlinearities. There's also some quirks with the mech blocks, as each hole in the grid can only be utilized in one cartesian direction. We thought a horizontal orientation would be a little simpler to start with, but were a little concerned about the torque imbalance by our large (to be reduced) moving mass.</p>
+     <div class="clear"></div>
+
+     <img class="img-left lb"
+     style="--w:260px"
+     src="assets/projects/aspe_nanoindenter/CADdoubleH.png"
+     alt="Double Leaf Spring v1"
+     onclick="lb(this)">
+
+     <p>We met with some professors for some feedback and other leaf spring designs and flexure mechanisms. We decided to try a Double Leaf Spring design for complete linearity along the axis of indentation, which the parallelogram (v1) design would not have.</p>
+     <div class="clear"></div>
+     <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/double1.jpg"  alt="1" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/double2.jpg"   alt="2"  class="lb" onclick="lb(this)">
+    </div>
+
+    <div class="clear"></div>
+
+    <img class="img-right lb"
+     style="--w:260px"
+     src="assets/projects/aspe_nanoindenter/doubleTilt.jpg"
+     alt="wow torsion"
+     onclick="lb(this)">
+    <p>So then the mechanism was assembled, and set up to calibrate the capacitance probe with the micrometer stage. The moving stage ended up heavier than expected to include enough attachment points for both the actuator and indenter.</p>
+    <p>...And then I came back after class to do the calibration and it was sagging and misaligned due to the weight, so we had to rethink the design.</p>
+    <div class="clear"></div>
+
+    <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/CADdoubleV.png"  alt="Vertical Double Leaf Spring" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/doubleBad.jpg"   alt="Slight Sag"  class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/doubleBad2.jpg"   alt="Actuator Tilt"  class="lb" onclick="lb(this)">
+    </div>
+    <p>We started entertaining the idea of a vertical orientation, so the sagging doesn't produce a torque and offset the axis of indentation. But that would only work if the center of mass was inline with the plane of the leaf springs (right picture), and also becomes very bulky with the placement of the micrometer stage.</p>
+    <div class="clear"></div>
+    <img class="img-center lb"
+     style="--w: 650px"
+     src="assets/projects/aspe_nanoindenter/firstBuild.jpg"
+     alt="First Build"
+     onclick="lb(this)">
+     <p>We realized the slight nonlinear flex of the parallelogram would be negligible at our scale of operation, and decided to go back to a revision of that design to continue with hardware calibration.</p>
 </section>
 <section>
     <h3>Hardware Calibration</h3>

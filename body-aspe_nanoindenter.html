@@ -71,6 +71,11 @@
      src="assets/projects/aspe_nanoindenter/VCA_prop.png"
      alt="VCA Force Sensitivity Curve"
      onclick="lb(this)">
+     <img class="img-right lb"
+     style="--w: 450px"
+     src="assets/projects/aspe_nanoindenter/shim.jpg"
+     alt="Miscellaneous washers for shimming lol"
+     onclick="lb(this)">
     <p>We also wanted to find the placement of the voice coil and magnet that gave the most linear operating regime. The datasheet gave this graph, and its clear the most consistent [N/A] gain would be at its peak sensitivity. The test would be straightforward: shim the magnet towards the voice coil until peak sensitivity is measured. By inputting a constant Vin, peak sensitivity is when displcement via capacitance probe peaks (assuming resistance in Vsense stays constant across tests, which was believed true due to the downtime needed to reshim and shift the magent). </p>
     <div class="clear"></div>
     <img class="img-right lb"
@@ -81,13 +86,52 @@
     <p>Calibration Attempt Results... After a few repeat measurements, it became very obvious manual alignment error in the voice coil and magnet's concentricity axis was much greater than its internal positioning in the stroke range. Since we were a little short on time, and also the actual indentation would rarely exceed 1mm, we moved on to the next step.</p>
     <div class="clear"></div>
 
+    <p>VCA Force is linear with Current, but we only have direct Voltage input, with Vsense as a reference voltage to calculate current. So using provided calibration masses, we wanted to validate the linearity with sustained use (heating in the resistor affecting reference Vsense), find the proportionality between Vin and Force, as well as gauge our flexure's stiffness. </p>
+    <img class="img-left lb"
+        style="--w: 450px"
+        src="assets/projects/aspe_nanoindenter/massCalibration.jpg"
+        alt="Hanging Mass Setup"
+        onclick="lb(this)">
+    <p>We tried to keep the calibration setup as close to the final configuration as possible. We used the v-groove bearing as a pulley, and tried to keep the string's horizontal axis perfectly parallel with the capacitance probe. We probably could have calculated the exact offsets by geometry, but didn't feel it was needed based on the results (and we were a little short on time lol). </p>
+    <div class="clear"></div>
+
+    <img class="img-right lb"
+        style="--w: 450px"
+        src="assets/projects/aspe_nanoindenter/ratTail_friction.png"
+        alt="Ugly Calibration"
+        onclick="lb(this)">
+    <p>Soo the first tries were not great- the linearity should be consistent and bidirectional. There was some frictional effect that we couldn't figure out. It could be from the bearing, the string stretching, or even the design of the flexure not retaining perfect concentricity between the voice coil and magnet, or some other artifact in our design. </p>
+    <div class="clear"></div>
+    <img class="img-right lb"
+        style="--w: 280px"
+        src="assets/projects/aspe_nanoindenter/ratTail.jpg"
+        alt="Rat Tail Wire"
+        onclick="lb(this)">
+    <p>This was like 4am a few days before our flight, and we were SO close to giving up, until Justin saw this rat tail of a wire barely scraping the table. So we forcibly twisted it until it was floating, and not pulling on the voice coil in any significant direction, and we were able to get clean calibration results!</p>
+    <div class="clear"></div>
+    <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/VCA_Sweeps.png"  alt="1" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/flexure_stiffness.png"   alt="2"  class="lb" onclick="lb(this)">
+    </div>
+
 </section>
 <section>
     <h3>LabVIEW Controls</h3>
+    <img class="img-center lb"
+     style="--w: 650px"
+     src="assets/projects/aspe_nanoindenter/PresentationSlide.jpg"
+     alt="Slide from Final Presentation"
+     onclick="lb(this)">
 </section>
 <section>
     <h3>Testing</h3>
 </section>
 <section>
     <h3>Competition! (and Murphy's Law)</h3>
+
+    <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/airport.jpg"  alt="1" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/airportFloor.jpg"   alt="2"  class="lb" onclick="lb(this)">
+    </div>
+
 </section>

@@ -49,11 +49,11 @@ const PROJECTS = [
     cat: "Personal",
     dateStart: "2026-09",
     date: "2026-10",
-    desc: "Designing a Nanoindenter using leaf spring flexure mechanism- won 3rd Place at the American Society of Precision Engineering 2026 Student Challenge.",
+    desc: "Designing a Nanoindenter using leaf spring flexure mechanism and LabVIEW controls- won 3rd Place at the American Society of Precision Engineering 2026 Student Challenge.",
     body: "",
     tags: ["Autodesk Inventor", "LabVIEW"],
     toc: true,    tocOffset: '4rem',   tocTop: '1.5rem',
-    sidebar:[{title: "Team:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'><strong>Sergio Bahena</strong></a>, <a href = 'https://www.linkedin.com/in/justinlin17/'><strong>Justin Lin</strong></a>"}],
+    sidebar:[{title: "Team:", content: "<a href = 'https://www.linkedin.com/in/sergio-bahena3/'><strong>Sergio Bahena</strong></a> (UIUC), <a href = 'https://www.linkedin.com/in/justinlin17/'><strong>Justin Lin</strong></a> (UMich). Since we were split across two states, the bulk of the assembly and testing was done in the last 1.5 weeks leading up to the challenge during Michigan's Fall Break."}],
     // coverImage: "ASME_Logo.png",
   },
   {

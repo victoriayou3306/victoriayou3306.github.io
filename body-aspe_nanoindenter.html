@@ -1,6 +1,6 @@
 <p>The 2026 ASPE Student Challenge was to design a nanoindenter using modular Mech Blocks and a leaf-spring mechanism to determine material properties like hardness and elastic modulus. We were given a Berkovich Indentor, Capacitance Probe, Voice Coil Actuator, and Micrometer stage. We also had Cu substrates to test our indenter before the competition to determine a mystery sample's material. A basic LabView control dashboard was provided for actuation and measurement, and we had to build the indentation control loop around it. The Oliver-Pharr method was used for data analysis.</p>
 
-<p>Justin and I originally met at our summer internship at KLA, and someone on the Mechatronics Team introduced us to ASPE. This conference was incredibly informative and fun, even though pretty much everything went wrong...(see last section), and we were able to meet so many incredible people. The community was unbelievably patient with us, and we are extremely grateful to Vy Tran, the KLA team, and the whole ASPE board and society.</p>
+<p>Justin and I originally met at our summer internship at KLA, and Vy Tran from the Mechatronics Team introduced us to ASPE. This conference was incredibly informative and fun, even though pretty much everything went wrong...(see last section), and we were able to meet so many incredible people. The community was unbelievably patient with us, and we are extremely grateful to Vy, the KLA team, and the whole ASPE board and society.</p>
 <section>
     <h3>Mechanical Design</h3>
     <p>Learning about flexure designs was really interesting, and to be honest, it took a while for us to even understand the project principles. We started a few CAD designs, thinking about minimizing the moving mass to reduce deflection due to gravity, as well as lowering the resonance frequency. We were given 10 leaf springs to use, but wanted to minimize their usage because <strong>a.</strong> we would probably bend and damage a few, and <strong>b. </strong>the notion that the indentation force being a larger percentage of our actuation force (compared to force in the flexure mechanism) would improve the precision of our measurements. </p>
@@ -52,6 +52,35 @@
 </section>
 <section>
     <h3>Hardware Calibration</h3>
+    <p>We planned to start the calibration process in three steps: finding the capacitance probe gain (µm/V) and baseline error, finding the most linear region of voice coil operation, and the proportionality of Force vs Current/Input Voltage.</p>
+    <img class="img-left lb"
+     style="--w: 450px"
+     src="assets/projects/aspe_nanoindenter/labviewDash.png"
+     alt="LabVIEW Dashboard"
+     onclick="lb(this)">
+     <p>The ASPE committee gave us this dashboard to control the hardware. I added a 4s average & stdev readout of the ADC-A (Capacitance Probe Voltage, not pictured), and then manually turned the micrometer stage across a ~1mm range. There's some error due to backlash in the stage, but it was more than sufficient for our needs.</p>
+    <div class="clear"></div>
+     <img class="img-center lb"
+     style="--w: 500px"
+     src="assets/projects/aspe_nanoindenter/capProbecal.png"
+     alt="Capacitance Probe Calibration"
+     onclick="lb(this)">
+     <p>We did two sets of 2 bidirectional sweeps, and the peak residuals were at a constant position in the micrometer stage, indicating it was a micrometer artifact, not capacitance probe. The slope was consistent and matched across directions and sweeps when accounting for backlash in the turning points.</p>
+    <img class="img-right lb"
+     style="--w: 450px"
+     src="assets/projects/aspe_nanoindenter/VCA_prop.png"
+     alt="VCA Force Sensitivity Curve"
+     onclick="lb(this)">
+    <p>We also wanted to find the placement of the voice coil and magnet that gave the most linear operating regime. The datasheet gave this graph, and its clear the most consistent [N/A] gain would be at its peak sensitivity. The test would be straightforward: shim the magnet towards the voice coil until peak sensitivity is measured. By inputting a constant Vin, peak sensitivity is when displcement via capacitance probe peaks (assuming resistance in Vsense stays constant across tests, which was believed true due to the downtime needed to reshim and shift the magent). </p>
+    <div class="clear"></div>
+    <img class="img-right lb"
+        style="--w: 450px"
+        src="assets/projects/aspe_nanoindenter/magnet_shim.png"
+        alt="VCA Cal Attempt"
+        onclick="lb(this)">
+    <p>Calibration Attempt Results... After a few repeat measurements, it became very obvious manual alignment error in the voice coil and magnet's concentricity axis was much greater than its internal positioning in the stroke range. Since we were a little short on time, and also the actual indentation would rarely exceed 1mm, we moved on to the next step.</p>
+    <div class="clear"></div>
+
 </section>
 <section>
     <h3>LabVIEW Controls</h3>

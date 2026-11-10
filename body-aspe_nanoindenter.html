@@ -83,7 +83,8 @@
         src="assets/projects/aspe_nanoindenter/magnet_shim.png"
         alt="VCA Cal Attempt"
         onclick="lb(this)">
-    <p>Calibration Attempt Results... After a few repeat measurements, it became very obvious manual alignment error in the voice coil and magnet's concentricity axis was much greater than its internal positioning in the stroke range. Since we were a little short on time, and also the actual indentation would rarely exceed 1mm, we moved on to the next step.</p>
+    <p>Calibration Attempt Results... After a few repeat measurements, it became very obvious manual alignment error in the voice coil and magnet's concentricity axis was much greater than its internal positioning in the stroke range.<span class="footnote">*
+    <span class="footnote-tip">The magnet and voice coil both used 10-32 bolts, and the mech block grid was designed around 1/4". That led to some placement variability, plus the voice coil being suspended on a cantilevered leaf spring flexure. (Maybe if we had more time, we could've 3D printed an alignment jig instead of doing it by feel)</span></span> Since we were a little short on time, and also the actual indentation would rarely exceed 1mm, we moved on to the next step.</p>
     <div class="clear"></div>
 
     <p>VCA Force is linear with Current, but we only have direct Voltage input, with Vsense as a reference voltage to calculate current. So using provided calibration masses, we wanted to validate the linearity with sustained use (heating in the resistor affecting reference Vsense), find the proportionality between Vin and Force, as well as gauge our flexure's stiffness. </p>
@@ -119,12 +120,15 @@
     <h3>LabVIEW Controls</h3>
     <img class="img-center lb"
      style="--w: 650px"
-     src="assets/projects/aspe_nanoindenter/PresentationSlide.jpg"
+     src="assets/projects/aspe_nanoindenter/PresentationSlide.png"
      alt="Slide from Final Presentation"
      onclick="lb(this)">
+     <p>We basically went as simple as possible for the controls, having not much labVIEW experience. The state machine cycles through all steps needed for the Oliver-Pharr process automatically, and Vin was controlled using Vsense as current feedback, with Force estimated using the displacement (consistent with the known flexure stiffness until contact). An initial idle state estimates the rate of thermal drift throughout the indentation, as well as baseline noise. The free-air approach allows for active fitting of the flexure stiffness, and a contact detection of 3mN to begin the loading stage. Then a t_hold, unloading, t_drift at 10% Force, and then final unload. There was also an Abort state that would trigger upon error to prevent damage to the tip. If we had more time, we probably could've improved the contact detection, as it was a large source of error, especially at the 50 mN indentation. Some sort of signal processing for noise reduction probably would have been very helpful too.</p>
 </section>
 <section>
     <h3>Testing</h3>
+    <p>After validating the control loop worked, it was time to test! We don't have pictures of the substrate holder, but we did a few attempts using the dummy tip first to ensure the system was fully functional through the loading/unloading stages. </p>
+    <p>We started by taping the Cu test substrates to the holder. We taped over the corners, since double sided tape under the material would create artificial compliance that wasn't from the Cu. </p>
 </section>
 <section>
     <h3>Competition! (and Murphy's Law)</h3>
@@ -133,5 +137,7 @@
         <img src="assets/projects/aspe_nanoindenter/airport.jpg"  alt="1" class="lb" onclick="lb(this)">
         <img src="assets/projects/aspe_nanoindenter/airportFloor.jpg"   alt="2"  class="lb" onclick="lb(this)">
     </div>
-
+    <p>Uh so we missed our flight... A 10 minute uber to the airport got canceled 3x, got stuck in local public school traffic, had check-in issues and were stuck behind a family of 10 rearranging suitcases for an international flight, and then sprinting to TSA with a rather suspicious looking box...</p>
+    <p>So most of the day was spent catching up on homework + sleep on the airport floor. I was also reading over the Lion Capacitance Probe datasheet and realized you can modify the bandwidth by flipping an internal switch, but needed a screwdriver to access. Unfortunately, my backpack screwdriver is on a multitool with a knife, so I didn't have it. We spent like an hour wandering the airport trying to find a screwdriver, but what else were we going to do lol. Changing the filter to 100 Hz ended up improving our stdev by about 10x, which was a brilliant airport floor discovery.</p>
+    <p>When we got there 12 hours late, we realized there might've been some miscommunication resulting in a lack of hotel room. Hence dubbing Illinois/Michigan as the Hobo Team that pulled up 4 hours late to a 5 hour competition.</p>
 </section>

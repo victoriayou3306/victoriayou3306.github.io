@@ -23,6 +23,10 @@ const EDUCATION = [
     minor: "Semiconductor Engineering",
     dates: "2024 – 2028",
     courses: [
+      { name: "Nanofabrication & Characterization",         skills: [] },
+      { name: "Signal Processing",         skills: [] },
+      { name: "Engineering Materials",         skills: [] },
+      { name: "Mechanical Design II",         skills: [] },
       { name: "Mechanical Design I",              skills: ["Fusion 360"] },
       { name: "Dynamics of Mechanical Systems",   skills: ["MATLAB"] },
       { name: "Design for Manufacturing",         skills: [] },
@@ -40,6 +44,8 @@ const EDUCATION = [
     minor: "Quantum Information Science",
     dates: "2024 – 2028",
     courses: [
+      { name: "Physics and Modeling of Semiconductor Devices",            skills: [] },
+      { name: "Condensed Matter Physics",            skills: [] },
       { name: "Semiconductor Devices",            skills: [] },
       { name: "Atomic Physics & Quantum Theory",  skills: [] },
       { name: "Electromagnetic Fields",           skills: [] },

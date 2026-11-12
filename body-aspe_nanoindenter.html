@@ -123,12 +123,22 @@
      src="assets/projects/aspe_nanoindenter/PresentationSlide.png"
      alt="Slide from Final Presentation"
      onclick="lb(this)">
-     <p>We basically went as simple as possible for the controls, having not much labVIEW experience. The state machine cycles through all steps needed for the Oliver-Pharr process automatically, and Vin was controlled using Vsense as current feedback, with Force estimated using the displacement (consistent with the known flexure stiffness until contact). An initial idle state estimates the rate of thermal drift throughout the indentation, as well as baseline noise. The free-air approach allows for active fitting of the flexure stiffness, and a contact detection of 3mN to begin the loading stage. Then a t_hold, unloading, t_drift at 10% Force, and then final unload. There was also an Abort state that would trigger upon error to prevent damage to the tip. If we had more time, we probably could've improved the contact detection, as it was a large source of error, especially at the 50 mN indentation. Some sort of signal processing for noise reduction probably would have been very helpful too.</p>
-</section>
+     <p>We basically went as simple as possible for the controls, having not much labVIEW experience. The state machine cycles through all steps needed for the Oliver-Pharr process automatically, and Vin was controlled using Vsense as current feedback, with Force estimated using the displacement (consistent with the known flexure stiffness until contact). An initial idle state estimates the rate of thermal drift throughout the indentation, as well as baseline noise. The free-air approach allows for active fitting of the flexure stiffness, and a contact detection of 3mN to begin the loading stage. Then a t_hold, unloading, t_drift at 10% Force, and then final unload. There was also an Abort state that would trigger upon error to prevent damage to the tip. If we had more time, we probably could've improved the contact detection, as it was a large source of error, especially at the 50 mN indentation. Some sort of signal processing for noise reduction probably would have been very helpful too, but we were a little short on time. There are lots of things from a controls perspective we could have improved and things to have focused on more, but there's always next year :)</p>
+    <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/blueScreen.jpg"  alt="1" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/blckScreen.jpg"   alt="2"  class="lb" onclick="lb(this)">
+    </div>
+    <p>Also, the LabVIEW setup did not come without casualties. We didn't realize it was uncompatible with Windows 11, so when I tried to reinstall it on my (brand new, 1 month old) laptop, it corrupted my operating system... And I had to wipe my laptop and reinstall Windows. That was not very fun.</p>
+    <p>This was resolved by using a VM that ran Windows 10. Except that also meant it was very, very slow. We also used TDMS file writeout to the myRIO, which saved the data in its internal storage, so we copied it over to the VM's local drive, and then uploaded to Google Drive, and then downloaded on the host pc to post process... Maybe there was a cleaner way, but it worked lol.</p>
+    </section>
 <section>
     <h3>Testing</h3>
-    <p>After validating the control loop worked, it was time to test! We don't have pictures of the substrate holder, but we did a few attempts using the dummy tip first to ensure the system was fully functional through the loading/unloading stages. </p>
-    <p>We started by taping the Cu test substrates to the holder. We taped over the corners, since double sided tape under the material would create artificial compliance that wasn't from the Cu. </p>
+    <p>We don't have pictures of the substrate holder, but we did a few attempts using the dummy tip first to ensure the system was fully functional through the loading/unloading stages and errors triggered the abort state properly. We taped the Cu sample to the substrate holder going over the corners, since double sided tape under the material would create artificial compliance that wasn't from the Cu. </p>
+    <div class="img-pair">
+        <img src="assets/projects/aspe_nanoindenter/dummyTests.png"  alt="1" class="lb" onclick="lb(this)">
+        <img src="assets/projects/aspe_nanoindenter/dummyForce.png"   alt="2"  class="lb" onclick="lb(this)">
+    </div>
+    <p>After verifying the system worked correctly through all the desired states, we decided to go ahead and install the Berkovich indenter. We honestly weren't super sure what to expect using a soft dummy indenter, and this seemed relatively reasonable? This also might've been the day before we left for Chicago, so there might have been a little time crunch.</p>
 </section>
 <section>
     <h3>Competition! (and Murphy's Law)</h3>

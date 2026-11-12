@@ -177,23 +177,28 @@
     .img-right { float: right; margin: 0.25rem 0 1rem 1.75rem; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
     .img-left  { float: left;  margin: 0.25rem 1.75rem 1rem 0; border-radius: 8px; width: var(--w, 280px); max-width: 48%; }
     .clear { clear: both; }
+    /* ── img-pair: equal heights, fills the row, nothing cropped ──
+       initPairSizing() sets each item's flex-grow to its image's aspect
+       ratio (width / height). With flex-basis 0, the row's width is then
+       split in proportion to those ratios — which is exactly the split
+       that gives every image the same height. Until an image loads it
+       falls back to an even split. */
     .img-pair {
       display: flex;
       gap: 10px;
       margin: 1.5rem 0;
-      align-items: stretch;
+      align-items: flex-start;
     }
     .img-pair > img,
     .img-pair-cell {
-      flex: 1;
+      flex: 1 1 0;
       min-width: 0;
     }
     .img-pair > img {
       border-radius: 8px;
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
     }
     .img-pair.float-right {
       float: right;
@@ -623,6 +628,9 @@
         float: none; width: 100% !important; margin: 1rem 0;
       }
       .img-pair > img { height: auto; object-fit: contain; }
+      /* Stacked: each image takes the full width at its natural height.
+         !important beats the per-image flex ratio set inline by JS. */
+      .img-pair > img, .img-pair-cell { flex: none !important; width: 100%; }
       .img-trio { grid-template-columns: 1fr; }
       .media-row { flex-direction: column; }
       .media-row > * { width: 100% !important; flex: none !important; }
@@ -1073,6 +1081,29 @@
           cap.className   = 'img-caption';
           cap.textContent = caption;
           cell.appendChild(cap);
+        });
+        initPairSizing();   // after wrapping, so captioned cells are sized too
+      }
+
+      /* ─── img-pair sizing: same height, fill the row ─────────────────────
+         Each item's flex-grow = its image's width/height. The row is then
+         divided in proportion to the aspect ratios, so all images come out
+         the same height with no cropping. Works for bare <img> children and
+         for captioned .img-pair-cell wrappers.
+      ──────────────────────────────────────────────────────────────────── */
+      function initPairSizing() {
+        document.querySelectorAll('.img-pair').forEach(pair => {
+          [...pair.children].forEach(item => {
+            const img = item.tagName === 'IMG' ? item : item.querySelector('img');
+            if (!img) return;
+            const apply = () => {
+              if (img.naturalWidth && img.naturalHeight) {
+                item.style.flex = `${img.naturalWidth / img.naturalHeight} 1 0`;
+              }
+            };
+            if (img.complete) apply();
+            else img.addEventListener('load', apply, { once: true });
+          });
         });
       }
 

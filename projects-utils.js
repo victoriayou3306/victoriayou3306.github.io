@@ -293,6 +293,60 @@ function _applyCollapse(container) {
   });
 }
 
+/* ── Card tag overflow: max 2 rows ─────────────────────────────────────────
+   Any tag that wraps onto a 3rd row is hidden and replaced by a "+N" pill
+   (hover it to see the hidden names). If the pill itself would land on row
+   3, more tags are swapped into it until it fits on row 2.
+   Shared by every page that uses buildCard(), and re-run on resize since
+   card widths change. Safe to call repeatedly — it resets first. */
+function trimCardTags(container) {
+  if (!container || !container.isConnected) return;
+  const tags = [...container.querySelectorAll('.card-tag')];
+  if (!tags.length) return;
+
+  // Reset from any previous run
+  const old = container.querySelector('.card-tags-more');
+  if (old) old.remove();
+  tags.forEach(t => t.style.display = '');
+
+  // A tag is on row 3+ if it starts more than ~1.5 tag-heights below row 1
+  const maxTop = tags[0].offsetTop + tags[0].offsetHeight * 1.5;
+  const overflowStart = tags.findIndex(t => t.offsetTop > maxTop);
+  if (overflowStart === -1) return;   // fits in 2 rows
+
+  const hidden = tags.slice(overflowStart);
+  hidden.forEach(t => t.style.display = 'none');
+
+  const pill = document.createElement('span');
+  pill.className = 'card-tags-more';
+  container.appendChild(pill);
+  const update = () => {
+    pill.textContent = `+${hidden.length}`;
+    pill.title = hidden.map(t => t.textContent).join(', ');
+  };
+  update();
+
+  // If the pill wrapped onto row 3, fold the last visible tag into it
+  let visible = tags.slice(0, overflowStart);
+  while (pill.offsetTop > maxTop && visible.length) {
+    const last = visible.pop();
+    last.style.display = 'none';
+    hidden.unshift(last);
+    update();
+  }
+}
+
+let _cardTagResizeWatching = false;
+function _watchCardTagResize() {
+  if (_cardTagResizeWatching) return;
+  _cardTagResizeWatching = true;
+  let timer;
+  window.addEventListener('resize', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => document.querySelectorAll('.card-tags').forEach(trimCardTags), 150);
+  });
+}
+
 /* Build a card element (used by index.html and projects.html) */
 function buildCard(p, { clickable = true } = {}) {
   const card = document.createElement('div');
@@ -331,27 +385,10 @@ function buildCard(p, { clickable = true } = {}) {
     </div>
   `;
 
-  /* Collapse tags to 2 rows with a (…) overflow bubble */
-  requestAnimationFrame(() => {
-    const tagsEl  = card.querySelector('.card-tags');
-    const tagEls  = [...tagsEl.querySelectorAll('.card-tag')];
-    if (!tagEls.length) return;
-
-    // Measure: find where the 3rd row starts
-    const rowH   = tagEls[0].offsetHeight + 5; // tag height + gap
-    const top0   = tagEls[0].offsetTop;
-    const cutoff = top0 + rowH * 2 + 3;
-
-    const hidden = tagEls.filter(t => t.offsetTop > cutoff);
-    if (!hidden.length) return;
-
-    hidden.forEach(t => t.style.display = 'none');
-    const more = document.createElement('span');
-    more.className = 'card-tags-more';
-    more.textContent = `+${hidden.length}`;
-    more.title = hidden.map(t => t.textContent).join(', ');
-    tagsEl.appendChild(more);
-  });
+  /* Collapse tags to 2 rows with a "+N" overflow bubble (runs after the
+     card is on the page, so real widths can be measured) */
+  requestAnimationFrame(() => trimCardTags(card.querySelector('.card-tags')));
+  _watchCardTagResize();
 
   if (clickable) {
     card.addEventListener('click', () => {

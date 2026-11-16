@@ -205,10 +205,9 @@ nav {
 /* Desc when there's NO cover image: max 5 lines, always visible */
 .card-desc-inline {
   font-size: 0.85rem; color: var(--text-muted); line-height: 1.55;
-  display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;
-  margin-bottom: 0.6rem; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 0.6rem;
 }
-
 /* Category badge */
 .card-category {
   display: inline-block; background: var(--accent-light); color: var(--accent);
